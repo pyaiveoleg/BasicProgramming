@@ -6,3 +6,5 @@ Repository for homeworks.
 
 1. Task1;
 2. Task2;
+
+Пробую использовать кириллицу
