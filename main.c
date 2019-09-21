@@ -15,27 +15,34 @@ int main() {
     printf("Please, write down the number N: ");
     scanf("%d", &number);
 
-    for (int i = 2; i <= number; i++)
+    for (int currentNumber = 2; currentNumber <= number; currentNumber++)
     {
-        if (number % i == 0)
+        for (int i = 2; i <= currentNumber; i++)
         {
-            isMutuallyPrime[i] = false;
-        }
-        if (!isMutuallyPrime[i])
-        {
-            for (int j = i; j <= number; j += i)
+            if (currentNumber % i == 0)
             {
-                isMutuallyPrime[j] = false;
+                isMutuallyPrime[i] = false;
+            }
+            if (!isMutuallyPrime[i])
+            {
+                for (int k = i; k <= number; k += i)
+                {
+                    isMutuallyPrime[k] = false;
+                }
             }
         }
-    }
 
-    printf("1 / n\n");
-    for (int i = 2; i <= number; i++)
-    {
-        if (isMutuallyPrime[i])
+        for (int i = 1; i <= currentNumber; i++)
         {
-            printf("%d / n\n",i);
+            if (isMutuallyPrime[i])
+            {
+                printf("%d / %d\n", i, currentNumber);
+            }
+        }
+
+        for (int i = 0; i < maxNumber; i++)
+        {
+            isMutuallyPrime[i] = true;
         }
     }
 
