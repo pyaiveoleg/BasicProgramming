@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void representationOfNumber(int remainingPart, int maximalTerm, int numberOfCurrentTerm, int* currentRepresentation)
+void decomposeNumberIntoTerms(int remainingPart, int maximalTerm, int numberOfCurrentTerm, int currentRepresentation[])
 {
     if (remainingPart < 0)
     {
@@ -20,10 +20,11 @@ void representationOfNumber(int remainingPart, int maximalTerm, int numberOfCurr
         if (remainingPart >= maximalTerm)
         {
             currentRepresentation[numberOfCurrentTerm] = maximalTerm;
-            representationOfNumber(remainingPart - maximalTerm, maximalTerm, numberOfCurrentTerm + 1, currentRepresentation);
+            decomposeNumberIntoTerms(remainingPart - maximalTerm, maximalTerm, numberOfCurrentTerm + 1, currentRepresentation);
         }
-        if (maximalTerm > 1) {
-            representationOfNumber(remainingPart, maximalTerm - 1, numberOfCurrentTerm, currentRepresentation);
+        if (maximalTerm > 1)
+        {
+            decomposeNumberIntoTerms(remainingPart, maximalTerm - 1, numberOfCurrentTerm, currentRepresentation);
         }
     }
     return;
@@ -42,7 +43,7 @@ int main()
     printf("Please, write down number (N): ");
     scanf("%d", &number);
 
-    representationOfNumber(number, number, 0, currentRepresentation);
+    decomposeNumberIntoTerms(number, number, 0, currentRepresentation);
 
     return 0;
 }
