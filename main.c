@@ -1,50 +1,55 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <time.h>
 
+int main()
+{
+    srand(time(NULL));
+    bool isSolved = false;
+    int thoughtNumber[4] = {rand() % 10, rand() % 10, rand() % 10, rand() % 10};
+    //printf ("%d%d%d%d\n", thoughtNumber[0], thoughtNumber[1], thoughtNumber[2], thoughtNumber[3]);
+    int guessedNumber[4] = {0,0,0,0};
+    int inputNumber = 0;
+    int cows = 0;
+    int bulls = 0;
+    int turn = 1;
 
-
-int main() {
-    const int maxNumber = 10000;
-    int number = 0;
-    bool isMutuallyPrime[maxNumber];
-    for (int i = 0; i < maxNumber; i++)
+    printf("     Guess Result\n");
+    while (!isSolved)
     {
-        isMutuallyPrime[i] = true;
+        printf(" %d  |", turn);
+        scanf("%d", &inputNumber);
+        guessedNumber[3] = inputNumber % 10;
+        inputNumber /= 10;
+        guessedNumber[2] = inputNumber % 10;
+        inputNumber /= 10;
+        guessedNumber[1] = inputNumber % 10;
+        inputNumber /= 10;
+        guessedNumber[0] = inputNumber;
+        //printf ("%d%d%d%d\n", guessedNumber[0], guessedNumber[1], guessedNumber[2], guessedNumber[3]);
+        for (int i = 0; i <= 3; i++)
+        {
+            if (guessedNumber[i] == thoughtNumber[i])
+            {
+                bulls++;
+            }
+            if ((guessedNumber[i] == thoughtNumber [0]) || (guessedNumber[i] == thoughtNumber [1])
+             || (guessedNumber[i] == thoughtNumber [2]) || (guessedNumber[i] == thoughtNumber [3]))
+            {
+                cows++;
+            }
+        }
+        printf ("           %dA %dB\n", cows - bulls, bulls);
+        if (bulls == 4)
+        {
+            isSolved = true;
+        }
+        bulls = 0;
+        cows = 0;
+        turn++;
     }
 
-    printf("Please, write down the number N: ");
-    scanf("%d", &number);
-
-    for (int currentNumber = 2; currentNumber <= number; currentNumber++)
-    {
-        for (int i = 2; i <= currentNumber; i++)
-        {
-            if (currentNumber % i == 0)
-            {
-                isMutuallyPrime[i] = false;
-            }
-            if (!isMutuallyPrime[i])
-            {
-                for (int k = i; k <= number; k += i)
-                {
-                    isMutuallyPrime[k] = false;
-                }
-            }
-        }
-
-        for (int i = 1; i <= currentNumber; i++)
-        {
-            if (isMutuallyPrime[i])
-            {
-                printf("%d / %d\n", i, currentNumber);
-            }
-        }
-
-        for (int i = 0; i < maxNumber; i++)
-        {
-            isMutuallyPrime[i] = true;
-        }
-    }
-
+    printf("You win!");
     return 0;
 }
