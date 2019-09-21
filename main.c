@@ -1,48 +1,43 @@
 #include <stdio.h>
+#include <stdbool.h>
 
-void representationOfNumber(int remainingPart, int maximalTerm, int numberOfCurrentTerm, int* currentRepresentation)
-{
-    if (remainingPart < 0)
-    {
-        return;
-    }
-    if (remainingPart == 0)
-    {
-        printf("%d ", currentRepresentation[0]);
-        for (int j = 1; j < numberOfCurrentTerm; j++)
-        {
-            printf("+ %d ", currentRepresentation[j]);
-        }
-        printf("\n");
-    }
-    else
-    {
-        if (remainingPart >= maximalTerm)
-        {
-            currentRepresentation[numberOfCurrentTerm] = maximalTerm;
-            representationOfNumber(remainingPart - maximalTerm, maximalTerm, numberOfCurrentTerm + 1, currentRepresentation);
-        }
-        if (maximalTerm > 1) {
-            representationOfNumber(remainingPart, maximalTerm - 1, numberOfCurrentTerm, currentRepresentation);
-        }
-    }
-    return;
-}
 
-int main()
-{
-    const int maxNumber = 100;
-    int currentRepresentation[maxNumber];
+
+int main() {
+    const int maxNumber = 10000;
+    int number = 0;
+    bool isMutuallyPrime[maxNumber];
     for (int i = 0; i < maxNumber; i++)
     {
-        currentRepresentation[i] = 0;
+        isMutuallyPrime[i] = true;
     }
-    int number = 0;
 
-    printf("Please, write down number (N): ");
+    printf("Please, write down the number N: ");
     scanf("%d", &number);
 
-    representationOfNumber(number, number, 0, currentRepresentation);
+    for (int i = 2; i <= number; i++)
+    {
+        if (number % i == 0)
+        {
+            isMutuallyPrime[i] = false;
+        }
+        if (!isMutuallyPrime[i])
+        {
+            for (int j = i; j <= number; j += i)
+            {
+                isMutuallyPrime[j] = false;
+            }
+        }
+    }
+
+    printf("1 / n\n");
+    for (int i = 2; i <= number; i++)
+    {
+        if (isMutuallyPrime[i])
+        {
+            printf("%d / n\n",i);
+        }
+    }
 
     return 0;
 }

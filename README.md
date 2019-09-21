@@ -1,4 +1,4 @@
 # BasicProgramming
 Repository for homeworks.
 
-Task 2-1
+Task 2-2
