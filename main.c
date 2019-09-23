@@ -1,55 +1,46 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
-#include <time.h>
+#include <stdbool.h>
 
-int main()
+int compare(const void * x1, const void * x2)   // функция сравнения элементов массива
 {
-    srand(time(NULL));
-    bool isSolved = false;
-    int thoughtNumber[4] = {rand() % 10, rand() % 10, rand() % 10, rand() % 10};
-    //printf ("%d%d%d%d\n", thoughtNumber[0], thoughtNumber[1], thoughtNumber[2], thoughtNumber[3]);
-    int guessedNumber[4] = {0,0,0,0};
-    int inputNumber = 0;
-    int cows = 0;
-    int bulls = 0;
-    int turn = 1;
+    return ( *(int*)x1 - *(int*)x2 );
+}
 
-    printf("     Guess Result\n");
-    while (!isSolved)
+int main() {
+    const int maxArraySize = 1000;
+    int array[maxArraySize];
+    for (int i = 0; i < maxArraySize; i++)
     {
-        printf(" %d  |", turn);
-        scanf("%d", &inputNumber);
-        guessedNumber[3] = inputNumber % 10;
-        inputNumber /= 10;
-        guessedNumber[2] = inputNumber % 10;
-        inputNumber /= 10;
-        guessedNumber[1] = inputNumber % 10;
-        inputNumber /= 10;
-        guessedNumber[0] = inputNumber;
-        //printf ("%d%d%d%d\n", guessedNumber[0], guessedNumber[1], guessedNumber[2], guessedNumber[3]);
-        for (int i = 0; i <= 3; i++)
-        {
-            if (guessedNumber[i] == thoughtNumber[i])
-            {
-                bulls++;
-            }
-            if ((guessedNumber[i] == thoughtNumber [0]) || (guessedNumber[i] == thoughtNumber [1])
-             || (guessedNumber[i] == thoughtNumber [2]) || (guessedNumber[i] == thoughtNumber [3]))
-            {
-                cows++;
-            }
-        }
-        printf ("           %dA %dB\n", cows - bulls, bulls);
-        if (bulls == 4)
-        {
-            isSolved = true;
-        }
-        bulls = 0;
-        cows = 0;
-        turn++;
+        array[i] = 0;
+    }
+    int maxRepeatingElement = 0;
+    int arrayLength = 0;
+    bool isFound = false;
+
+    printf("Please, write down length of the array: ");
+    scanf("%d", &arrayLength);
+
+    printf("Please, write down array: ");
+    for (int i = 0; i < arrayLength; i++)
+    {
+        scanf("%d", &array[i]);
     }
 
-    printf("You win!");
+    qsort(array, arrayLength, sizeof(int), compare);
+
+    int checkingElement = arrayLength - 1;
+    while (!isFound)
+    {
+        if (array[checkingElement] == array[checkingElement - 1])
+        {
+            maxRepeatingElement = array[checkingElement];
+            isFound = true;
+        }
+        checkingElement--;
+    }
+
+    printf("There is maximal repeating element in this array: %d", maxRepeatingElement);
+
     return 0;
 }
