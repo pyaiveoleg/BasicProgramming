@@ -1,4 +1,0 @@
-# BasicProgramming
-
-Repository for homeworks.
-
