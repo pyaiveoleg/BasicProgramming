@@ -2,6 +2,14 @@
 #include <string.h>
 #include <stdbool.h>
 
+void getStructureOfString(int structureOfString[], char string[], int stringLength)
+{
+    for (int i = 0; i < stringLength; i++)
+    {
+        structureOfString[string[i]]++;
+    }
+}
+
 int main() {
     const int quantityOfSymbols = 256;
     const int maxStringLength = 1000;
@@ -21,18 +29,14 @@ int main() {
     }
     bool isTransposition = true;
 
-    printf("Please, write down first string (s1): ");
+    printf("Please, write down first string (s1):\n");
     scanf("%s", &firstString);
-    printf("Please, write down second string (s2): ");
+    printf("Please, write down second string (s2):\n");
     scanf("%s", &secondString);
-    for (int i = 0; i < strlen(firstString); i++)
-    {
-        structureOfFirstString[firstString[i]]++;
-    }
-    for (int i = 0; i < strlen(secondString); i++)
-    {
-        structureOfSecondString[secondString[i]]++;
-    }
+
+    getStructureOfString(structureOfFirstString, firstString, strlen(firstString));
+    getStructureOfString(structureOfSecondString, secondString, strlen(secondString));
+
     for (int i = 0; i < quantityOfSymbols; i++)
     {
         if (structureOfFirstString[i] != structureOfSecondString[i])
