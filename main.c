@@ -22,9 +22,9 @@ int main() {
     int firstArrayLength = 0;
     int secondArrayLength = 0;
     int maxElement = 0;
-    int firstIndex = 0;
-    int secondIndex = 0;
-    int mergedIndex = 0;
+    int pointerInFirstArray = 0;
+    int pointerInSecondArray = 0;
+    int numberOfAddedElement = 0;
 
     printf("Please, write down length of array of Petya\n");
     scanf("%d", &firstArrayLength);
@@ -47,23 +47,24 @@ int main() {
 
     for (int i = maxElement; i >= 1; i--)
     {
-        if ((arrayOfPetya[firstIndex] == i) || (arrayOfVasya[secondIndex] == i))
+        if ((arrayOfPetya[pointerInFirstArray] == i) || (arrayOfVasya[pointerInSecondArray] == i))
         {
-            mergedArray[mergedIndex] = i;
-            mergedIndex++;
+            mergedArray[numberOfAddedElement] = i;
+            numberOfAddedElement++;
         }
-        if (arrayOfPetya[firstIndex] == i)
+        if (arrayOfPetya[pointerInFirstArray] == i)
         {
-            firstIndex++;
+            pointerInFirstArray++;
         }
-        if (arrayOfVasya[secondIndex] == i)
+        if (arrayOfVasya[pointerInSecondArray] == i)
         {
-            secondIndex++;
+            pointerInSecondArray++;
         }
     }
 
+    int mergedArrayLength = numberOfAddedElement;
     printf("There is merged array:\n");
-    for (int i = 0; i < mergedIndex; i++)
+    for (int i = 0; i < mergedArrayLength; i++)
     {
         printf("%d ", mergedArray[i]);
     }
