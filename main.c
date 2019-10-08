@@ -1,71 +1,71 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 
-int insertionSort(int array[], int arrayLength, int step)
+void readArray(int array[], int arrayLength)
 {
-    int currentElement = 0;
-    int indexOfElement = 0;
-
-    for (int i = step; i < arrayLength; i += step)
+    for (int i = 0; i < arrayLength; i++)
     {
-        currentElement = array[i];
-        indexOfElement = i - step;
-        while((indexOfElement >= 0) && (array[indexOfElement] > currentElement))
-        {
-            array[indexOfElement + step] = array[indexOfElement];
-            indexOfElement -= step;
-        }
-        array[indexOfElement + step] = currentElement;
+        scanf("%d", &array[i]);
     }
 }
 
 int main() {
     const int maxArrayLength = 1000;
-    int array[maxArrayLength];
+    int arrayOfPetya[maxArrayLength];
+    int arrayOfVasya[maxArrayLength];
+    int mergedArray[maxArrayLength];
     for (int i = 0; i < maxArrayLength; i++)
     {
-        array[i] = 0;
+        arrayOfVasya[i] = 0;
+        arrayOfPetya[i] = 0;
+        mergedArray[i] = 0;
     }
-    int arrayLength = 0;
-    int i = -1;
-    int codeOfAction = 0;
-    const int step = 2;
+    int firstArrayLength = 0;
+    int secondArrayLength = 0;
+    int maxElement = 0;
+    int firstIndex = 0;
+    int secondIndex = 0;
+    int mergedIndex = 0;
 
-    printf("If you want to type the array, press 0, if you want to generate array randomly, write down any other number\n");
-    scanf("%d", &codeOfAction);
-    if (codeOfAction == 0)
+    printf("Please, write down length of array of Petya\n");
+    scanf("%d", &firstArrayLength);
+    printf("Please, write down array of Petya\n");
+    readArray(arrayOfPetya, firstArrayLength);
+
+    printf("Please, write down length of array of Vasya\n");
+    scanf("%d", &secondArrayLength);
+    printf("Please, write down array of Vasya\n");
+    readArray(arrayOfVasya, secondArrayLength);
+
+    if (arrayOfPetya[0] > arrayOfVasya[0])
     {
-        printf("Please, write down the array:\n");
-        do
-        {
-            i++;
-            scanf("%d", &array[i]);
-        }
-        while (array[i] != 0);
-        arrayLength = i;
+        maxElement = arrayOfPetya[0];
     }
     else
     {
-        printf("Please, write down length of the array:\n");
-        scanf("%d", &arrayLength);
+        maxElement = arrayOfVasya[0];
+    }
 
-        srand(time(NULL));
-        const int minNumber = 11;
-        const int maxNumber = 42;
-
-        for (i = 0; i < arrayLength; i++)
+    for (int i = maxElement; i >= 1; i--)
+    {
+        if ((arrayOfPetya[firstIndex] == i) || (arrayOfVasya[secondIndex] == i))
         {
-            array[i] = minNumber + rand() % (maxNumber - minNumber);
+            mergedArray[mergedIndex] = i;
+            mergedIndex++;
+        }
+        if (arrayOfPetya[firstIndex] == i)
+        {
+            firstIndex++;
+        }
+        if (arrayOfVasya[secondIndex] == i)
+        {
+            secondIndex++;
         }
     }
 
-    insertionSort(array, arrayLength, step);
-
-    printf("This is array, sorted with step 2:\n");
-    for (int i = 0; i < arrayLength; i++)
+    printf("There is merged array:\n");
+    for (int i = 0; i < mergedIndex; i++)
     {
-        printf("%d ", array[i]);
+        printf("%d ", mergedArray[i]);
     }
 
     return 0;
