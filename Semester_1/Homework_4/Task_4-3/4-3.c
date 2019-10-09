@@ -1,83 +1,49 @@
 #include <stdio.h>
 
-void printHorizontalInterval(int array[][100], int lengthOfInterval, int* startX, int* startY, char direction[])
+void addNewDigit(int digit, unsigned long long *parsedNumber, int *quantityOfEachDigit)
 {
-    if (direction == "right")
+    while (quantityOfEachDigit[digit] != 0)
     {
-        for (int j = 1; j <= lengthOfInterval; j++)
-        {
-            printf("%d ", array[*startX][*startY + j]);
-        }
-        *startY += lengthOfInterval;
-    }
-    else
-    {
-        for (int j = 1; j <= lengthOfInterval; j++)
-        {
-            printf("%d ", array[*startX][*startY - j]);
-        }
-        *startY -= lengthOfInterval;
-    }
-}
-
-void printVerticalInterval(int array[][100], int lengthOfInterval, int* startX, int* startY, char direction[])
-{
-    if (direction == "down")
-    {
-        for (int j = 1; j <= lengthOfInterval; j++)
-        {
-            printf("%d ", array[*startX + j][*startY]);
-        }
-        *startX += lengthOfInterval;
-    }
-    else
-    {
-        for (int j = 1; j <= lengthOfInterval; j++)
-        {
-            printf("%d ", array[*startX - j][*startY]);
-        }
-        *startX -= lengthOfInterval;
+        *parsedNumber = *parsedNumber * 10 + digit;
+        quantityOfEachDigit[digit]--;
     }
 }
 
 int main() {
-    const int maxArraySize = 100;
-    int array[maxArraySize][maxArraySize];
-    for (int i = 0; i < maxArraySize; i++)
+    const int quantityOfDigits = 10;
+    int quantityOfEachDigit[quantityOfDigits];
+    for (int i = 0; i < quantityOfDigits; i++)
     {
-        for (int j = 0; j < maxArraySize; j++)
+        quantityOfEachDigit[i] = 0;
+    }
+    unsigned long long number = 0;
+    unsigned long long parsedNumber = 0;
+
+    printf("Please, write down number N: ");
+    scanf("%llu", &number);
+
+    while (number != 0)
+    {
+        quantityOfEachDigit[number % 10]++;
+        number /= 10;
+    }
+
+    for (int i = 1; i < quantityOfDigits; i++)
+    {
+        if (quantityOfEachDigit[i] > 0)
         {
-            array[i][j] = 0;
+            parsedNumber = i;
+            quantityOfEachDigit[i]--;
+            break;
         }
     }
-    int lengthOfInterval = 0;
-    int arraySize = 0;
 
-    printf("Please, write down size of the array: ");
-    scanf("%d", &arraySize);
-    printf("Please, write down the array: ");
-    for (int i = 0; i < arraySize; i++)
+    for (int i = 0; i < quantityOfDigits; i++)
     {
-        for (int j = 0; j < arraySize; j++)
-        {
-            scanf("%d", &array[i][j]);
-        }
+        addNewDigit(i, &parsedNumber, quantityOfEachDigit);
     }
 
-    int startX = arraySize / 2;
-    int startY = arraySize / 2;
-    printf("%d ", array[startX][startY]);
-    for (int i = 0; i <= arraySize - 4; i++)
-    {
-        lengthOfInterval++;
-        printHorizontalInterval(array, lengthOfInterval, &startX, &startY, "right");
-        printVerticalInterval(array, lengthOfInterval, &startX, &startY, "down");
-
-        lengthOfInterval++;
-        printHorizontalInterval(array, lengthOfInterval, &startX, &startY, "left");
-        printVerticalInterval(array, lengthOfInterval, &startX, &startY, "up");
-    }
-    printHorizontalInterval(array, lengthOfInterval, &startX, &startY, "right");
+    printf("This is parsed number: %llu", parsedNumber);
 
     return 0;
 }
