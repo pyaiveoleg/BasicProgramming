@@ -1,42 +1,49 @@
 #include <stdio.h>
 
-void addNewDigit(int digit, unsigned long long *parsedNumber, int *consistance)
+void addNewDigit(int digit, unsigned long long *parsedNumber, int *quantityOfEachDigit)
 {
-    while (consistance[digit] != 0)
+    while (quantityOfEachDigit[digit] != 0)
     {
         *parsedNumber = *parsedNumber * 10 + digit;
-        consistance[digit]--;
+        quantityOfEachDigit[digit]--;
     }
 }
 
 int main() {
     const int quantityOfDigits = 10;
-    int consistance[quantityOfDigits];
+    int quantityOfEachDigit[quantityOfDigits];
     for (int i = 0; i < quantityOfDigits; i++)
     {
-        consistance[i] = 0;
+        quantityOfEachDigit[i] = 0;
     }
     unsigned long long number = 0;
     unsigned long long parsedNumber = 0;
 
     printf("Please, write down number N: ");
-    scanf("%d", &number);
+    scanf("%llu", &number);
 
     while (number != 0)
     {
-        consistance[number%10]++;
+        quantityOfEachDigit[number % 10]++;
         number /= 10;
     }
 
-    addNewDigit(1, &parsedNumber, consistance);
-    addNewDigit(0, &parsedNumber, consistance);
-
-    for (int i = 2; i < quantityOfDigits; i++)
+    for (int i = 1; i < quantityOfDigits; i++)
     {
-        addNewDigit(i, &parsedNumber, consistance);
+        if (quantityOfEachDigit[i] > 0)
+        {
+            parsedNumber = i;
+            quantityOfEachDigit[i]--;
+            break;
+        }
     }
 
-    printf("This is parsed number: %d", parsedNumber);
+    for (int i = 0; i < quantityOfDigits; i++)
+    {
+        addNewDigit(i, &parsedNumber, quantityOfEachDigit);
+    }
+
+    printf("This is parsed number: %llu", parsedNumber);
 
     return 0;
 }
