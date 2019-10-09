@@ -1,50 +1,27 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+void printFareiSequence(int maxDenominator, int firstNumerator, int firstDenominator, int secondNumerator, int secondDenominator)
+{
+    int numeratorOfMediant = firstNumerator + secondNumerator;
+    int denominatorOfMediant = firstDenominator + secondDenominator;
 
+    if (denominatorOfMediant <= maxDenominator)
+    {
+        printFareiSequence(maxDenominator, firstNumerator, firstDenominator, numeratorOfMediant, denominatorOfMediant);
+        printf("%d / %d\n", numeratorOfMediant, denominatorOfMediant);
+        printFareiSequence(maxDenominator, numeratorOfMediant, denominatorOfMediant, secondNumerator, secondDenominator);
+    }
+}
 
 int main() {
-    const int maxNumber = 10000;
-    int number = 0;
-    bool isMutuallyPrime[maxNumber];
-    for (int i = 0; i < maxNumber; i++)
-    {
-        isMutuallyPrime[i] = true;
-    }
+    int maxDenominator = 0;
 
-    printf("Please, write down the number N: ");
-    scanf("%d", &number);
+    printf("Please, write down maximal denominator (N):\n");
+    scanf("%d", &maxDenominator);
 
-    for (int currentNumber = 2; currentNumber <= number; currentNumber++)
-    {
-        for (int i = 2; i <= currentNumber; i++)
-        {
-            if (currentNumber % i == 0)
-            {
-                isMutuallyPrime[i] = false;
-            }
-            if (!isMutuallyPrime[i])
-            {
-                for (int k = i; k <= number; k += i)
-                {
-                    isMutuallyPrime[k] = false;
-                }
-            }
-        }
-
-        for (int i = 1; i <= currentNumber; i++)
-        {
-            if (isMutuallyPrime[i])
-            {
-                printf("%d / %d\n", i, currentNumber);
-            }
-        }
-
-        for (int i = 0; i < maxNumber; i++)
-        {
-            isMutuallyPrime[i] = true;
-        }
-    }
+    printf("There are all fractions with denominator less than N:\n");
+    printFareiSequence(maxDenominator, 0, 1, 1, 1);
 
     return 0;
 }
