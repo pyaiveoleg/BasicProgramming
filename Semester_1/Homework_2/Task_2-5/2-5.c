@@ -2,11 +2,11 @@
 #include <string.h>
 #include <stdbool.h>
 
-void getStructureOfString(int structureOfString[], char string[], int stringLength)
+void getStructureOfString(int structureOfString[], char stringForAnalyze[], int stringLength)
 {
     for (int i = 0; i < stringLength; i++)
     {
-        structureOfString[string[i]]++;
+        structureOfString[stringForAnalyze[i] - (int) 'a']++;
     }
 }
 
