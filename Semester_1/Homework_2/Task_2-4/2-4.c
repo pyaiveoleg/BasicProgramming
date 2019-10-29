@@ -18,10 +18,10 @@ int main() {
     int arrayLength = 0;
     bool isFound = false;
 
-    printf("Please, write down length of the array: ");
+    printf("Please, write down length of the array: \n");
     scanf("%d", &arrayLength);
 
-    printf("Please, write down array: ");
+    printf("Please, write down array: \n");
     for (int i = 0; i < arrayLength; i++)
     {
         scanf("%d", &array[i]);
@@ -32,6 +32,11 @@ int main() {
     int checkingElement = arrayLength - 1;
     while (!isFound)
     {
+        if (checkingElement == 0)
+        {
+            printf("There aren't repeating elements in this array.\n");
+            return 0;
+        }
         if (array[checkingElement] == array[checkingElement - 1])
         {
             maxRepeatingElement = array[checkingElement];
