@@ -18,19 +18,16 @@ int main() {
     input = fopen("input.txt", "r");
 
     char inputFile[maxInputLength];
-    if (input)
-    {
-        while (!feof(input))
-        {
-            fscanf(input, "%[^\0]", inputFile);
-        }
-        fclose(input);
-    }
-    else
+    if (!input)
     {
         printf("Error. Cannot open file.");
         return 0;
     }
+    while (!feof(input))
+    {
+        fscanf(input, "%[^\0]", inputFile);
+    }
+    fclose(input);
 
     int lengthOfInputString = strlen(inputFile);
     for (int i = 0; i < lengthOfInputString; i++)
