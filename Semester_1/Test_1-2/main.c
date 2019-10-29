@@ -35,7 +35,7 @@ int main() {
         int codeOfSymbol = inputFile[i];
         if ((codeOfSymbol >= codeOfA) && (codeOfSymbol <= codeOfZ))
         {
-            quantityOfLetters[codeOfSymbol - codeOfA] += 1;
+            quantityOfLetters[codeOfSymbol - codeOfA]++;
         }
     }
 
