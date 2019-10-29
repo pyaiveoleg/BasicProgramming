@@ -1,12 +1,13 @@
 #include <stdio.h>
 
-void addNewDigit(int digit, unsigned long long *parsedNumber, int *quantityOfEachDigit)
+int addNewTypeOfDigit(int digit, unsigned long long parsedNumber, int quantityOfDigit)
 {
-    while (quantityOfEachDigit[digit] != 0)
+    while (quantityOfDigit != 0)
     {
-        *parsedNumber = *parsedNumber * 10 + digit;
-        quantityOfEachDigit[digit]--;
+        parsedNumber = parsedNumber * 10 + digit;
+        quantityOfDigit--;
     }
+    return parsedNumber;
 }
 
 int main() {
@@ -40,7 +41,7 @@ int main() {
 
     for (int i = 0; i < quantityOfDigits; i++)
     {
-        addNewDigit(i, &parsedNumber, quantityOfEachDigit);
+        parsedNumber = addNewTypeOfDigit(i, parsedNumber, quantityOfEachDigit[i]);
     }
 
     printf("This is parsed number: %llu", parsedNumber);
