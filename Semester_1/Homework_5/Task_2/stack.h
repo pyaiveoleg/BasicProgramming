@@ -1,7 +1,3 @@
-//
-// Created by Олег on 01.10.2019.
-//
-
 #ifndef REALISATION_OF_STACK_STACK_H
 #define REALISATION_OF_STACK_STACK_H
 
@@ -13,11 +9,21 @@ typedef struct StackElement StackElement;
 
 bool isStackEmpty(Stack *stack);
 bool pushToStack(int value, Stack *stack);
-bool pushCharToStack(char charValue, Stack* stack);
 int popFromStack(Stack *stack);
-int frontValue(Stack* stack);
-char frontCharValue(Stack* stack);
+int frontValueOfStack(Stack* stack);
 Stack* createStack();
+
+
+struct StackOfDouble;
+struct StackOfDoubleElement;
+typedef struct StackOfDouble StackOfDouble;
+typedef struct StackOfDoubleElement StackOfDoubleElement;
+
+bool isStackOfDoubleEmpty(StackOfDouble *stack);
+bool pushToStackOfDouble(double value, StackOfDouble *stack);
+double popFromStackOfDouble(StackOfDouble *stack);
+double frontValueOfStackOfDouble(StackOfDouble* stack);
+StackOfDouble* createStackOfDouble();
 
 
 #endif //REALISATION_OF_STACK_STACK_H

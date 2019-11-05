@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 #include "stack.h"
 
-bool isNotDividingOperator(char symbol)
+bool isOperator(char symbol)
 {
-    return (symbol == '+') || (symbol == '-') || (symbol == '*');
+    return (symbol == '+') || (symbol == '-') || (symbol == '*') || (symbol == '/');
 }
 
 bool isDigit(char symbol)
@@ -12,7 +13,7 @@ bool isDigit(char symbol)
     return ((int) symbol >= (int) '0') && ((int) symbol <= (int) '9');
 }
 
-int valueOfCurrentExpression(char currentSymbol, int firstOperand, int secondOperand)
+double binaryOperation(char currentSymbol, int firstOperand, int secondOperand)
 {
     switch (currentSymbol)
     {
@@ -28,10 +29,14 @@ int valueOfCurrentExpression(char currentSymbol, int firstOperand, int secondOpe
         {
             return firstOperand * secondOperand;
         }
+        case '/':
+        {
+            return firstOperand / secondOperand;
+        }
     }
 }
 
-void parseExpression(char *inputExpression, Stack* stack)
+void countValueOfWholeExpression(char *inputExpression, StackOfDouble* stack)
 {
     int currentSymbol = 0;
 
@@ -42,21 +47,13 @@ void parseExpression(char *inputExpression, Stack* stack)
         int currentNumber = 0;
         currentSymbol = inputExpression[i];
 
-        if (isNotDividingOperator( (char) currentSymbol))
+        if (isOperator( (char) currentSymbol))
         {
-            int firstOperand = frontValue(stack);
-            popFromStack(stack);
-            int secondOperand = frontValue(stack);
-            popFromStack(stack);
-            pushToStack(valueOfCurrentExpression(currentSymbol, firstOperand, secondOperand), stack);
-        }
-        else if (currentSymbol == '/')
-        {
-            int firstOperand = frontValue(stack);
-            popFromStack(stack);
-            int secondOperand = frontValue(stack);
-            popFromStack(stack);
-            pushToStack(firstOperand / secondOperand, stack);
+            int firstOperand = frontValueOfStackOfDouble(stack);
+            popFromStackOfDouble(stack);
+            int secondOperand = frontValueOfStackOfDouble(stack);
+            popFromStackOfDouble(stack);
+            pushToStackOfDouble(binaryOperation(currentSymbol, firstOperand, secondOperand), stack);
         }
         else if (isDigit(currentSymbol))
         {
@@ -66,22 +63,35 @@ void parseExpression(char *inputExpression, Stack* stack)
                 i++;
                 currentSymbol = inputExpression[i];
             }
-            pushToStack(currentNumber, stack);
+            pushToStackOfDouble(currentNumber, stack);
             i--;
         }
     }
 }
 
+void printValueOfWholeExpression(double value, const double eps)
+{
+    if (fabs(value - (int) value) < eps)
+    {
+        printf("This is the value of your expression:\n%d", (int) value);
+    }
+    else
+    {
+        printf("This is the value of your expression:\n%lf", value);
+    }
+}
+
 int main() {
-    struct Stack* stack = createStack();
+    struct StackOfDouble* stack = createStackOfDouble();
 
     const int maxInputLength = 1000;
+    const double eps = 0.0001;
     char inputExpression[maxInputLength];
     printf("Please, write down the expression:\n");
     gets(inputExpression);
 
-    parseExpression(inputExpression, stack);
-    printf("This is the value of your expression:\n%d", frontValue(stack));
+    countValueOfWholeExpression(inputExpression, stack);
+    printValueOfWholeExpression(frontValueOfStackOfDouble(stack), eps);
 
     return 0;
 }
