@@ -10,22 +10,27 @@ void swap(int array[], int firstElement, int secondElement)
 
 void heapFiltering(int array[], int root, int bottom)
 {
+    int leftChild = root * 2;
+    int rightChild = root * 2 + 1;
     int maxChild = 0;
     bool isFormed = false;
 
-    while ((root * 2 <= bottom) && (!isFormed))
+    while ((leftChild <= bottom) && (!isFormed))
     {
-        if (root * 2 == bottom)
+        leftChild = root * 2;
+        rightChild = root * 2 + 1;
+
+        if (leftChild == bottom)
         {
-            maxChild = root * 2;
+            maxChild = leftChild;
         }
-        else if (array[root * 2] > array[root * 2 + 1])
+        else if (array[leftChild] > array[rightChild])
         {
-            maxChild = root * 2;
+            maxChild = leftChild;
         }
         else
         {
-            maxChild = root * 2 + 1;
+            maxChild = rightChild;
         }
 
         if (array[root] < array[maxChild])
@@ -63,9 +68,9 @@ int main() {
     }
     int arrayLength = 0;
 
-    printf("Please, write down the length of array: ");
+    printf("Please, write down the length of array: \n");
     scanf("%d", &arrayLength);
-    printf("Please, write down the array: ");
+    printf("Please, write down the array: \n");
     for (int i = 0; i < arrayLength; i++)
     {
         scanf("%d", &array[i]);
