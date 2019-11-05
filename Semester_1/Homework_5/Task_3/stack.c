@@ -1,15 +1,11 @@
-//
-// Created by Олег on 01.10.2019.
-//
-
 #include <stdlib.h>
 #include <stdbool.h>
 #include "stack.h"
 
+//StackOfInt
 struct StackElement
 {
     int value;
-    char charValue;
     StackElement* next;
 };
 
@@ -40,17 +36,6 @@ bool pushToStack(int value, Stack *stack)
     return true;
 }
 
-bool pushCharToStack(char charValue, Stack *stack)
-{
-    StackElement* stackElement = (StackElement*) malloc(sizeof(StackElement));
-    stackElement->charValue = charValue;
-    stackElement->value = 0;
-    stackElement->next = stack->first;
-
-    stack->first = stackElement;
-    return true;
-}
-
 int popFromStack(Stack *stack)
 {
     if (isStackEmpty(stack))
@@ -64,12 +49,62 @@ int popFromStack(Stack *stack)
     return(value);
 }
 
-int frontValue(Stack* stack)
+int frontValueOfStack(Stack* stack)
 {
     return stack->first->value;
 }
 
-char frontCharValue(Stack* stack)
+
+
+
+//StackOfDouble
+struct StackOfDoubleElement
 {
-    return stack->first->charValue;
+    double value;
+    StackOfDoubleElement* next;
+};
+
+struct StackOfDouble
+{
+    struct StackOfDoubleElement* first;
+};
+
+StackOfDouble* createStackOfDouble()
+{
+    StackOfDouble* stck1 = malloc(sizeof(Stack));
+    stck1->first = NULL;
+    return stck1;
+}
+
+bool isStackOfDoubleEmpty(StackOfDouble *stack)
+{
+    return stack->first == NULL;
+}
+
+bool pushToStackOfDouble(double value, StackOfDouble *stack)
+{
+    StackOfDoubleElement* stackElement = (StackOfDoubleElement*) malloc(sizeof(struct StackOfDoubleElement));
+    stackElement->value = value;
+    stackElement->next = stack->first;
+
+    stack->first = stackElement;
+    return true;
+}
+
+double popFromStackOfDouble(StackOfDouble *stack)
+{
+    if (isStackOfDoubleEmpty(stack))
+    {
+        return 0;
+    }
+    StackOfDoubleElement* poppedElement = stack->first;
+    stack->first = poppedElement->next;
+    double value = poppedElement->value;
+    free(poppedElement);
+    return(value);
+}
+
+double frontValueOfStackOfDouble(StackOfDouble* stack)
+{
+    return stack->first->value;
 }

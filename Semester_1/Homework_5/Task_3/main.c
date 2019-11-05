@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include "stack.h"
-#include "queue.h"
 #include <stdbool.h>
+#include <math.h>
 
 bool isOperator(char symbol)
 {
@@ -33,7 +33,13 @@ int getcode(char symbol) //код сдвигается, чтобы случай�
     return (int) symbol + maxNumber;
 }
 
-bool parseExpression(char *inputExpression, Stack* stack, Queue* queue)
+void addToResultingArray(int resultingArray[], int* currentIndex, int value)
+{
+    resultingArray[*currentIndex] = value;
+    (*currentIndex)++;
+}
+
+bool convertInfixToPostfix(char *inputExpression, Stack* stack, int resultingArray[], int* currentIndexInResultingArray)
 {
     char currentSymbol = '0';
     int currentNumber = 0;
@@ -46,10 +52,9 @@ bool parseExpression(char *inputExpression, Stack* stack, Queue* queue)
         currentSymbol = inputExpression[i];
         if (isOperator(currentSymbol))
         {
-            while ((!isStackEmpty(stack)) && (getPriority( (char) (frontValue(stack) - maxNumber)) >= getPriority(currentSymbol)))
+            while ((!isStackEmpty(stack)) && (getPriority( (char) (frontValueOfStack(stack) - maxNumber)) >= getPriority(currentSymbol)))
             {
-                pushToQueue(frontValue(stack), queue);
-                popFromStack(stack);
+                addToResultingArray(resultingArray, currentIndexInResultingArray, popFromStack(stack));
             }
             pushToStack(getcode(currentSymbol), stack);
         }
@@ -61,7 +66,7 @@ bool parseExpression(char *inputExpression, Stack* stack, Queue* queue)
                 i++;
                 currentSymbol = inputExpression[i];
             }
-            pushToQueue(currentNumber, queue);
+            addToResultingArray(resultingArray, currentIndexInResultingArray, currentNumber);
             currentNumber = 0;
             i--;
         }
@@ -71,10 +76,9 @@ bool parseExpression(char *inputExpression, Stack* stack, Queue* queue)
         }
         else if (currentSymbol == ')')
         {
-            while (frontValue(stack) != getcode ('('))
+            while (frontValueOfStack(stack) != getcode ('('))
             {
-                pushToQueue(frontValue(stack), queue);
-                popFromStack(stack);
+                addToResultingArray(resultingArray, currentIndexInResultingArray, popFromStack(stack));
             }
             popFromStack(stack);
         }
@@ -86,10 +90,40 @@ bool parseExpression(char *inputExpression, Stack* stack, Queue* queue)
         }
     }
 
+    while (!isStackEmpty(stack))
+    {
+        if (frontValueOfStack(stack) == getcode('('))
+        {
+            printf("Closing bracket missed in input expression.");
+            return false;
+        }
+        addToResultingArray(resultingArray, currentIndexInResultingArray, popFromStack(stack));
+    }
+
     return true;
 }
 
-int valueOfCurrentExpression(char currentSymbol, int firstOperand, int secondOperand)
+void convertResultingArrayToString(int resultingArray[], int currentIndexInResultingArray, const int maxNumber, const int maxInputLength, char* resultingString)
+{
+    char tempString[maxInputLength];
+
+    int sizeOfResultingArray = currentIndexInResultingArray;
+    for (int i = 0; i < sizeOfResultingArray; i++)
+    {
+        if (isOperator((char) resultingArray[i] - maxNumber))
+        {
+            sprintf(tempString, "%c ", (char) resultingArray[i] - maxNumber);
+            strcat(resultingString, tempString);
+        }
+        else
+        {
+            sprintf(tempString, "%d ", resultingArray[i]);
+            strcat(resultingString, tempString);
+        }
+    }
+}
+
+double binaryOperation(char currentSymbol, int firstOperand, int secondOperand)
 {
     switch (currentSymbol)
     {
@@ -105,36 +139,85 @@ int valueOfCurrentExpression(char currentSymbol, int firstOperand, int secondOpe
         {
             return firstOperand * secondOperand;
         }
+        case '/':
+        {
+            return firstOperand / secondOperand;
+        }
+    }
+}
+
+void countValueOfWholeExpression(char *inputExpression, StackOfDouble* stack)
+{
+    int currentSymbol = 0;
+
+    int inputExpressionLength = strlen(inputExpression);
+
+    for (int i = 0; i < inputExpressionLength; i++)
+    {
+        int currentNumber = 0;
+        currentSymbol = inputExpression[i];
+
+        if (isOperator( (char) currentSymbol))
+        {
+            int firstOperand = frontValueOfStackOfDouble(stack);
+            popFromStackOfDouble(stack);
+            int secondOperand = frontValueOfStackOfDouble(stack);
+            popFromStackOfDouble(stack);
+            pushToStackOfDouble(binaryOperation(currentSymbol, firstOperand, secondOperand), stack);
+        }
+        else if (isDigit(currentSymbol))
+        {
+            while (isDigit(currentSymbol))
+            {
+                currentNumber = currentNumber * 10 + (int) currentSymbol - (int) '0';
+                i++;
+                currentSymbol = inputExpression[i];
+            }
+            pushToStackOfDouble(currentNumber, stack);
+            i--;
+        }
+    }
+}
+
+void printValueOfWholeExpression(double value, const double eps)
+{
+    if (fabs(value - (int) value) < eps)
+    {
+        printf("This is the value of your expression:\n%d", (int) value);
+    }
+    else
+    {
+        printf("This is the value of your expression:\n%lf", value);
     }
 }
 
 int main() {
     const int maxNumber = 1000;
-    struct Stack* stack = createStack();
-    struct Queue* queue = createQueue();
+    struct Stack *stack = createStack();
 
     const int maxInputLength = 1000;
     char inputExpression[maxInputLength];
     printf("Please, write down the expression:\n");
     gets(inputExpression);
-    //printf("as;dlfk");
-    if (!parseExpression(inputExpression, stack, queue))
-    {
+
+    int resultingArray[maxInputLength];
+    for (int i = 0; i < maxInputLength; i++) {
+        resultingArray[i] = 0;
+    }
+    int currentIndexInResultingArray = 0;
+
+    if (!convertInfixToPostfix(inputExpression, stack, resultingArray, &currentIndexInResultingArray)) {
         return 0;
     }
 
-    while (!isStackEmpty(stack))
-    {
-        if (frontValue(stack) == getcode('('))
-        {
-            printf("Closing bracket missed in input expression.");
-            return 0;
-        }
-        pushToQueue(frontValue(stack), queue);
-        popFromStack(stack);
-    }
+    char resultingString[maxInputLength];
+    convertResultingArrayToString(resultingArray, currentIndexInResultingArray, maxNumber, maxInputLength, resultingString);
 
 
+    struct StackOfDouble* stack2 = createStackOfDouble();
+    const double eps = 0.0001;
+    countValueOfWholeExpression(resultingString, stack2);
+    printValueOfWholeExpression(frontValueOfStackOfDouble(stack2), eps);
 
     return 0;
 }
