@@ -9,7 +9,6 @@
 struct StackElement
 {
     int value;
-    char charValue;
     StackElement* next;
 };
 
@@ -40,17 +39,6 @@ bool pushToStack(int value, Stack *stack)
     return true;
 }
 
-bool pushCharToStack(char charValue, Stack *stack)
-{
-    StackElement* stackElement = (StackElement*) malloc(sizeof(StackElement));
-    stackElement->charValue = charValue;
-    stackElement->value = 0;
-    stackElement->next = stack->first;
-
-    stack->first = stackElement;
-    return true;
-}
-
 int popFromStack(Stack *stack)
 {
     if (isStackEmpty(stack))
@@ -64,12 +52,7 @@ int popFromStack(Stack *stack)
     return(value);
 }
 
-int frontValue(Stack* stack)
+int frontValueOfStack(Stack* stack)
 {
     return stack->first->value;
-}
-
-char frontCharValue(Stack* stack)
-{
-    return stack->first->charValue;
 }
