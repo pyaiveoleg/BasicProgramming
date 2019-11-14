@@ -1,6 +1,7 @@
 #include "tree.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 struct TreeElement
 {
@@ -192,4 +193,36 @@ void deleteElement(Tree* tree, int value)
     }
 
     free(currentElement);
+}
+
+void printElementsInABCOrder(TreeElement* treeElement)
+{
+    printf("(%d ", treeElement->value);
+
+    if (treeElement->leftChild == NULL)
+    {
+        printf("null");
+    }
+    else
+    {
+        printElementsInABCOrder(treeElement->leftChild);
+    }
+
+    printf(" ");
+
+    if (treeElement->rightChild == NULL)
+    {
+        printf("null");
+    }
+    else
+    {
+        printElementsInABCOrder(treeElement->rightChild);
+    }
+
+    printf(")");
+}
+
+void printInABCOrder(Tree* tree)
+{
+    printElementsInABCOrder(tree->root);
 }

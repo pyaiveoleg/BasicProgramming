@@ -94,7 +94,7 @@ int main() {
         }
         else if (strcmp(inputCommand, "Print in (a b c) Order") == 0)
         {
-            printf("1");
+            printInABCOrder(set);
         }
         else if (strcmp(inputCommand, "Exit") == 0)
         {
