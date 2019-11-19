@@ -1,15 +1,14 @@
 #include <stdio.h>
 #include "queue.h"
 
-void printQueueWithDescription(Queue* queue, char description[])
+void printQueueWithDescriptionInFile(FILE *output, Queue* queue, char description[])
 {
-    printf("%s", description);
-    print(queue);
-    printf("\n");
+    fprintf(output, "%s", description);
+    fprint(output, queue);
+    fprintf(output, "\n");
 }
 
-int main()
-{
+int main() {
     Queue* numbersLessThanA = createQueue();
     Queue* numbersBetweenAAndB = createQueue();
     Queue* numbersBiggerThanB = createQueue();
@@ -22,7 +21,9 @@ int main()
     int inputNumber = 0;
 
     FILE *input;
+    FILE *output;
     input = fopen("input.txt", "r");
+    output = fopen("output.txt", "w");
 
     if (!input)
     {
@@ -47,9 +48,10 @@ int main()
     }
     fclose(input);
 
-    printQueueWithDescription(numbersLessThanA, "Numbers less than A:\n");
-    printQueueWithDescription(numbersBetweenAAndB, "Numbers between A and B:\n");
-    printQueueWithDescription(numbersBiggerThanB, "Numbers bigger than B:\n");
+    fprintf(output, "A = %d, B = %d\n", leftBorder, rightBorder);
+    printQueueWithDescriptionInFile(output, numbersLessThanA, "Numbers less than A:\n");
+    printQueueWithDescriptionInFile(output, numbersBetweenAAndB, "Numbers between A and B:\n");
+    printQueueWithDescriptionInFile(output, numbersBiggerThanB, "Numbers bigger than B:\n");
 
     return 0;
 }

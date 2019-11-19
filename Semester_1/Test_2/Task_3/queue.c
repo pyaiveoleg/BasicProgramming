@@ -78,13 +78,13 @@ bool isEmpty(Queue* queue)
     return (queue->size == 0);
 }
 
-void print(Queue* queue)
+void fprint(FILE *output, Queue* queue)
 {
     QueueElement* currentElement = queue->header;
     for (int i = 0; i < queue->size; i++)
 
     {
-        printf("%d ", currentElement->value);
+        fprintf(output, "%d ", currentElement->value);
         currentElement = currentElement->nextElement;
     }
 }

@@ -1,0 +1,7 @@
+A = 3, B = 100
+Numbers less than A:
+1 0 -11 
+Numbers between A and B:
+3 4 3 13 4 5 98 
+Numbers bigger than B:
+123 3453 115 239 
