@@ -5,17 +5,21 @@ int main() {
     int numberInFibonacciSequence = 0;
     scanf("%d", &numberInFibonacciSequence);
 
-    int firstNumber = 1;
+    int firstNumber = 0;
     int secondNumber = 1;
 
-    for (int i = 1; i < numberInFibonacciSequence; i++)
+    for (int i = 0; i < numberInFibonacciSequence; i++)
     {
         int temporary = secondNumber;
         secondNumber = firstNumber + secondNumber;
         firstNumber = temporary;
     }
 
-    if ((numberInFibonacciSequence == 1) || (numberInFibonacciSequence == 2))
+    if (numberInFibonacciSequence == 0)
+    {
+        printf("%d", 0);
+    }
+    else if (numberInFibonacciSequence == 1)
     {
         printf("%d", 1);
     }
