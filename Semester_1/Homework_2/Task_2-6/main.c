@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int addNewTypeOfDigit(int digit, unsigned long long parsedNumber, int quantityOfDigit)
+unsigned long long addNewTypeOfDigit(int digit, unsigned long long parsedNumber, int quantityOfDigit)
 {
     while (quantityOfDigit != 0)
     {
@@ -10,7 +10,8 @@ int addNewTypeOfDigit(int digit, unsigned long long parsedNumber, int quantityOf
     return parsedNumber;
 }
 
-int main() {
+int main()
+{
     const int quantityOfDigits = 10;
     int quantityOfEachDigit[quantityOfDigits];
     for (int i = 0; i < quantityOfDigits; i++)
@@ -20,7 +21,7 @@ int main() {
     unsigned long long number = 0;
     unsigned long long parsedNumber = 0;
 
-    printf("Please, write down number N: ");
+    printf("Please, write down number N:\n");
     scanf("%llu", &number);
 
     while (number != 0)
@@ -39,7 +40,9 @@ int main() {
         }
     }
 
-    for (int i = 0; i < quantityOfDigits; i++)
+    parsedNumber = addNewTypeOfDigit(1, parsedNumber, quantityOfEachDigit[1]);
+    parsedNumber = addNewTypeOfDigit(0, parsedNumber, quantityOfEachDigit[0]);
+    for (int i = 2; i < quantityOfDigits; i++)
     {
         parsedNumber = addNewTypeOfDigit(i, parsedNumber, quantityOfEachDigit[i]);
     }
