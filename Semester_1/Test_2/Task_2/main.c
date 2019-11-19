@@ -2,7 +2,8 @@
 #include <string.h>
 #include <math.h>
 
-int main() {
+int main()
+{
     const int maxStringLength = 1000;
     const int lengthOfDate = 10;
     const int codeOfZero = (int) '0';
@@ -11,7 +12,6 @@ int main() {
     input = fopen("input.txt", "r");
 
     char inputString[maxStringLength];
-    char minDate[] = "99.99.9999";
     int dayInMinDate = 99;
     int monthInMinDate = 99;
     int yearInMinDate = 9999;
