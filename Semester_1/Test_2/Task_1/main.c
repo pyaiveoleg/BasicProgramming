@@ -1,6 +1,7 @@
 #include <stdio.h>
 
-int main() {
+int main()
+{
     printf("Write down number in Fibonacci sequence (i):\n");
     int numberInFibonacciSequence = 0;
     scanf("%d", &numberInFibonacciSequence);
