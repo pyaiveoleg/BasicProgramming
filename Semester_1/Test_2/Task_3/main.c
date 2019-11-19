@@ -8,7 +8,8 @@ void printQueueWithDescription(Queue* queue, char description[])
     printf("\n");
 }
 
-int main() {
+int main()
+{
     Queue* numbersLessThanA = createQueue();
     Queue* numbersBetweenAAndB = createQueue();
     Queue* numbersBiggerThanB = createQueue();
