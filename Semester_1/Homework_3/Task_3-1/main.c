@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdbool.h>
 
 void swap(int array[], int firstElement, int secondElement)
 {
@@ -8,54 +7,40 @@ void swap(int array[], int firstElement, int secondElement)
     array[secondElement] = temporary;
 }
 
-void heapFiltering(int array[], int root, int bottom)
+void heapFiltering(int array[], int root, int heapSize)
 {
-    int leftChild = root * 2;
-    int rightChild = root * 2 + 1;
-    int maxChild = 0;
-    bool isFormed = false;
+    int leftChild = root * 2 + 1;
+    int rightChild = root * 2 + 2;
+    int maxElement = root;
 
-    while ((leftChild <= bottom) && (!isFormed))
+    if ((leftChild < heapSize) && (array[leftChild] > array[maxElement]))
     {
-        leftChild = root * 2;
-        rightChild = root * 2 + 1;
-
-        if (leftChild == bottom)
-        {
-            maxChild = leftChild;
-        }
-        else if (array[leftChild] > array[rightChild])
-        {
-            maxChild = leftChild;
-        }
-        else
-        {
-            maxChild = rightChild;
-        }
-
-        if (array[root] < array[maxChild])
-        {
-            swap(array, root, maxChild);
-            root = maxChild;
-        }
-        else
-        {
-            isFormed = true;
-        }
+        maxElement = leftChild;
     }
+    if ((rightChild < heapSize) && (array[rightChild] > array[maxElement]))
+    {
+        maxElement = rightChild;
+    }
+
+    if (maxElement != root)
+    {
+        swap(array, root, maxElement);
+        heapFiltering(array, maxElement, heapSize);
+    }
+
 }
 
 void heapSort(int array[], int arrayLength)
 {
     for (int i = arrayLength / 2 - 1; i >= 0; i--)
     {
-        heapFiltering(array, i, arrayLength - 1);
+        heapFiltering(array, i, arrayLength);
     }
 
-    for (int i = arrayLength - 1; i >= 1; i--)
+    for (int i = arrayLength - 1; i >= 0; i--)
     {
         swap(array, 0, i);
-        heapFiltering(array, 0, i - 1);
+        heapFiltering(array, 0, i);
     }
 }
 
