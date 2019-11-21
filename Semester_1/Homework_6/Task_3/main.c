@@ -24,7 +24,8 @@ void printGreetingMessage()
     printf("Type: Exit to close the program\n");
 }
 
-int main() {
+int main()
+{
     printf("If you don't know how to use it, type 'Help'\n");
 
     const int maxLengthOfCommand = 1000;
@@ -44,7 +45,7 @@ int main() {
     while (true)
     {
         gets(inputCommand);
-        //scanf("\n");
+
         if (strcmp(inputCommand, "Help") == 0)
         {
             printGreetingMessage();
