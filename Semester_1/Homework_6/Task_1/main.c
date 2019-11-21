@@ -2,7 +2,8 @@
 #include <stdbool.h>
 #include <math.h>
 
-int main() {
+int main() 
+{
     unsigned int bit = 2147483648; //единица и 31 ноль
     const int sizeOfSign = 1;
     const int sizeOfExponent = 8;
