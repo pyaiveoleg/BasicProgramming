@@ -7,7 +7,8 @@ int compare(const void * x1, const void * x2)   // функция сравнен
     return ( *(int*)x1 - *(int*)x2 );
 }
 
-int main() {
+int main()
+{
     const int maxArraySize = 1000;
     int array[maxArraySize];
     for (int i = 0; i < maxArraySize; i++)
