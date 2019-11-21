@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include "String.h"
+#include "MyString.h"
 
-int main() {
+int main()
+{
     const int sizeOfString = 10000;
     char* a;
     a = "1234";
