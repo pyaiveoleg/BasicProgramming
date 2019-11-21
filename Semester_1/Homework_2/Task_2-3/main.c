@@ -7,27 +7,30 @@ int main()
 {
     const int quantityOfDigits = 10;
     srand(time(NULL));
+
     bool isDigitUsed[quantityOfDigits];
     bool isDigitUsedInGuessedNumber[quantityOfDigits];
+    bool isDigitABull[quantityOfDigits];
     for (int i = 0; i < quantityOfDigits; i++)
     {
         isDigitUsed[i] = false;
         isDigitUsedInGuessedNumber[i] = false;
+        isDigitABull[i] = false;
     }
-    int randomDigit = rand() % 10;
-    isDigitUsed[randomDigit] = true;
-    int thoughtNumber[4] = {randomDigit, 0, 0, 0};
-    for (int i = 1; i <= 3; i++)
+
+    int thoughtNumber[4] = {0, 0, 0, 0};
+    int randomDigit = 0;
+    for (int i = 0; i <= 3; i++)
     {
-        randomDigit = rand() % 10;
-        while (isDigitUsed[randomDigit])
+        do
         {
             randomDigit = rand() % 10;
         }
+        while (isDigitUsed[randomDigit]);
+
         thoughtNumber[i] = randomDigit;
         isDigitUsed[randomDigit] = true;
     }
-    //printf("%d %d %d %d", thoughtNumber[0], thoughtNumber[1], thoughtNumber[2], thoughtNumber[3]);
 
     bool isSolved = false;
     int guessedNumber[4] = {0, 0, 0, 0};
@@ -55,19 +58,21 @@ int main()
             if (guessedNumber[i] == thoughtNumber[i])
             {
                 bulls++;
+                isDigitABull[i] = true;
             }
         }
 
         for (int i = 0; i < quantityOfDigits; i++)
         {
-            if ((isDigitUsed[i]) && (isDigitUsedInGuessedNumber[i]))
+            if ((isDigitUsed[i]) && (isDigitUsedInGuessedNumber[i]) && (!isDigitABull[i]))
             {
                 cows++;
             }
+            isDigitABull[i] = false;
             isDigitUsedInGuessedNumber[i] = false;
         }
 
-        printf("           %d cows %d bulls\n", cows - bulls, bulls);
+        printf("           %d cows %d bulls\n", cows, bulls);
 
         if (bulls == 4)
         {
