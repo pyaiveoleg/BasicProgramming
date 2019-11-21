@@ -81,7 +81,8 @@ void printValueOfWholeExpression(double value, const double eps)
     }
 }
 
-int main() {
+int main() 
+{
     struct StackOfDouble* stack = createStackOfDouble();
 
     const int maxInputLength = 1000;
