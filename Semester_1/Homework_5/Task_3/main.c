@@ -191,7 +191,8 @@ void printValueOfWholeExpression(double value, const double eps)
     }
 }
 
-int main() {
+int main() 
+{
     const int maxNumber = 1000;
     struct Stack *stack = createStack();
 
