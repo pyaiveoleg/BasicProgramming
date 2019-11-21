@@ -11,7 +11,8 @@ void printBinaryForm(int binaryForm[], int bitesInInteger, char description[])
     printf("\n");
 }
 
-int main() {
+int main()
+{
     printf("Please, write down two numbers to convert in binary and summarize them:\n");
     int firstOperand = 0;
     int secondOperand = 0;
@@ -23,6 +24,7 @@ int main() {
     int binaryFormOfSum[bitesInInteger];
     int decimalSum = 0;
     int carry = 0;
+    
     for (int i = 0; i < bitesInInteger; i++)
     {
         binaryFormOfFirstOperand[i] = (firstOperand >> i) & 1;
@@ -41,6 +43,7 @@ int main() {
 
         decimalSum += binaryFormOfSum[i] * (int) pow(2, i);
     }
+
     printBinaryForm(binaryFormOfFirstOperand, bitesInInteger, "Binary form of first operand is:\n");
     printBinaryForm(binaryFormOfSecondOperand, bitesInInteger, "Binary form of second operand is:\n");
     printBinaryForm(binaryFormOfSum, bitesInInteger, "Binary form of sum is:\n");
