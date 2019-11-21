@@ -122,7 +122,8 @@ void convertResultingArrayToString(int resultingArray[], int currentIndexInResul
     }
 }
 
-int main() {
+int main() 
+{
     const int maxNumber = 1000;
     struct Stack* stack = createStack();
 
