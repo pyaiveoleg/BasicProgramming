@@ -1,61 +1,80 @@
-//
-// Created by Олег on 07.10.2019.
-//
-
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include "CycleList.h"
 
+typedef struct ListElement ListElement;
 
 struct ListElement
 {
     int value;
     ListElement* next;
+    ListElement* previous;
 };
 
-ListElement* createList(int value)
+struct CycleList
 {
-    ListElement* newList = (ListElement*) malloc(sizeof(ListElement));
-    newList->next = newList;
-    newList->value = value;
+    ListElement* current;
+};
+
+CycleList* createList()
+{
+    CycleList* newList = (CycleList*) malloc(sizeof(CycleList));
+    newList->current = NULL;
     return newList;
 }
 
-bool isEmpty(ListElement *listElement)
+bool isEmpty(CycleList* list)
 {
-    return listElement->next == listElement;
+    return list->current == NULL;
 }
 
-ListElement* addItem(ListElement* listElement, int value)
+void addItem(CycleList* list, int value)
 {
-    ListElement* temporary = listElement->next;
     ListElement* addedItem = (ListElement*) malloc(sizeof(ListElement));
-    listElement->next = addedItem;
-    addedItem->next = temporary;
     addedItem->value = value;
-    return addedItem;
+
+    if (isEmpty(list))
+    {
+        list->current = addedItem;
+        list->current->next = list->current;
+        list->current->previous = list->current;
+        return;
+    }
+
+    ListElement* previousRoot = list->current;
+    ListElement* temporary = previousRoot->next;
+    list->current = addedItem;
+    previousRoot->next = addedItem;
+    addedItem->previous = previousRoot;
+    addedItem->next = temporary;
+    temporary->previous = addedItem;
 }
 
-ListElement* goNext(ListElement* listElement)
+void goNext(CycleList* list)
 {
-    return listElement->next;
+    list->current = list->current->next;
 }
 
-ListElement* deleteNextElement(ListElement* listElement)
+void deleteCurrentElement(CycleList* list)
 {
-    ListElement* nextElement = listElement->next;
-    listElement->next = nextElement->next;
-    free(nextElement);
-    return(listElement);
+    ListElement* previousElement = list->current->previous;
+    ListElement* nextElement = list->current->next;
+    ListElement* deletedElement = list->current;
+
+    list->current = previousElement;
+    nextElement->previous = previousElement;
+    previousElement->next = nextElement;
+
+    free(deletedElement);
 }
 
-int getValue(ListElement* listElement)
+int getValueOfCurrentElement(CycleList* list)
 {
-    return listElement->value;
+    return list->current->value;
 }
 
-void printElement(ListElement* listElement)
+void printCurrentElement(CycleList* list)
 {
-    printf("%d", listElement->value);
+    printf("%d", list->current->value);
 }

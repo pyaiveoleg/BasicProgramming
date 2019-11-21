@@ -1,22 +1,16 @@
-//
-// Created by Олег on 07.10.2019.
-//
-
 #ifndef INC_4_1_CYCLELIST_H
 #define INC_4_1_CYCLELIST_H
 
 #include <stdbool.h>
-//struct CycleList;
-struct ListElement;
-//typedef struct CycleList CycleList;
-typedef struct ListElement ListElement;
+struct CycleList;
+typedef struct CycleList CycleList;
 
-bool isEmpty(ListElement *listElement);
-ListElement* createList(int value);
-ListElement* addItem(ListElement* listElement, int value);
-ListElement* goNext(ListElement* listElement);
-ListElement* deleteNextElement(ListElement* listElement);
-int getValue(ListElement* listElement);
-void printElement(ListElement* listElement);
+bool isEmpty(CycleList* list);
+CycleList* createList();
+void addItem(CycleList* list, int value);
+void goNext(CycleList* list);
+void deleteCurrentElement(CycleList* list);
+int getValueOfCurrentElement(CycleList* list);
+void printCurrentElement(CycleList* list);
 
 #endif //INC_4_1_CYCLELIST_H
