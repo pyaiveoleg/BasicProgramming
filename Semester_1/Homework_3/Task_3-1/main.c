@@ -44,7 +44,8 @@ void heapSort(int array[], int arrayLength)
     }
 }
 
-int main() {
+int main()
+{
     const int maxArrayLength = 1000;
     int array[maxArrayLength];
     for (int i = 0; i < maxArrayLength; i++)
