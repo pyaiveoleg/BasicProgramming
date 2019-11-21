@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdbool.h>
 
-int main() {
+int main()
+{
     const int maxStringSize = 1000;
     char inputString[maxStringSize];
     for (int i = 0; i < maxStringSize; i++)
@@ -40,8 +41,9 @@ int main() {
             isEmpty = true;
         }
     }
+    fclose(input);
+    
     printf("Quantity of not-empty strings in the file: %d", quantityOfNotEmptyStrings);
 
-    fclose(input);
     return 0;
 }
