@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+
 #include "CycleList.h"
 
 typedef struct ListElement ListElement;
@@ -51,13 +52,23 @@ void addItem(CycleList* list, int value)
     temporary->previous = addedItem;
 }
 
-void goNext(CycleList* list)
+Result goNext(CycleList* list)
 {
+    if (isEmpty(list))
+    {
+        return  kResult_Fail;
+    }
     list->current = list->current->next;
+    return kResult_Ok;
 }
 
-void deleteCurrentElement(CycleList* list)
+Result deleteCurrentElement(CycleList* list)
 {
+    if (isEmpty(list))
+    {
+        return kResult_Fail;
+    }
+
     ListElement* previousElement = list->current->previous;
     ListElement* nextElement = list->current->next;
     ListElement* deletedElement = list->current;
@@ -67,14 +78,25 @@ void deleteCurrentElement(CycleList* list)
     previousElement->next = nextElement;
 
     free(deletedElement);
+    return kResult_Ok;
 }
 
-int getValueOfCurrentElement(CycleList* list)
+Result getValueOfCurrentElement(CycleList* list, int* value)
 {
-    return list->current->value;
+    if (isEmpty(list))
+    {
+        return kResult_Fail;
+    }
+    *value = list->current->value;
+    return  kResult_Ok;
 }
 
-void printCurrentElement(CycleList* list)
+Result printCurrentElement(CycleList* list)
 {
+    if (isEmpty(list))
+    {
+        return kResult_Fail;
+    }
     printf("%d", list->current->value);
+    return kResult_Ok;
 }

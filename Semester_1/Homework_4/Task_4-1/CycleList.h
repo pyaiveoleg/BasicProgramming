@@ -1,16 +1,19 @@
-#ifndef INC_4_1_CYCLELIST_H
-#define INC_4_1_CYCLELIST_H
+#pragma once
 
 #include <stdbool.h>
 struct CycleList;
 typedef struct CycleList CycleList;
 
-bool isEmpty(CycleList* list);
-CycleList* createList();
-void addItem(CycleList* list, int value);
-void goNext(CycleList* list);
-void deleteCurrentElement(CycleList* list);
-int getValueOfCurrentElement(CycleList* list);
-void printCurrentElement(CycleList* list);
+typedef enum Result
+{
+    kResult_Ok,
+    kResult_Fail,
+} Result;
 
-#endif //INC_4_1_CYCLELIST_H
+CycleList* createList();
+
+void addItem(CycleList* list, int value);
+Result goNext(CycleList* list);
+Result deleteCurrentElement(CycleList* list);
+Result getValueOfCurrentElement(CycleList* list, int* value);
+Result printCurrentElement(CycleList* list);

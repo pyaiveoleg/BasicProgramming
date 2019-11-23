@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "CycleList.h"
 
 int main() 
@@ -15,9 +17,9 @@ int main()
         addItem(listOfWarriors, i);
     }
 
-    while (quantityOfWarriors != 1)
+    while (quantityOfWarriors > 1)
     {
-        for (int i = 1; i <= distanceForKilling; i++)
+        for (int i = 0; i < distanceForKilling; i++)
         {
             goNext(listOfWarriors);
         }
@@ -25,7 +27,10 @@ int main()
         quantityOfWarriors--;
     }
 
-    printf("This is the number of last warrior:\n%d", getValueOfCurrentElement(listOfWarriors));
+    int numberOfLastWarrior = 0;
+    getValueOfCurrentElement(listOfWarriors, &numberOfLastWarrior);
+    printf("This is the number of last warrior:\n%d", numberOfLastWarrior);
 
+    free(listOfWarriors);
     return 0;
 }
