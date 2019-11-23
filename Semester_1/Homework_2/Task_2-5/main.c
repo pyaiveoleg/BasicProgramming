@@ -2,9 +2,9 @@
 #include <string.h>
 #include <stdbool.h>
 
-void getStructureOfString(int structureOfString[], char stringForAnalyze[], int stringLength)
+void getStructureOfString(int structureOfString[], const char stringForAnalyze[], size_t stringLength)
 {
-    for (int i = 0; i < stringLength; i++)
+    for (size_t i = 0; i < stringLength; i++)
     {
         structureOfString[stringForAnalyze[i] - (int)'a']++;
     }
@@ -31,9 +31,9 @@ int main()
     bool isTransposition = true;
 
     printf("Please, write down first string (s1):\n");
-    scanf("%s", &firstString);
+    scanf("%s", firstString);
     printf("Please, write down second string (s2):\n");
-    scanf("%s", &secondString);
+    scanf("%s", secondString);
 
     getStructureOfString(structureOfFirstString, firstString, strlen(firstString));
     getStructureOfString(structureOfSecondString, secondString, strlen(secondString));
