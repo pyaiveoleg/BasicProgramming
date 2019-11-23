@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 void swap(int array[], int firstElement, int secondElement)
 {
@@ -13,11 +14,11 @@ void heapFiltering(int array[], int root, int heapSize)
     int rightChild = root * 2 + 2;
     int maxElement = root;
 
-    if ((leftChild < heapSize) && (array[leftChild] > array[maxElement]))
+    if (leftChild < heapSize && array[leftChild] > array[maxElement])
     {
         maxElement = leftChild;
     }
-    if ((rightChild < heapSize) && (array[rightChild] > array[maxElement]))
+    if (rightChild < heapSize && array[rightChild] > array[maxElement])
     {
         maxElement = rightChild;
     }
@@ -27,12 +28,12 @@ void heapFiltering(int array[], int root, int heapSize)
         swap(array, root, maxElement);
         heapFiltering(array, maxElement, heapSize);
     }
-
 }
 
 void heapSort(int array[], int arrayLength)
 {
-    for (int i = arrayLength / 2 - 1; i >= 0; i--)
+    int arrayMiddle = arrayLength / 2 - 1;
+    for (int i = arrayMiddle; i >= 0; i--)
     {
         heapFiltering(array, i, arrayLength);
     }
@@ -46,16 +47,15 @@ void heapSort(int array[], int arrayLength)
 
 int main()
 {
-    const int maxArrayLength = 1000;
-    int array[maxArrayLength];
-    for (int i = 0; i < maxArrayLength; i++)
+    int arrayLength = 0;
+    printf("Please, write down the length of array: \n");
+    scanf("%d", &arrayLength);
+    int* array = (int*) malloc (sizeof(int) * arrayLength);
+    for (int i = 0; i < arrayLength; i++)
     {
         array[i] = 0;
     }
-    int arrayLength = 0;
 
-    printf("Please, write down the length of array: \n");
-    scanf("%d", &arrayLength);
     printf("Please, write down the array: \n");
     for (int i = 0; i < arrayLength; i++)
     {
@@ -70,5 +70,6 @@ int main()
         printf("%d ", array[i]);
     }
 
+    free(array);
     return 0;
 }
