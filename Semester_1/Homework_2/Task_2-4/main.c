@@ -1,59 +1,52 @@
 #include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
-void getStructureOfString(int structureOfString[], const char stringForAnalyze[], size_t stringLength)
+int compare(const void * x1, const void * x2)   // функция сравнения элементов массива
 {
-    for (size_t i = 0; i < stringLength; i++)
-    {
-        structureOfString[stringForAnalyze[i] - (int)'a']++;
-    }
+    return ( *(int*)x1 - *(int*)x2 );
 }
 
 int main()
 {
-    const int quantityOfEnglishLetters = 26;
-    const int maxStringLength = 1000;
-    int structureOfFirstString[quantityOfEnglishLetters];
-    int structureOfSecondString[quantityOfEnglishLetters];
-    for (int i = 0; i < quantityOfEnglishLetters; i++)
+    const int maxArraySize = 1000;
+    int array[maxArraySize];
+    for (int i = 0; i < maxArraySize; i++)
     {
-        structureOfFirstString[i] = 0;
-        structureOfSecondString[i] = 0;
+        array[i] = 0;
     }
-    char firstString[maxStringLength];
-    char secondString[maxStringLength];
-    for (int i = 0; i < maxStringLength; i++)
+    int maxRepeatingElement = 0;
+    int arrayLength = 0;
+    bool isFound = false;
+
+    printf("Please, write down length of the array: \n");
+    scanf("%d", &arrayLength);
+
+    printf("Please, write down array: \n");
+    for (int i = 0; i < arrayLength; i++)
     {
-        firstString[i] = 0;
-        secondString[i] = 0;
+        scanf("%d", &array[i]);
     }
-    bool isTransposition = true;
 
-    printf("Please, write down first string (s1):\n");
-    scanf("%s", firstString);
-    printf("Please, write down second string (s2):\n");
-    scanf("%s", secondString);
+    qsort(array, arrayLength, sizeof(int), compare);
 
-    getStructureOfString(structureOfFirstString, firstString, strlen(firstString));
-    getStructureOfString(structureOfSecondString, secondString, strlen(secondString));
-
-    for (int i = 0; i < quantityOfEnglishLetters; i++)
+    int checkingElement = arrayLength - 1;
+    while (!isFound)
     {
-        if (structureOfFirstString[i] != structureOfSecondString[i])
+        if (checkingElement == 0)
         {
-            isTransposition = false;
+            printf("There aren't repeating elements in this array.\n");
+            return 0;
         }
+        if (array[checkingElement] == array[checkingElement - 1])
+        {
+            maxRepeatingElement = array[checkingElement];
+            isFound = true;
+        }
+        checkingElement--;
     }
 
-    if (isTransposition)
-    {
-        printf("First string is transposition of elements of second string");
-    }
-    else
-    {
-        printf("First string is not transposition of elements of second string");
-    }
+    printf("There is maximal repeating element in this array: %d", maxRepeatingElement);
 
     return 0;
 }
