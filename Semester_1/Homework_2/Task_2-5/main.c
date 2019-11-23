@@ -1,53 +1,59 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
 
-unsigned long long addNewTypeOfDigit(int digit, unsigned long long parsedNumber, int quantityOfDigit)
+void getStructureOfString(int structureOfString[], char stringForAnalyze[], int stringLength)
 {
-    while (quantityOfDigit != 0)
+    for (int i = 0; i < stringLength; i++)
     {
-        parsedNumber = parsedNumber * 10 + digit;
-        quantityOfDigit--;
+        structureOfString[stringForAnalyze[i] - (int)'a']++;
     }
-    return parsedNumber;
 }
 
 int main()
 {
-    const int quantityOfDigits = 10;
-    int quantityOfEachDigit[quantityOfDigits];
-    for (int i = 0; i < quantityOfDigits; i++)
+    const int quantityOfEnglishLetters = 26;
+    const int maxStringLength = 1000;
+    int structureOfFirstString[quantityOfEnglishLetters];
+    int structureOfSecondString[quantityOfEnglishLetters];
+    for (int i = 0; i < quantityOfEnglishLetters; i++)
     {
-        quantityOfEachDigit[i] = 0;
+        structureOfFirstString[i] = 0;
+        structureOfSecondString[i] = 0;
     }
-    unsigned long long number = 0;
-    unsigned long long parsedNumber = 0;
-
-    printf("Please, write down number N:\n");
-    scanf("%llu", &number);
-
-    while (number != 0)
+    char firstString[maxStringLength];
+    char secondString[maxStringLength];
+    for (int i = 0; i < maxStringLength; i++)
     {
-        quantityOfEachDigit[number % 10]++;
-        number /= 10;
+        firstString[i] = 0;
+        secondString[i] = 0;
     }
+    bool isTransposition = true;
 
-    for (int i = 1; i < quantityOfDigits; i++)
+    printf("Please, write down first string (s1):\n");
+    scanf("%s", &firstString);
+    printf("Please, write down second string (s2):\n");
+    scanf("%s", &secondString);
+
+    getStructureOfString(structureOfFirstString, firstString, strlen(firstString));
+    getStructureOfString(structureOfSecondString, secondString, strlen(secondString));
+
+    for (int i = 0; i < quantityOfEnglishLetters; i++)
     {
-        if (quantityOfEachDigit[i] > 0)
+        if (structureOfFirstString[i] != structureOfSecondString[i])
         {
-            parsedNumber = i;
-            quantityOfEachDigit[i]--;
-            break;
+            isTransposition = false;
         }
     }
 
-    parsedNumber = addNewTypeOfDigit(1, parsedNumber, quantityOfEachDigit[1]);
-    parsedNumber = addNewTypeOfDigit(0, parsedNumber, quantityOfEachDigit[0]);
-    for (int i = 2; i < quantityOfDigits; i++)
+    if (isTransposition)
     {
-        parsedNumber = addNewTypeOfDigit(i, parsedNumber, quantityOfEachDigit[i]);
+        printf("First string is transposition of elements of second string");
     }
-
-    printf("This is parsed number: %llu", parsedNumber);
+    else
+    {
+        printf("First string is not transposition of elements of second string");
+    }
 
     return 0;
 }
