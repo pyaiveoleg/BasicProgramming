@@ -31,6 +31,7 @@ int main()
     getValueOfCurrentElement(listOfWarriors, &numberOfLastWarrior);
     printf("This is the number of last warrior:\n%d", numberOfLastWarrior);
 
+    deleteCurrentElement(listOfWarriors);
     free(listOfWarriors);
     return 0;
 }
