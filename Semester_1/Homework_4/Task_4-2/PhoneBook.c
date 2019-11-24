@@ -2,39 +2,38 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
-#define maxQuantityOfNotes 1000
-#define maxStringLength 1000
-#define phoneNumberLength 11
+#define phoneNumberLength 12
 
 typedef struct Record Record;
 
 struct Record
 {
-    char name[maxStringLength];
     char phone[phoneNumberLength];
+    char* name;
 };
 
 struct PhoneBook
 {
     int capacity;
-    Record* records[maxQuantityOfNotes];
     int size;
-
+    Record** records;
 };
 
 PhoneBook* createPhoneBook(int capacity)
 {
-    PhoneBook* newBook = malloc(sizeof(Record*) * capacity + 2 * sizeof(int));
+    PhoneBook* newBook = malloc(sizeof(PhoneBook));
+    newBook->records = (Record**) malloc(sizeof(Record*) * capacity);
     newBook->size = 0;
     newBook->capacity = capacity;
     return newBook;
 }
 
-void expand(PhoneBook* phoneBook)
+void expand(PhoneBook** phoneBook)
 {
-    phoneBook = realloc(phoneBook, phoneBook->capacity * 2);
-    phoneBook->capacity *= 2;
+    (*phoneBook)->capacity *= 2;
+    (*phoneBook)->records = realloc((*phoneBook)->records, (*phoneBook)->capacity);
 }
 
 Record* createRecord()
@@ -47,16 +46,17 @@ void addRecord(PhoneBook* phoneBook, char name[], char phone[])
 {
     if (phoneBook->size == phoneBook->capacity)
     {
-        expand(phoneBook);
+        expand(&phoneBook);
     }
 
     Record* addedRecord = createRecord();
-    strcpy(addedRecord->name, name);
     strcpy(addedRecord->phone, phone);
+
+    addedRecord->name = (char*) malloc(sizeof(char) * strlen(name));
+    strcpy(addedRecord->name, name);
 
     phoneBook->records[phoneBook->size] = addedRecord;
     (phoneBook->size)++;
-
 }
 
 char* searchByName(PhoneBook* phoneBook, char name[])
@@ -85,19 +85,44 @@ char* searchByPhone(PhoneBook* phoneBook, char phone[])
 
 PhoneBook* importPhoneBookFromFile(int capacity)
 {
+    const int startingSizeOfString = 1000;
     PhoneBook* phoneBook = createPhoneBook(capacity);
     FILE *phoneBookFile;
     phoneBookFile = fopen("PhoneBook.txt", "r");
 
-    char currentPhone[maxStringLength];
-    char currentName[maxStringLength];
-
     if (phoneBookFile)
     {
-        while (!feof(phoneBookFile))
+        bool hasReachedEndOfFile = false;
+        while (!hasReachedEndOfFile)
         {
-            fscanf(phoneBookFile, "%s %[^\n]s", currentPhone, currentName);
-            addRecord(phoneBook, currentName, currentPhone);
+            char currentPhone[phoneNumberLength];
+            fscanf(phoneBookFile, "%s ", currentPhone);
+
+            char *currentName = (char *) malloc(sizeof(char) * startingSizeOfString);
+            int currentNameSize = startingSizeOfString;
+
+            int i = 0;
+            do
+            {
+                currentName[i] = (char) fgetc(phoneBookFile);
+                if (currentName[i] == EOF)
+                {
+                    hasReachedEndOfFile = true;
+                    break;
+                }
+
+                i++;
+                if (i >= currentNameSize) {
+                    currentNameSize *= 2;
+                    currentName = (char *) realloc(currentName, sizeof(char) * currentNameSize);
+                }
+            }
+            while (currentName[i - 1] != '\n');
+            currentName[i - 1] = '\0';
+            if (!hasReachedEndOfFile)
+            {
+                addRecord(phoneBook, currentName, currentPhone);
+            }
         }
     }
     fclose(phoneBookFile);

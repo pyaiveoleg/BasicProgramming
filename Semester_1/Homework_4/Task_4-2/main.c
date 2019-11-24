@@ -1,25 +1,33 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "PhoneBook.h"
 
-int main()
+char* readString(size_t startingSizeOfString)
 {
-    const int startingCapacity = 1000;
-    const int maxStringLength = 1000;
+    char *currentString = (char *) malloc(sizeof(char) * startingSizeOfString);
+    int currentStringSize = startingSizeOfString;
 
-    PhoneBook* phoneBook = importPhoneBookFromFile(startingCapacity);
-
-    int codeOfAction = 0;
-    char currentName[maxStringLength];
-    char currentPhone[maxStringLength];
-    char foundPhone[maxStringLength];
-    char foundName[maxStringLength];
-    for (int i = 0; i < maxStringLength; i++)
+    int i = 0;
+    do
     {
-        currentName[i] = '\0';
-        currentPhone[i] = '\0';
-        foundPhone[i] = '\0';
-        foundName[i] = '\0';
+        currentString[i] = (char) getchar();
+        i++;
+        if (i >= currentStringSize) {
+            currentStringSize *= 2;
+            currentString = (char *) realloc(currentString, sizeof(char) * currentStringSize);
+        }
     }
+    while (currentString[i - 1] != '\n');
+    currentString[i - 1] = '\0';
+
+    return currentString;
+}
+
+void workWithPhoneBook(PhoneBook* phoneBook, const int startingStringLength)
+{
+    int codeOfAction = 0;
+    char* currentName = NULL;
+    char* currentPhone = NULL;
 
     while (1)
     {
@@ -29,26 +37,26 @@ int main()
         switch (codeOfAction)
         {
             case 0:
-                return 0;
+                return;
             case 1:
                 printf("Please, write down the name:\n");
                 fflush(stdin);
-                gets(currentName);
+                currentName = readString(startingStringLength);
                 printf("Please, write down the phone:\n");
-                scanf("%s", currentPhone);
+                currentPhone = readString(startingStringLength);
                 addRecord(phoneBook, currentName, currentPhone);
                 printf("Added successfully.\n");
                 break;
             case 2:
                 printf("Please, write down the name:\n");
                 fflush(stdin);
-                gets(currentName);
+                currentName = readString(startingStringLength);
                 printf("Number: %s\n", searchByName(phoneBook, currentName));
                 break;
             case 3:
                 printf("Please, write down the phone number:\n");
                 fflush(stdin);
-                gets(currentPhone);
+                currentPhone = readString(startingStringLength);
                 printf("Name: %s\n", searchByPhone(phoneBook, currentPhone));
                 break;
             case 4:
@@ -60,4 +68,13 @@ int main()
                 break;
         }
     }
+}
+
+int main()
+{
+    const int startingCapacity = 1000;
+    const int startingStringLength = 1000;
+
+    PhoneBook* phoneBook = importPhoneBookFromFile(startingCapacity);
+    workWithPhoneBook(phoneBook, startingStringLength);
 }
