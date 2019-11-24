@@ -3,6 +3,34 @@
 #include <stdlib.h>
 #include <time.h>
 
+void parseInputNumber(int inputNumber, int* guessedNumber, bool* isDigitUsedInGuessedNumber,
+                      bool* allDigitsAreDifferent, bool* fourDigitsInGuessedNumber)
+{
+    if (inputNumber >= 10000 || inputNumber < 1000)
+    {
+        printf("\nThere must be 4 digits in your number, please rewrite\n");
+        *fourDigitsInGuessedNumber = false;
+    }
+
+    for (int i = 3; i >= 0; i--)
+    {
+        int currentDigit = inputNumber % 10;
+        guessedNumber[i] = currentDigit;
+
+        if (isDigitUsedInGuessedNumber[currentDigit])
+        {
+            printf("\nAll digits need to be different, please rewrite:\n");
+            *allDigitsAreDifferent = false;
+            break;
+        }
+        else
+        {
+            isDigitUsedInGuessedNumber[currentDigit] = true;
+        }
+        inputNumber /= 10;
+    }
+}
+
 void createThoughtNumber(int* thoughtNumber, bool* isDigitUsed)
 {
     srand(time(NULL));
@@ -20,6 +48,27 @@ void createThoughtNumber(int* thoughtNumber, bool* isDigitUsed)
 
         thoughtNumber[i] = randomDigit;
         isDigitUsed[randomDigit] = true;
+    }
+}
+
+void calculateCowsAndBulls(const int* guessedNumber, const int* thoughtNumber, int* bulls, int* cows, bool* isDigitABull,
+                          const int quantityOfDigits, const bool* isDigitUsed, const bool* isDigitUsedInGuessedNumber)
+{
+    for (int i = 0; i <= 3; i++)
+    {
+        if (guessedNumber[i] == thoughtNumber[i])
+        {
+            (*bulls)++;
+            isDigitABull[guessedNumber[i]] = true;
+        }
+    }
+
+    for (int i = 0; i < quantityOfDigits; i++)
+    {
+        if (isDigitUsed[i] && isDigitUsedInGuessedNumber[i] && (!isDigitABull[i]))
+        {
+            (*cows)++;
+        }
     }
 }
 
@@ -46,52 +95,17 @@ void play(int* thoughtNumber, const int quantityOfDigits, const bool* isDigitUse
     {
         printf(" %d  |", turn);
         scanf("%d", &inputNumber);
-        if (inputNumber >= 10000 || inputNumber < 1000)
-        {
-            printf("\nThere must be 4 digits in your number, please rewrite\n");
-            continue;
-        }
+
         bool allDigitsAreDifferent = true;
+        bool fourDigitsInInputNumber = true;
+        parseInputNumber(inputNumber, guessedNumber, isDigitUsedInGuessedNumber, &allDigitsAreDifferent, &fourDigitsInInputNumber);
 
-        for (int i = 3; i >= 0; i--)
-        {
-            int currentDigit = inputNumber % 10;
-            guessedNumber[i] = currentDigit;
-
-            if (isDigitUsedInGuessedNumber[currentDigit])
-            {
-                printf("\nAll digits need to be different, please rewrite:\n");
-                allDigitsAreDifferent = false;
-                break;
-            }
-            else
-            {
-                isDigitUsedInGuessedNumber[currentDigit] = true;
-            }
-            inputNumber /= 10;
-        }
-
-        if (!allDigitsAreDifferent)
+        if (!allDigitsAreDifferent || !fourDigitsInInputNumber)
         {
             continue;
         }
 
-        for (int i = 0; i <= 3; i++)
-        {
-            if (guessedNumber[i] == thoughtNumber[i])
-            {
-                bulls++;
-                isDigitABull[guessedNumber[i]] = true;
-            }
-        }
-
-        for (int i = 0; i < quantityOfDigits; i++)
-        {
-            if (isDigitUsed[i] && isDigitUsedInGuessedNumber[i] && (!isDigitABull[i]))
-            {
-                cows++;
-            }
-        }
+        calculateCowsAndBulls(guessedNumber, thoughtNumber, &bulls, &cows, isDigitABull, quantityOfDigits, isDigitUsed, isDigitUsedInGuessedNumber);
 
         printf("           %d cows %d bulls\n", cows, bulls);
 
