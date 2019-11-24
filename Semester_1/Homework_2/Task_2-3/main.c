@@ -46,11 +46,10 @@ void play(int* thoughtNumber, const int quantityOfDigits, const bool* isDigitUse
     {
         printf(" %d  |", turn);
         scanf("%d", &inputNumber);
-        bool fourDigitsInGuessedNumber = true;
         if (inputNumber >= 10000 || inputNumber < 1000)
         {
             printf("\nThere must be 4 digits in your number, please rewrite\n");
-            fourDigitsInGuessedNumber = false;
+            continue;
         }
         bool allDigitsAreDifferent = true;
 
@@ -72,34 +71,35 @@ void play(int* thoughtNumber, const int quantityOfDigits, const bool* isDigitUse
             inputNumber /= 10;
         }
 
-        if (allDigitsAreDifferent && fourDigitsInGuessedNumber)
+        if (!allDigitsAreDifferent)
         {
-            for (int i = 0; i <= 3; i++)
-            {
-                if (guessedNumber[i] == thoughtNumber[i])
-                {
-                    bulls++;
-                    isDigitABull[guessedNumber[i]] = true;
-                }
-            }
-
-            for (int i = 0; i < quantityOfDigits; i++)
-            {
-                if (isDigitUsed[i] && isDigitUsedInGuessedNumber[i] && (!isDigitABull[i]))
-                {
-                    cows++;
-                }
-            }
-
-            printf("           %d cows %d bulls\n", cows, bulls);
-
-            if (bulls == 4)
-            {
-                isSolved = true;
-            }
-            turn++;
+            continue;
         }
 
+        for (int i = 0; i <= 3; i++)
+        {
+            if (guessedNumber[i] == thoughtNumber[i])
+            {
+                bulls++;
+                isDigitABull[guessedNumber[i]] = true;
+            }
+        }
+
+        for (int i = 0; i < quantityOfDigits; i++)
+        {
+            if (isDigitUsed[i] && isDigitUsedInGuessedNumber[i] && (!isDigitABull[i]))
+            {
+                cows++;
+            }
+        }
+
+        printf("           %d cows %d bulls\n", cows, bulls);
+
+        if (bulls == 4)
+        {
+            isSolved = true;
+        }
+        turn++;
         for (int i = 0; i < quantityOfDigits; i++)
         {
             isDigitUsedInGuessedNumber[i] = false;
