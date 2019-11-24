@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <assert.h>
+#include <stdlib.h>
+
 #include "stack.h"
 
 bool isOperator(char symbol)
@@ -13,7 +16,7 @@ bool isDigit(char symbol)
     return ((int) symbol >= (int) '0') && ((int) symbol <= (int) '9');
 }
 
-double binaryOperation(char currentSymbol, int firstOperand, int secondOperand)
+double binaryOperation(char currentSymbol, double firstOperand, double secondOperand)
 {
     switch (currentSymbol)
     {
@@ -33,14 +36,16 @@ double binaryOperation(char currentSymbol, int firstOperand, int secondOperand)
         {
             return firstOperand / secondOperand;
         }
+        default:
+            exit(1);
     }
 }
 
 void countValueOfWholeExpression(char *inputExpression, StackOfDouble* stack)
 {
-    int currentSymbol = 0;
+    char currentSymbol = 0;
 
-    int inputExpressionLength = strlen(inputExpression);
+    int inputExpressionLength = (int) strlen(inputExpression);
 
     for (int i = 0; i < inputExpressionLength; i++)
     {
@@ -49,9 +54,9 @@ void countValueOfWholeExpression(char *inputExpression, StackOfDouble* stack)
 
         if (isOperator( (char) currentSymbol))
         {
-            int firstOperand = frontValueOfStackOfDouble(stack);
+            double firstOperand = peakOfStackOfDouble(stack);
             popFromStackOfDouble(stack);
-            int secondOperand = frontValueOfStackOfDouble(stack);
+            double secondOperand = peakOfStackOfDouble(stack);
             popFromStackOfDouble(stack);
             pushToStackOfDouble(binaryOperation(currentSymbol, firstOperand, secondOperand), stack);
         }
@@ -69,8 +74,9 @@ void countValueOfWholeExpression(char *inputExpression, StackOfDouble* stack)
     }
 }
 
-void printValueOfWholeExpression(double value, const double eps)
+void printValueOfWholeExpression(double value)
 {
+    const double eps = 0.0001;
     if (fabs(value - (int) value) < eps)
     {
         printf("This is the value of your expression:\n%d", (int) value);
@@ -81,18 +87,37 @@ void printValueOfWholeExpression(double value, const double eps)
     }
 }
 
+char* readString(size_t startingSizeOfString)
+{
+    char *currentString = (char *) malloc(sizeof(char) * startingSizeOfString);
+    int currentStringSize = startingSizeOfString;
+
+    int i = 0;
+    do
+    {
+        currentString[i] = (char) getchar();
+        i++;
+        if (i >= currentStringSize) {
+            currentStringSize *= 2;
+            currentString = (char *) realloc(currentString, sizeof(char) * currentStringSize);
+        }
+    }
+    while (currentString[i - 1] != '\n');
+    currentString[i - 1] = '\0';
+
+    return currentString;
+}
+
 int main() 
 {
     struct StackOfDouble* stack = createStackOfDouble();
 
-    const int maxInputLength = 1000;
-    const double eps = 0.0001;
-    char inputExpression[maxInputLength];
+    const size_t startingSizeOfString = 1000;
     printf("Please, write down the expression:\n");
-    gets(inputExpression);
+    char* inputExpression = readString(startingSizeOfString);
 
     countValueOfWholeExpression(inputExpression, stack);
-    printValueOfWholeExpression(frontValueOfStackOfDouble(stack), eps);
+    printValueOfWholeExpression(peakOfStackOfDouble(stack));
 
     return 0;
 }
