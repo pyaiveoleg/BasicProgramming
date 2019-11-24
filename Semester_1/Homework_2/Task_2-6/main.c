@@ -10,21 +10,11 @@ unsigned long long addNewTypeOfDigit(int digit, unsigned long long parsedNumber,
     return parsedNumber;
 }
 
-int main()
+unsigned long long decomposeIntoDigits(unsigned long long number, int* quantityOfEachDigit, const int quantityOfDigits)
 {
-    const int quantityOfDigits = 10;
-    int quantityOfEachDigit[quantityOfDigits];
-    for (int i = 0; i < quantityOfDigits; i++)
-    {
-        quantityOfEachDigit[i] = 0;
-    }
-    unsigned long long number = 0;
     unsigned long long parsedNumber = 0;
 
-    printf("Please, write down number N:\n");
-    scanf("%llu", &number);
-
-    while (number != 0)
+    while (number > 0)
     {
         quantityOfEachDigit[number % 10]++;
         number /= 10;
@@ -40,9 +30,26 @@ int main()
         }
     }
 
-    parsedNumber = addNewTypeOfDigit(1, parsedNumber, quantityOfEachDigit[1]);
-    parsedNumber = addNewTypeOfDigit(0, parsedNumber, quantityOfEachDigit[0]);
-    for (int i = 2; i < quantityOfDigits; i++)
+    return parsedNumber;
+}
+
+int main()
+{
+    const int quantityOfDigits = 10;
+    int quantityOfEachDigit[quantityOfDigits];
+    for (int i = 0; i < quantityOfDigits; i++)
+    {
+        quantityOfEachDigit[i] = 0;
+    }
+    unsigned long long number = 0;
+    unsigned long long parsedNumber = 0;
+
+    printf("Please, write down number N:\n");
+    scanf("%llu", &number);
+
+    parsedNumber = decomposeIntoDigits(number, quantityOfEachDigit, quantityOfDigits);
+
+    for (int i = 0; i < quantityOfDigits; i++)
     {
         parsedNumber = addNewTypeOfDigit(i, parsedNumber, quantityOfEachDigit[i]);
     }
