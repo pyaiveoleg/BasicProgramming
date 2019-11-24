@@ -1,21 +1,44 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
+#include <stdlib.h>
+
+char* readString(bool* hasReachedEndOfFile, const int startingSizeOfString, FILE* input, char* inputString)
+{
+    int inputStringSize = startingSizeOfString;
+    int i = 0;
+    do
+    {
+        inputString[i] =  (char) fgetc(input);
+        if (inputString[i] == EOF)
+        {
+            *hasReachedEndOfFile = true;
+            i++;
+            break;
+        }
+
+        i++;
+        if (i >= inputStringSize)
+        {
+            inputStringSize *= 2;
+            inputString = (char*) realloc (inputString, sizeof(char) * inputStringSize);
+        }
+    }
+    while (inputString[i - 1] != '\n');
+    inputString[i - 1] = '\0';
+
+    return inputString;
+}
 
 int main()
 {
-    const int maxStringSize = 1000;
-    char inputString[maxStringSize];
-    for (int i = 0; i < maxStringSize; i++)
-    {
-        inputString[i] = '0';
-    }
+    const int startingSizeOfString = 5;
+
     bool isEmpty = true;
     int quantityOfNotEmptyStrings = 0;
-    int stringLength = 0;
+    size_t stringLength = 0;
 
-    FILE *input;
-    input = fopen("input.txt", "r");
+    FILE *input = fopen("input.txt", "r");
 
     if (!input)
     {
@@ -23,26 +46,31 @@ int main()
         return 0;
     }
 
-    while (!feof(input))
+    bool hasReachedEndOfFile = false;
+    while (!hasReachedEndOfFile)
     {
-        fgets(inputString, maxStringSize, input);
-        stringLength = strlen(inputString) - 1;
-        for (int i = 0; i < stringLength; i++)
+        char* inputString = (char*) malloc(sizeof(char) * startingSizeOfString);
+        inputString = readString(&hasReachedEndOfFile, startingSizeOfString, input, inputString);
+
+        stringLength = strlen(inputString);
+
+        for (size_t j = 0; j < stringLength; j++)
         {
-            if ((inputString[i] != ' ') && (inputString[i] != '\t'))
+            if ((inputString[j] != ' ') && (inputString[j] != '\t'))
             {
                 isEmpty = false;
             }
         }
 
-        if (!isEmpty)
+        if (!isEmpty && stringLength > 0)
         {
             quantityOfNotEmptyStrings++;
-            isEmpty = true;
         }
+        free(inputString);
+        isEmpty = true;
     }
     fclose(input);
-    
+
     printf("Quantity of not-empty strings in the file: %d", quantityOfNotEmptyStrings);
 
     return 0;
