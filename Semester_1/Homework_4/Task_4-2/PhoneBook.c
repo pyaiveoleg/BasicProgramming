@@ -4,13 +4,13 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define phoneNumberLength 12
+#define PHONE_NUMBER_LENGTH 12
 
 typedef struct Record Record;
 
 struct Record
 {
-    char phone[phoneNumberLength];
+    char phone[PHONE_NUMBER_LENGTH];
     char* name;
 };
 
@@ -56,7 +56,7 @@ void addRecord(PhoneBook* phoneBook, char name[], char phone[])
     strcpy(addedRecord->name, name);
 
     phoneBook->records[phoneBook->size] = addedRecord;
-    (phoneBook->size)++;
+    phoneBook->size++;
 }
 
 char* searchByName(PhoneBook* phoneBook, char name[])
@@ -95,7 +95,7 @@ PhoneBook* importPhoneBookFromFile(int capacity)
         bool hasReachedEndOfFile = false;
         while (!hasReachedEndOfFile)
         {
-            char currentPhone[phoneNumberLength];
+            char currentPhone[PHONE_NUMBER_LENGTH];
             fscanf(phoneBookFile, "%s ", currentPhone);
 
             char *currentName = (char *) malloc(sizeof(char) * startingSizeOfString);
@@ -124,8 +124,8 @@ PhoneBook* importPhoneBookFromFile(int capacity)
                 addRecord(phoneBook, currentName, currentPhone);
             }
         }
+        fclose(phoneBookFile);
     }
-    fclose(phoneBookFile);
 
     return phoneBook;
 }
