@@ -1,15 +1,20 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
+
 #include "AVLtree.h"
 
-void clearArray(int array[], int* sizeOfArray)
+void clearArray(int* array, int* sizeOfArray, int* maxSizeOfArray, const int staringSizeOfArray)
 {
-    for (int i = 0; i < *sizeOfArray; i++)
+    free(array);
+    array = malloc(sizeof(int) * staringSizeOfArray);
+    for (int i = 0; i < staringSizeOfArray; i++)
     {
         array[i] = 0;
     }
     *sizeOfArray = 0;
+    *maxSizeOfArray = staringSizeOfArray;
 }
 
 void printGreetingMessage()
@@ -24,27 +29,44 @@ void printGreetingMessage()
     printf("Type: Exit to close the program\n");
 }
 
-int main()
+char* readString(size_t startingSizeOfString)
 {
-    printf("If you don't know how to use it, type 'Help'\n");
+    char *currentString = (char *) malloc(sizeof(char) * startingSizeOfString);
+    int currentStringSize = startingSizeOfString;
 
-    const int maxLengthOfCommand = 1000;
-    const int maxSizeOfSet = 1000;
-    char inputCommand[maxLengthOfCommand];
+    int i = 0;
+    do
+    {
+        currentString[i] = (char) getchar();
+        i++;
+        if (i >= currentStringSize) {
+            currentStringSize *= 2;
+            currentString = (char *) realloc(currentString, sizeof(char) * currentStringSize);
+        }
+    }
+    while (currentString[i - 1] != '\n');
+    currentString[i - 1] = '\0';
 
-    Tree* set = createTree();
+    return currentString;
+}
+
+void workWithSet(Tree* set, const int startingSizeOfString, const int startingSizeOfArray)
+{
+    char* inputCommand;
     int numberToAdd = 0;
     int numberToDelete = 0;
     int numberToCheck = 0;
     bool isCommand = false;
 
-    int elementsOfSet[maxSizeOfSet];
-    int currentArraySize;
-    clearArray(elementsOfSet, &currentArraySize);
+    int currentArraySize = 0;
+    int maxArraySize = startingSizeOfArray;
+    int* elementsOfSet = malloc(sizeof(int) * maxArraySize);
+    clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
 
     while (true)
     {
-        gets(inputCommand);
+        inputCommand = readString(startingSizeOfString);
+
         if (strcmp(inputCommand, "Help") == 0)
         {
             printGreetingMessage();
@@ -70,27 +92,29 @@ int main()
             printf("Write down number to check:\n");
             scanf("%d", &numberToCheck);
             isCommand = true;
-            printf(findElement(set, numberToCheck) ? "Element exists\n" : "Element haven't found\n");
+            bool existenceOfElement = false;
+            findElement(set, numberToCheck, &existenceOfElement);
+            printf(existenceOfElement ? "Element exists\n" : "Element haven't found\n");
         }
         else if (strcmp(inputCommand, "Print in Ascending Order") == 0)
         {
-            getSymmetricOrder(set, elementsOfSet, &currentArraySize);
+            getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
             for (int i = 0; i < currentArraySize; i++)
             {
                 printf("%d ", elementsOfSet[i]);
             }
             printf("\n");
-            clearArray(elementsOfSet, &currentArraySize);
+            clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
         }
         else if (strcmp(inputCommand, "Print in Descending Order") == 0)
         {
-            getSymmetricOrder(set, elementsOfSet, &currentArraySize);
+            getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
             for (int i = currentArraySize - 1; i > 0; i--)
             {
                 printf("%d ", elementsOfSet[i]);
             }
             printf("\n");
-            clearArray(elementsOfSet, &currentArraySize);
+            clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
         }
         else if (strcmp(inputCommand, "Print in (a b c) Order") == 0)
         {
@@ -98,7 +122,10 @@ int main()
         }
         else if (strcmp(inputCommand, "Exit") == 0)
         {
-            return 0;
+            deleteTree(set);
+            free(elementsOfSet);
+            free(inputCommand);
+            return;
         }
         else if (!isCommand)
         {
@@ -108,5 +135,20 @@ int main()
         {
             isCommand = false;
         }
+
+        free(inputCommand);
     }
+}
+
+int main()
+{
+    printf("If you don't know how to use it, type 'Help'\n");
+
+    const int startingSizeOfString = 10;
+    const int startingSizeOfArray = 10;
+    Tree* set = createTree();
+
+    workWithSet(set, startingSizeOfString, startingSizeOfArray);
+
+    return 0;
 }

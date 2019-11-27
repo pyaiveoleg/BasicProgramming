@@ -38,35 +38,53 @@ bool isTreeEmpty(Tree* tree)
     return tree->root == NULL;
 }
 
-void processSymmetricOrder(TreeElement* treeElement, int *array, int* sizeOfArray)
+void processSymmetricOrder(TreeElement* treeElement, int *array, int* sizeOfArray, int* maxSizeOfArray)
 {
     if (treeElement == NULL)
     {
         return;
     }
-    processSymmetricOrder(treeElement->leftChild, array, sizeOfArray);
+    processSymmetricOrder(treeElement->leftChild, array, sizeOfArray, maxSizeOfArray);
+
+    if (*sizeOfArray == *maxSizeOfArray)
+    {
+        (*maxSizeOfArray) *= 2;
+        array = (int*) realloc(array, *maxSizeOfArray);
+    }
+
     array[*sizeOfArray] = treeElement->value;
     (*sizeOfArray)++;
-    processSymmetricOrder(treeElement->rightChild, array, sizeOfArray);
+    processSymmetricOrder(treeElement->rightChild, array, sizeOfArray, maxSizeOfArray);
 }
 
-void getSymmetricOrder(Tree* tree, int array[], int* sizeOfArray)
+Result getSymmetricOrder(Tree* tree, int array[], int* sizeOfArray, int* maxSizeOfArray)
 {
-    processSymmetricOrder(tree->root, array, sizeOfArray);
+    if (tree == NULL)
+    {
+        return kResult_Fail;
+    }
+    processSymmetricOrder(tree->root, array, sizeOfArray, maxSizeOfArray);
+    return kResult_Ok;
 }
 
-bool findElement(Tree* tree, int value)
+Result findElement(Tree* tree, int value, bool* existenceOfElement)
 {
+    if (tree == NULL)
+    {
+        return kResult_Fail;
+    }
     TreeElement* currentElement = tree->root;
     while (true)
     {
         if (currentElement == NULL)
         {
-            return false;
+            *existenceOfElement = false;
+            return kResult_Ok;
         }
         else if (value == currentElement->value)
         {
-            return true;
+            *existenceOfElement = true;
+            return kResult_Ok;
         }
         else if (value < currentElement->value)
         {
@@ -106,9 +124,14 @@ void printElementsInABCOrder(TreeElement* treeElement)
     printf(")");
 }
 
-void printInABCOrder(Tree* tree)
+Result printInABCOrder(Tree* tree)
 {
+    if (tree == NULL)
+    {
+        return kResult_Fail;
+    }
     printElementsInABCOrder(tree->root);
+    return kResult_Ok;
 }
 
 int getHeight(TreeElement* treeElement)
@@ -135,7 +158,11 @@ TreeElement* rotateRight(TreeElement* root, Tree* tree, TreeElement* parentEleme
     pivot->rightChild = root;
     updateHeight(root);
     updateHeight(pivot);
-    if (parentElement->value > pivot->value)
+    if (root == tree->root)
+    {
+        tree->root = pivot;
+    }
+    else if (parentElement->value > pivot->value)
     {
         parentElement->leftChild = pivot;
     }
@@ -216,11 +243,16 @@ void insert(TreeElement* treeElement, int value, Tree* tree, TreeElement* parent
             insert(treeElement->rightChild, value, tree, treeElement);
         }
     }
-    treeElement = balance(treeElement, tree, parentElement);
+    balance(treeElement, tree, parentElement);
 }
 
-void addElement(Tree* tree, int value)
+Result addElement(Tree* tree, int value)
 {
+    if (tree == NULL)
+    {
+        return kResult_Fail;
+    }
+
     if (tree->root == NULL)
     {
         TreeElement* newTreeElement = createTreeElement(value);
@@ -230,6 +262,7 @@ void addElement(Tree* tree, int value)
     {
         insert(tree->root, value, tree, NULL);
     }
+    return kResult_Ok;
 }
 
 int findMaxInSubTree(TreeElement* currentElement)
@@ -239,6 +272,14 @@ int findMaxInSubTree(TreeElement* currentElement)
 
 void delete(TreeElement* currentElement, int value, Tree* tree, TreeElement* parentElement)
 {
+    if (currentElement == tree->root)
+    {
+        tree->root = currentElement->leftChild;
+        free(currentElement);
+        balance(tree->root, tree, NULL);
+        return;
+    }
+
     if (value < currentElement->value)
     {
         delete(currentElement->leftChild, value, tree, currentElement);
@@ -308,19 +349,58 @@ void delete(TreeElement* currentElement, int value, Tree* tree, TreeElement* par
     balance(currentElement, tree, parentElement);
 }
 
-void deleteElement(Tree* tree, int value)
+Result deleteElement(Tree* tree, int value)
 {
+    if (tree == NULL)
+    {
+        return kResult_Fail;
+    }
+
     if (tree->root == NULL)
     {
         printf("Tree is already empty.\n");
-        return;
-    }
-    else if (findElement(tree, value))
-    {
-        delete(tree->root, value, tree, NULL);
+        return kResult_Ok;
     }
     else
     {
-        printf("There aren't such element.\n");
+        bool existenceOfElement = false;
+        findElement(tree, value, &existenceOfElement);
+
+        if (existenceOfElement)
+        {
+            delete(tree->root, value, tree, NULL);
+        }
+        else
+        {
+            printf("There aren't such element.\n");
+        }
     }
+
+    return kResult_Ok;
+}
+
+void deleteAllElementsInTree(TreeElement* treeElement)
+{
+    if (treeElement->rightChild != NULL)
+    {
+        deleteAllElementsInTree(treeElement->rightChild);
+    }
+    if (treeElement->leftChild != NULL)
+    {
+        deleteAllElementsInTree(treeElement->leftChild);
+    }
+    free(treeElement);
+}
+
+Result deleteTree(Tree* tree)
+{
+    if (tree == NULL)
+    {
+        return kResult_Fail;
+    }
+
+    deleteAllElementsInTree(tree->root);
+    free(tree);
+
+    return kResult_Ok;
 }

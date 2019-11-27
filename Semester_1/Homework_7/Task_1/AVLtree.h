@@ -1,17 +1,20 @@
-#include <stdbool.h>
+#pragma once
 
-#ifndef BINARY_SEARCH_TREE_TREE_H
-#define BINARY_SEARCH_TREE_TREE_H
+#include <stdbool.h>
 
 typedef struct Tree Tree;
 typedef struct TreeElement TreeElement;
 
-Tree* createTree();
-void addElement(Tree* tree, int value);
-bool isTreeEmpty(Tree* tree);
-void getSymmetricOrder(Tree* tree, int array[], int* sizeOfArray);
-bool findElement(Tree* tree, int value);
-void deleteElement(Tree* tree, int value);
-void printInABCOrder(Tree* tree);
+typedef enum Result
+{
+    kResult_Ok,
+    kResult_Fail,
+} Result;
 
-#endif //BINARY_SEARCH_TREE_TREE_H
+Tree* createTree();
+Result addElement(Tree* tree, int value);
+Result getSymmetricOrder(Tree* tree, int array[], int* sizeOfArray, int* maxSizeOfArray);
+Result findElement(Tree* tree, int value, bool* existenceOfElement);
+Result deleteElement(Tree* tree, int value);
+Result printInABCOrder(Tree* tree);
+Result deleteTree(Tree* tree);
