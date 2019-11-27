@@ -10,7 +10,7 @@ struct String
     int maxLength;
 };
 
-int getInputLength(char value[])
+int getInputLength(const char value[])
 {
     int length = 0;
     while (value[length] != '\0')
@@ -33,88 +33,139 @@ String* createString(char* value)
     return newString;
 }
 
-void printString(String* string)
+Result printString(String* string)
 {
+    if (string == NULL)
+    {
+        printf("1");
+        return  kResult_Fail;
+    }
     printf("%s\n", string->text);
+    return kResult_Ok;
 }
 
-void deleteString(String* string)
+Result deleteString(String* string)
 {
+    if (string == NULL)
+    {
+        return  kResult_Fail;
+    }
     free(string->text);
     free(string);
+    return kResult_Ok;
 }
 
-String* cloneString(String* originalString)
+Result cloneString(String* originalString, String* clonedString)
 {
-    String* clonedString = createString(originalString->text);
-    return clonedString;
+    if (originalString == NULL)
+    {
+        return  kResult_Fail;
+    }
+    clonedString = createString(originalString->text);
+    return kResult_Ok;
 }
 
 void increaseLengthOfString(String* string)
 {
-    string->text = (char*) realloc(string->text, 2 * string->maxLength);
     string->maxLength *= 2;
+    string->text = (char*) realloc(string->text, string->maxLength);
 }
 
-String* concatenationOfStrings(String* firstString, String* secondString)
+Result concatenationOfStrings(String *firstString, String *secondString, String** concatenatedStrings)
 {
-    String* concatenatedString = createString(firstString->text);
-    while (concatenatedString->maxLength < firstString->length + secondString->maxLength)
+    if (firstString == NULL || secondString == NULL)
     {
-        increaseLengthOfString(concatenatedString);
+        return kResult_Fail;
     }
+
+    *concatenatedStrings = createString(firstString->text);
+
+
+    while ((*concatenatedStrings)->maxLength < firstString->length + secondString->length)
+    {
+        increaseLengthOfString(*concatenatedStrings);
+    }
+
     for (int i = firstString->length; i < firstString->length + secondString->length; i++)
     {
-        concatenatedString->text[i] = secondString->text[i];
+        (*concatenatedStrings)->text[i] = secondString->text[i - firstString->length];
+    }
+    (*concatenatedStrings)->length = firstString->length + secondString->length;
+
+    return kResult_Ok;
+}
+
+Result getStringLength(String* string, int* lengthOfString)
+{
+    if (string == NULL)
+    {
+        return  kResult_Fail;
+    }
+    *lengthOfString = string->length;
+    return kResult_Ok;
+}
+
+Result areStringsEqual(String* firstString, String* secondString, bool* equalityOfStrings)
+{
+    if (firstString == NULL || secondString == NULL)
+    {
+        return  kResult_Fail;
     }
 
-    concatenatedString->length = firstString->length + secondString->length;
-    return concatenatedString;
-}
-
-int getStringLength(String* string)
-{
-    return string->length;
-}
-
-bool areStringsEqual(String* firstString, String* secondString)
-{
     if (firstString->length == secondString->length)
     {
         for (int i = 0; i < firstString->length; i++)
         {
-            if (firstString->text != secondString->text)
+            if (firstString->text[i] != secondString->text[i])
             {
-                return false;
+                *equalityOfStrings = false;
             }
         }
-        return true;
+        *equalityOfStrings = true;
     }
     else
     {
-        return false;
+        *equalityOfStrings = false;
     }
+    return kResult_Ok;
 }
 
-String* getSubstring(String* string, int leftIndex, int rightIndex)
+Result getSubstring(String* string, int leftIndex, int rightIndex, String** substring)
 {
+    if (string == NULL)
+    {
+        return  kResult_Fail;
+    }
+
     int lengthOfSubstring = rightIndex - leftIndex + 1;
-    char substring[lengthOfSubstring];
+    char substringOfChar[lengthOfSubstring];
     for (int i = 0; i < lengthOfSubstring; i++)
     {
-        substring[i] = string->text[leftIndex + i];
+        substringOfChar[i] = string->text[leftIndex + i];
     }
 
-    String* newString = createString(substring);
-    return newString;
+    String* pointerToSubstring = createString(substringOfChar);
+    *substring = pointerToSubstring;
+
+    return kResult_Ok;
 }
 
-bool isStringEmpty(String* string)
+Result isStringEmpty(String* string, bool* isStringEmpty)
 {
-    return string->length == 0;
+    if (string == NULL)
+    {
+        return  kResult_Fail;
+    }
+    *isStringEmpty = string->length == 0;
+    return kResult_Ok;
 }
 
-char* convertToPointerToChar(String* string)
+Result convertToPointerToChar(String* string, char* convertedString)
 {
-    return string->text;
+    if (string == NULL)
+    {
+        return  kResult_Fail;
+    }
+    convertedString = string->text;
+    return kResult_Ok;
 }
