@@ -161,12 +161,12 @@ Result isStringEmpty(String* string, bool* isStringEmpty)
     return kResult_Ok;
 }
 
-Result convertToPointerToChar(String* string, char* convertedString)
+Result convertToPointerToChar(String* string, char** convertedString)
 {
     if (string == NULL)
     {
         return  kResult_Fail;
     }
-    convertedString = string->text;
+    *convertedString = string->text;
     return kResult_Ok;
 }

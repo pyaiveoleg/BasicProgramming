@@ -21,6 +21,7 @@ struct HashTable
 {
     int sizeOfHash;
     int quantityOfRecords;
+    int quantityOfFilledBuckets;
     double maxLoadFactor;
     Record** array;
 };
@@ -31,6 +32,8 @@ HashTable* createHashTable(int sizeOfHash, double maxLoadFactor)
     newHashTable->array = (Record**) malloc(sizeof(Record*) * sizeOfHash);
     newHashTable->sizeOfHash = sizeOfHash;
     newHashTable->maxLoadFactor = maxLoadFactor;
+    newHashTable->quantityOfRecords = 0;
+    newHashTable->quantityOfFilledBuckets = 0;
 
     for (int i = 0; i < sizeOfHash; i++)
     {
@@ -48,13 +51,13 @@ HashTable* createHashTable(int sizeOfHash, double maxLoadFactor)
 unsigned int calculateHash(String* string)
 {
     const size_t bigPrimaryNumber = pow(10, 9) + 9;
-    int hash = 0;
+    unsigned int hash = 0;
 
     int lengthOfString = 0;
     getStringLength(string, &lengthOfString);
 
-    char* text = malloc(sizeof(int) * lengthOfString);
-    convertToPointerToChar(string, text);
+    char* text = (char*) malloc(sizeof(char) * lengthOfString);
+    convertToPointerToChar(string, &text);
 
     for (int i = 0; i < lengthOfString; i++)
     {
@@ -96,7 +99,7 @@ void addStringToTable(HashTable* hashTable, String* string, int sizeOfHash)
     unsigned int possibleIndex = hash;
 
     String* emptyString = createString("\0");
-    int i = 0;
+    int i = 1;
     do
     {
         bool equalityOfStrings = false;
@@ -109,19 +112,21 @@ void addStringToTable(HashTable* hashTable, String* string, int sizeOfHash)
         {
             hashTable->array[possibleIndex]->key = string;
             hashTable->array[possibleIndex]->quantityOfEntries++;
-            if (i > hashTable->array[possibleIndex]->maxAttemptsToInsert) //разобраться с инициализацией таблицы!!!
+            if (i > hashTable->array[possibleIndex]->maxAttemptsToInsert)
             {
                 hashTable->array[possibleIndex]->maxAttemptsToInsert = i;
             }
             hashTable->array[possibleIndex]->attemptsToInsert += i;
             hashTable->quantityOfRecords++;
+            if (isKeyEmpty || hashTable->array[possibleIndex]->hasDeleted)
+            {
+                hashTable->quantityOfFilledBuckets++;
+            }
             hasInserted = true;
-
         }
 
         i++;
         possibleIndex = (possibleIndex + (int) pow(i, 2)) % sizeOfHash;
-        //printf(hasInserted ? "true" : "false");
     }
     while (!hasInserted);
 
@@ -133,7 +138,7 @@ void addStringToTable(HashTable* hashTable, String* string, int sizeOfHash)
 
 double getLoadFactor(HashTable* hashTable)
 {
-    return (double) hashTable->quantityOfRecords / hashTable->sizeOfHash;
+    return (double) hashTable->quantityOfFilledBuckets / hashTable->sizeOfHash;
 }
 
 double getAverageAttemptsQuantity(HashTable* hashTable)
@@ -169,16 +174,17 @@ void printInformationAboutTable(HashTable* hashTable)
     printf("Max quantity of attempts during adding the element was %d with string ", maxQuantityOfAttempts);
     printString(valueWithMaxQuantity);
 
-    printf("\nAverage quantity of attempts during adding the element is %lf\n", getAverageAttemptsQuantity(hashTable));
+    printf("Average quantity of attempts during adding the element is %lf\n", getAverageAttemptsQuantity(hashTable));
 
-    printf("There are %d words\n", hashTable->quantityOfRecords);
-    printf("Quantity of empty buckets is %d", hashTable->sizeOfHash - hashTable->quantityOfRecords);
+    printf("There are %d words at all\n", hashTable->quantityOfRecords);
+    printf("There are %d different words\n", hashTable->quantityOfFilledBuckets);
+    printf("Quantity of empty buckets is %d\n", hashTable->sizeOfHash - hashTable->quantityOfFilledBuckets);
 }
 
 void getDataFromBucket(HashTable* hashTable, int numberOfBucket, int* value, String** key)
 {
     *value = hashTable->array[numberOfBucket] == NULL ? -1 : hashTable->array[numberOfBucket]->quantityOfEntries;
-    *key = hashTable->array[numberOfBucket] == NULL ? NULL : hashTable->array[numberOfBucket]->key;
+    *key = hashTable->array[numberOfBucket]->key;
 }
 
 int getSizeOfHashTable(HashTable* hashTable)

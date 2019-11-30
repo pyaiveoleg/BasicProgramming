@@ -19,4 +19,4 @@ Result areStringsEqual(String* firstString, String* secondString, bool* equality
 Result getStringLength(String* string, int* lengthOfString);
 Result getSubstring(String* string, int leftIndex, int rightIndex, String** substring);
 Result isStringEmpty(String* string, bool* isStringEmpty);
-Result convertToPointerToChar(String* string, char* convertedString);
+Result convertToPointerToChar(String* string, char** convertedString);

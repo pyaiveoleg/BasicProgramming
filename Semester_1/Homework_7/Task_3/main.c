@@ -58,7 +58,6 @@ int main()
         inputString = readStringFromFile(&hasReachedEndOfFile, startingStringLength, input);
         String* addedString = createString(inputString);
         addStringToTable(hashTable, addedString, sizeOfHash);
-        printf("1");
         free(inputString);
     }
     fclose(input);
@@ -68,12 +67,19 @@ int main()
 
     int quantityOfEntries = 0;
     String* currentString = NULL;
+    String* emptyString = createString("\0");
     for (int i = 0; i < sizeOfHashTable; i++)
     {
         getDataFromBucket(hashTable, i, &quantityOfEntries, &currentString);
-        printf("String ");
-        printString(currentString);
-        printf("used %d times\n", quantityOfEntries);
+
+        bool isStringEmpty = false;
+        areStringsEqual(currentString, emptyString, &isStringEmpty);
+        if (!isStringEmpty)
+        {
+            printf("String ");
+            printString(currentString);
+            printf("used %d times\n", quantityOfEntries);
+        }
     }
 
     return 0;
