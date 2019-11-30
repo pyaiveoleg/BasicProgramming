@@ -2,6 +2,7 @@
 #include <string.h>
 #include "stack.h"
 #include <stdbool.h>
+#include <stdlib.h>
 
 bool isOperator(char symbol)
 {
@@ -26,9 +27,8 @@ int getPriority(char symbol)
     return 0;
 }
 
-int getcode(char symbol) //код сдвигается, чтобы случайно не совпал с введённым числом
+int getcode(char symbol, const int maxNumber) //код сдвигается, чтобы случайно не совпал с введённым числом
 {
-    const int maxNumber = 1000;
     return (int) symbol + maxNumber;
 }
 
@@ -38,24 +38,24 @@ void addToResultingArray(int resultingArray[], int* currentIndex, int value)
     (*currentIndex)++;
 }
 
-bool convertInfixToPostfix(char *inputExpression, Stack* stack, int resultingArray[], int* currentIndexInResultingArray)
+bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
+                           int* currentIndexInResultingArray, const int maxNumber)
 {
-    char currentSymbol = '0';
     int currentNumber = 0;
-    const int maxNumber = 1000;
+    Stack* stack = createStack();
 
-    int inputExpressionLength = strlen(inputExpression);
+    size_t inputExpressionLength = strlen(inputExpression);
 
-    for (int i = 0; i < inputExpressionLength; i++)
+    for (size_t i = 0; i < inputExpressionLength; i++)
     {
-        currentSymbol = inputExpression[i];
+        char currentSymbol = inputExpression[i];
         if (isOperator(currentSymbol))
         {
             while ((!isStackEmpty(stack)) && (getPriority( (char) (frontValueOfStack(stack) - maxNumber)) >= getPriority(currentSymbol)))
             {
                 addToResultingArray(resultingArray, currentIndexInResultingArray, popFromStack(stack));
             }
-            pushToStack(getcode(currentSymbol), stack);
+            pushToStack(getcode(currentSymbol, maxNumber), stack);
         }
         else if (isDigit(currentSymbol))
         {
@@ -71,17 +71,20 @@ bool convertInfixToPostfix(char *inputExpression, Stack* stack, int resultingArr
         }
         else if (currentSymbol == '(')
         {
-            pushToStack(getcode('('), stack);
+            pushToStack(getcode('(', maxNumber), stack);
         }
         else if (currentSymbol == ')')
         {
-            while (frontValueOfStack(stack) != getcode ('('))
+            while (frontValueOfStack(stack) != getcode ('(', maxNumber))
             {
                 addToResultingArray(resultingArray, currentIndexInResultingArray, popFromStack(stack));
             }
             popFromStack(stack);
         }
-        else if (currentSymbol == ' ') {}
+        else if (currentSymbol == ' ')
+        {
+            continue;
+        }
         else
         {
             printf("There is unexpected symbol in input expression.");
@@ -91,7 +94,7 @@ bool convertInfixToPostfix(char *inputExpression, Stack* stack, int resultingArr
 
     while (!isStackEmpty(stack))
     {
-        if (frontValueOfStack(stack) == getcode('('))
+        if (frontValueOfStack(stack) == getcode('(', maxNumber))
         {
             printf("Closing bracket missed in input expression.");
             return false;
@@ -99,17 +102,18 @@ bool convertInfixToPostfix(char *inputExpression, Stack* stack, int resultingArr
         addToResultingArray(resultingArray, currentIndexInResultingArray, popFromStack(stack));
     }
 
+    free(stack);
     return true;
 }
 
-void convertResultingArrayToString(int resultingArray[], int currentIndexInResultingArray, const int maxNumber, const int maxInputLength, char* resultingString)
+void convertResultingArrayToString(int resultingArray[], int sizeOfResultingArray, const int maxNumber,
+                                   const int maxInputLength, char* resultingString)
 {
     char tempString[maxInputLength];
 
-    int sizeOfResultingArray = currentIndexInResultingArray;
     for (int i = 0; i < sizeOfResultingArray; i++)
     {
-        if (isOperator((char) resultingArray[i] - maxNumber))
+        if (isOperator((char) (resultingArray[i] - maxNumber)))
         {
             sprintf(tempString, "%c ", (char) resultingArray[i] - maxNumber);
             strcat(resultingString, tempString);
@@ -122,31 +126,55 @@ void convertResultingArrayToString(int resultingArray[], int currentIndexInResul
     }
 }
 
+char* readString(size_t startingSizeOfString)
+{
+    char *currentString = (char *) malloc(sizeof(char) * startingSizeOfString);
+    int currentStringSize = startingSizeOfString;
+
+    int i = 0;
+    do
+    {
+        currentString[i] = (char) getchar();
+        i++;
+        if (i >= currentStringSize)
+        {
+            currentStringSize *= 2;
+            currentString = (char *) realloc(currentString, sizeof(char) * currentStringSize);
+        }
+    }
+    while (currentString[i - 1] != '\n');
+    currentString[i - 1] = '\0';
+
+    return currentString;
+}
+
 int main() 
 {
     const int maxNumber = 1000;
-    struct Stack* stack = createStack();
-
     const int maxInputLength = 1000;
-    char inputExpression[maxInputLength];
-    printf("Please, write down the expression:\n");
-    gets(inputExpression);
 
-    int resultingArray[maxInputLength];
-    for (int i = 0; i < maxInputLength; i++)
+    const int startingStringLength = 1000;
+    printf("Please, write down the expression:\n");
+    char* inputExpression = readString(startingStringLength);
+
+    int* resultingArray = (int*) malloc(sizeof(int) * strlen(inputExpression));
+    for (size_t i = 0; i < strlen(inputExpression); i++)
     {
         resultingArray[i] = 0;
     }
     int currentIndexInResultingArray = 0;
 
-    if (!convertInfixToPostfix(inputExpression, stack, resultingArray, &currentIndexInResultingArray))
+    if (!convertInfixToPostfix(inputExpression, resultingArray, &currentIndexInResultingArray, maxNumber))
     {
         return 0;
     }
 
-    char resultingString[maxInputLength];
+    char* resultingString = (char*) malloc(sizeof(char) * maxInputLength);
+    resultingString[0] = '\0';
+
     convertResultingArrayToString(resultingArray, currentIndexInResultingArray, maxNumber, maxInputLength, resultingString);
     printf("This is your expression in postfix format:\n%s", resultingString);
+    free(resultingString);
 
     return 0;
 }

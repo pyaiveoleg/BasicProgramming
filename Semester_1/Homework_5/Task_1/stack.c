@@ -1,11 +1,8 @@
-//
-// Created by Олег on 01.10.2019.
-//
-
 #include <stdlib.h>
 #include <stdbool.h>
 #include "stack.h"
 
+typedef struct StackElement StackElement;
 struct StackElement
 {
     int value;
@@ -29,21 +26,25 @@ bool isStackEmpty(Stack *stack)
     return stack->first == NULL;
 }
 
-bool pushToStack(int value, Stack *stack)
+Result pushToStack(int value, Stack *stack)
 {
+    if (stack == NULL)
+    {
+        return kResult_Fail;
+    }
     StackElement* stackElement = (StackElement*) malloc(sizeof(StackElement));
     stackElement->value = value;
     stackElement->next = stack->first;
 
     stack->first = stackElement;
-    return true;
+    return kResult_Ok
 }
 
 int popFromStack(Stack *stack)
 {
     if (isStackEmpty(stack))
     {
-        return 0;
+        return -1;
     }
     StackElement* poppedElement = stack->first;
     stack->first = poppedElement->next;
@@ -54,5 +55,9 @@ int popFromStack(Stack *stack)
 
 int frontValueOfStack(Stack* stack)
 {
+    if (isStackEmpty(stack))
+    {
+        return -1;
+    }
     return stack->first->value;
 }
