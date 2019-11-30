@@ -2,7 +2,8 @@
 #include <stdbool.h>
 #include "stack.h"
 
-//StackOfInt
+//---------------------------StackOfInt-------------------------//
+
 struct StackElement
 {
     int value;
@@ -46,7 +47,7 @@ int popFromStack(Stack *stack)
     stack->head = poppedElement->next;
     int value = poppedElement->value;
     free(poppedElement);
-    return(value);
+    return value;
 }
 
 int peakOfStack(Stack* stack)
@@ -54,7 +55,9 @@ int peakOfStack(Stack* stack)
     return stack->head->value;
 }
 
-//------------------------StackOfDoubleStack-----------------------------//
+//------------------------StackOfDouble-----------------------------//
+
+typedef struct StackOfDoubleElement StackOfDoubleElement;
 struct StackOfDoubleElement
 {
     double value;
@@ -63,45 +66,60 @@ struct StackOfDoubleElement
 
 struct StackOfDouble
 {
-    struct StackOfDoubleElement* first;
+    struct StackOfDoubleElement* head;
 };
 
 StackOfDouble* createStackOfDouble()
 {
-    StackOfDouble* stck1 = malloc(sizeof(Stack));
-    stck1->first = NULL;
-    return stck1;
+    StackOfDouble* newStack = malloc(sizeof(Stack));
+    newStack->head = NULL;
+    return newStack;
 }
 
 bool isStackOfDoubleEmpty(StackOfDouble *stack)
 {
-    return stack->first == NULL;
+    return stack->head == NULL;
 }
 
-bool pushToStackOfDouble(double value, StackOfDouble *stack)
+Result pushToStackOfDouble(double value, StackOfDouble *stack)
 {
+    if (stack == NULL)
+    {
+        return kResult_Fail;
+    }
+
     StackOfDoubleElement* stackElement = (StackOfDoubleElement*) malloc(sizeof(struct StackOfDoubleElement));
     stackElement->value = value;
-    stackElement->next = stack->first;
+    stackElement->next = stack->head;
 
-    stack->first = stackElement;
-    return true;
+    stack->head = stackElement;
+    return kResult_Ok;
 }
 
-double popFromStackOfDouble(StackOfDouble *stack)
+Result popFromStackOfDouble(StackOfDouble *stack)
 {
+    if (stack == NULL)
+    {
+        return kResult_Fail;
+    }
+
     if (isStackOfDoubleEmpty(stack))
     {
         return 0;
     }
-    StackOfDoubleElement* poppedElement = stack->first;
-    stack->first = poppedElement->next;
+    StackOfDoubleElement* poppedElement = stack->head;
+    stack->head = poppedElement->next;
     double value = poppedElement->value;
     free(poppedElement);
-    return(value);
+    return kResult_Ok;
 }
 
-double peakOfStackOfDouble(StackOfDouble* stack)
+Result peakOfStackOfDouble(StackOfDouble* stack, double* value)
 {
-    return stack->first->value;
+    if (stack == NULL)
+    {
+        return  kResult_Fail;
+    }
+    *value = stack->head->value;
+    return kResult_Ok;
 }

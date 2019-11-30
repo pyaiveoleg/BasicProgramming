@@ -36,14 +36,27 @@ double binaryOperation(char currentSymbol, double firstOperand, double secondOpe
         {
             return firstOperand / secondOperand;
         }
-        default:
-            exit(1);
     }
 }
 
-void countValueOfWholeExpression(char *inputExpression, StackOfDouble* stack)
+void printValueOfWholeExpression(double value)
+{
+    const double eps = 0.0001;
+    printf("This is the value of your expression:\n");
+    if (fabs(value - (int) value) < eps)
+    {
+        printf("%d", (int) value);
+    }
+    else
+    {
+        printf("%lf", value);
+    }
+}
+
+void countValueOfWholeExpression(char *inputExpression)
 {
     char currentSymbol = 0;
+    StackOfDouble* stack = createStackOfDouble();
 
     int inputExpressionLength = (int) strlen(inputExpression);
 
@@ -54,9 +67,11 @@ void countValueOfWholeExpression(char *inputExpression, StackOfDouble* stack)
 
         if (isOperator( (char) currentSymbol))
         {
-            double firstOperand = peakOfStackOfDouble(stack);
+            double secondOperand = 0;
+            peakOfStackOfDouble(stack, &secondOperand);
             popFromStackOfDouble(stack);
-            double secondOperand = peakOfStackOfDouble(stack);
+            double firstOperand = 0;
+            peakOfStackOfDouble(stack, &firstOperand);
             popFromStackOfDouble(stack);
             pushToStackOfDouble(binaryOperation(currentSymbol, firstOperand, secondOperand), stack);
         }
@@ -72,19 +87,13 @@ void countValueOfWholeExpression(char *inputExpression, StackOfDouble* stack)
             i--;
         }
     }
-}
 
-void printValueOfWholeExpression(double value)
-{
-    const double eps = 0.0001;
-    if (fabs(value - (int) value) < eps)
-    {
-        printf("This is the value of your expression:\n%d", (int) value);
-    }
-    else
-    {
-        printf("This is the value of your expression:\n%lf", value);
-    }
+    double resultingValue = 0;
+    peakOfStackOfDouble(stack, &resultingValue);
+    printValueOfWholeExpression(resultingValue);
+
+    popFromStackOfDouble(stack);
+    free(stack);
 }
 
 char* readString(size_t startingSizeOfString)
@@ -110,14 +119,11 @@ char* readString(size_t startingSizeOfString)
 
 int main() 
 {
-    struct StackOfDouble* stack = createStackOfDouble();
-
     const size_t startingSizeOfString = 1000;
     printf("Please, write down the expression:\n");
     char* inputExpression = readString(startingSizeOfString);
 
-    countValueOfWholeExpression(inputExpression, stack);
-    printValueOfWholeExpression(peakOfStackOfDouble(stack));
+    countValueOfWholeExpression(inputExpression);
 
     return 0;
 }

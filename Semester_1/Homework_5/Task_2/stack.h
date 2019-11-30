@@ -14,12 +14,15 @@ int peakOfStack(Stack* stack);
 Stack* createStack();
 
 struct StackOfDouble;
-struct StackOfDoubleElement;
 typedef struct StackOfDouble StackOfDouble;
-typedef struct StackOfDoubleElement StackOfDoubleElement;
 
-bool isStackOfDoubleEmpty(StackOfDouble *stack);
-bool pushToStackOfDouble(double value, StackOfDouble *stack);
-double popFromStackOfDouble(StackOfDouble *stack);
-double peakOfStackOfDouble(StackOfDouble* stack);
+typedef enum Result
+{
+    kResult_Ok,
+    kResult_Fail,
+} Result;
+
+Result pushToStackOfDouble(double value, StackOfDouble *stack);
+Result popFromStackOfDouble(StackOfDouble *stack);
+Result peakOfStackOfDouble(StackOfDouble* stackOfDouble, double* value);
 StackOfDouble* createStackOfDouble();
