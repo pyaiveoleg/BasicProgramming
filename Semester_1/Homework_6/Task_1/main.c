@@ -2,17 +2,14 @@
 #include <stdbool.h>
 #include <math.h>
 
-int main() 
+void convertToExponentialForm(float testVariable, double* normalizedValue, int* exponent)
 {
     unsigned int bit = 2147483648; //единица и 31 ноль
     const int sizeOfSign = 1;
     const int sizeOfExponent = 8;
     const int bitesInByte = 8;
-    const int sizeOfMantissa = bitesInByte * sizeof(float) - sizeOfSign - sizeOfExponent;
+    const unsigned int sizeOfMantissa = (unsigned int) bitesInByte * sizeof(float) - sizeOfSign - sizeOfExponent;
 
-    float testVariable = 0;
-    printf("Enter a number:\n");
-    scanf("%f", &testVariable);
     unsigned int* pointerToVariable = (unsigned int*) &testVariable;
     unsigned int convertedVariable = *pointerToVariable;
 
@@ -28,11 +25,11 @@ int main()
     {
         if (convertedVariable & bit)
         {
-            shiftedExponent += pow(2, sizeOfExponent - j);
+            shiftedExponent += (int) pow(2, sizeOfExponent - j);
         }
         bit = bit >> 1;
     }
-    int exponent = shiftedExponent - (pow(2, sizeOfExponent - 1) - 1);
+    *exponent = (int) (shiftedExponent - (pow(2, sizeOfExponent - 1) - 1));
 
     double valueOfMantissa = 0;
     for (int j = 1; j <= sizeOfMantissa; j++)
@@ -44,12 +41,22 @@ int main()
         bit = bit >> 1;
     }
 
-    double normalizedValue = 1 + valueOfMantissa;
+    *normalizedValue = 1 + valueOfMantissa;
     if (!isPositive)
     {
-        normalizedValue *= -1;
+        (*normalizedValue) *= -1;
     }
+}
 
+int main() 
+{
+    float testVariable = 0;
+    printf("Enter a number:\n");
+    scanf("%f", &testVariable);
+
+    double normalizedValue = 0;
+    int exponent = 0;
+    convertToExponentialForm(testVariable, &normalizedValue, &exponent);
     printf("%lf * 2 ^ %d", normalizedValue, exponent);
 
     return 0;
