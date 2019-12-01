@@ -75,6 +75,10 @@ int main()
         printf("\n");
     }
 
+    for (int i = 0; i <= quantityOfStudents; ++i)
+    {
+        free(areWorksEqual[i]);
+    }
     free(areWorksEqual);
     return 0;
 }
