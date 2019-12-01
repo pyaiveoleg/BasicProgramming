@@ -30,23 +30,11 @@ char* readString(bool* hasReachedEndOfFile, const int startingSizeOfString, FILE
     return inputString;
 }
 
-int main()
+void countNotEmptyStrings(FILE* input, const int startingSizeOfString, int* quantityOfNotEmptyStrings)
 {
-    const int startingSizeOfString = 5;
-
-    bool isEmpty = true;
-    int quantityOfNotEmptyStrings = 0;
     size_t stringLength = 0;
-
-    FILE *input = fopen("input.txt", "r");
-
-    if (!input)
-    {
-        printf("Error. Cannot open file.\n");
-        return 0;
-    }
-
     bool hasReachedEndOfFile = false;
+    bool isEmpty = true;
     while (!hasReachedEndOfFile)
     {
         char* inputString = (char*) malloc(sizeof(char) * startingSizeOfString);
@@ -64,11 +52,26 @@ int main()
 
         if (!isEmpty && stringLength > 0)
         {
-            quantityOfNotEmptyStrings++;
+            (*quantityOfNotEmptyStrings)++;
         }
         free(inputString);
         isEmpty = true;
     }
+}
+
+int main()
+{
+    const int startingSizeOfString = 5;
+    int quantityOfNotEmptyStrings = 0;
+
+    FILE *input = fopen("input.txt", "r");
+
+    if (!input)
+    {
+        printf("Error. Cannot open file.\n");
+        return 0;
+    }
+    countNotEmptyStrings(input, startingSizeOfString, &quantityOfNotEmptyStrings);
     fclose(input);
 
     printf("Quantity of not-empty strings in the file: %d", quantityOfNotEmptyStrings);
