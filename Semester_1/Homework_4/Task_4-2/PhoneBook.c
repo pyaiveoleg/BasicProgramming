@@ -4,13 +4,13 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define PHONE_NUMBER_LENGTH 12
+#define PHONE_NUMBER_LENGTH 11
 
 typedef struct Record Record;
 
 struct Record
 {
-    char phone[PHONE_NUMBER_LENGTH];
+    char phone[PHONE_NUMBER_LENGTH + 1];
     char* name;
 };
 
@@ -42,11 +42,16 @@ Record* createRecord()
     return newRecord;
 }
 
-void addRecord(PhoneBook* phoneBook, char name[], char phone[])
+bool addRecord(PhoneBook* phoneBook, char name[], char phone[])
 {
     if (phoneBook->size == phoneBook->capacity)
     {
         expand(&phoneBook);
+    }
+
+    if (strlen(phone) != PHONE_NUMBER_LENGTH)
+    {
+        return false;
     }
 
     Record* addedRecord = createRecord();
@@ -57,6 +62,7 @@ void addRecord(PhoneBook* phoneBook, char name[], char phone[])
 
     phoneBook->records[phoneBook->size] = addedRecord;
     phoneBook->size++;
+    return true;
 }
 
 char* searchByName(PhoneBook* phoneBook, char name[])
@@ -83,6 +89,34 @@ char* searchByPhone(PhoneBook* phoneBook, char phone[])
     return "haven't found";
 }
 
+char* readStringFromFile(bool* hasReachedEndOfFile, const int startingSizeOfString, FILE* input)
+{
+    char* inputString = (char*) malloc(startingSizeOfString);
+    int inputStringSize = startingSizeOfString;
+    int i = 0;
+    do
+    {
+        inputString[i] =  (char) fgetc(input);
+        if (inputString[i] == EOF)
+        {
+            *hasReachedEndOfFile = true;
+            i++;
+            break;
+        }
+
+        i++;
+        if (i >= inputStringSize)
+        {
+            inputStringSize *= 2;
+            inputString = (char*) realloc (inputString, sizeof(char) * inputStringSize);
+        }
+    }
+    while (inputString[i - 1] != '\n');
+    inputString[i - 1] = '\0';
+
+    return inputString;
+}
+
 PhoneBook* importPhoneBookFromFile(int capacity)
 {
     const int startingSizeOfString = 1000;
@@ -90,55 +124,47 @@ PhoneBook* importPhoneBookFromFile(int capacity)
     FILE *phoneBookFile;
     phoneBookFile = fopen("PhoneBook.txt", "r");
 
-    if (phoneBookFile)
+    if (!phoneBookFile)
     {
-        bool hasReachedEndOfFile = false;
-        while (!hasReachedEndOfFile)
-        {
-            char currentPhone[PHONE_NUMBER_LENGTH];
-            fscanf(phoneBookFile, "%s ", currentPhone);
-
-            char *currentName = (char *) malloc(sizeof(char) * startingSizeOfString);
-            int currentNameSize = startingSizeOfString;
-
-            int i = 0;
-            do
-            {
-                currentName[i] = (char) fgetc(phoneBookFile);
-                if (currentName[i] == EOF)
-                {
-                    hasReachedEndOfFile = true;
-                    break;
-                }
-
-                i++;
-                if (i >= currentNameSize) {
-                    currentNameSize *= 2;
-                    currentName = (char *) realloc(currentName, sizeof(char) * currentNameSize);
-                }
-            }
-            while (currentName[i - 1] != '\n');
-            currentName[i - 1] = '\0';
-            if (!hasReachedEndOfFile)
-            {
-                addRecord(phoneBook, currentName, currentPhone);
-            }
-        }
-        fclose(phoneBookFile);
+        printf("Cannot open file\n");
+        return phoneBook;
     }
+
+    bool hasReachedEndOfFile = false;
+    while (!hasReachedEndOfFile)
+    {
+        char currentPhone[PHONE_NUMBER_LENGTH + 1];
+        fscanf(phoneBookFile, "%s ", currentPhone);
+
+        char* currentName = readStringFromFile(&hasReachedEndOfFile, startingSizeOfString, phoneBookFile);
+
+        if (!hasReachedEndOfFile)
+        {
+            addRecord(phoneBook, currentName, currentPhone);
+        }
+        free(currentName);
+    }
+    fclose(phoneBookFile);
 
     return phoneBook;
 }
 
 void saveDataToFile(PhoneBook* phoneBook)
 {
-    FILE *phoneBookFile;
-    phoneBookFile = fopen("PhoneBook.txt", "w");
+    FILE *phoneBookFile = fopen("PhoneBook.txt", "w");
 
     for (int i = 0; i < phoneBook->size; i++)
     {
         fprintf(phoneBookFile, "%s %s\n", phoneBook->records[i]->phone, phoneBook->records[i]->name);
     }
-
     fclose(phoneBookFile);
+}
+
+void deletePhoneBook(PhoneBook* phoneBook)
+{
+    for (int i = 0; i < phoneBook->capacity; i++)
+    {
+        free(phoneBook->records[i]);
+    }
+    free(phoneBook);
 }
