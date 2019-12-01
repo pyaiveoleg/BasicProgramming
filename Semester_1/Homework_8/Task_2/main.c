@@ -48,21 +48,8 @@ void deleteTwoDimensionalArray(int** array, int size)
     free(array);
 }
 
-int main()
+int** readDistances(const int quantityOfCities, const int quantityOfRoads, FILE* input, const int infinity)
 {
-    const int infinity = INT_MAX;
-
-    int quantityOfCities = 0;
-    int quantityOfRoads = 0;
-    FILE* input = fopen("input.txt", "r");
-    if (!input)
-    {
-        printf("Error. Cannot open file.");
-        return 0;
-    }
-
-    fscanf(input, "%d %d", &quantityOfCities, &quantityOfRoads);
-
     int** distance = createTwoDimensionalArray(quantityOfCities + 1, quantityOfCities + 1, infinity); //нумерация городов с 1
 
     int numberOfFirstCity = 0;
@@ -74,6 +61,59 @@ int main()
         distance[numberOfFirstCity][numberOfSecondCity] = distanceBetweenCities;
         distance[numberOfSecondCity][numberOfFirstCity] = distanceBetweenCities;
     }
+
+    return distance;
+
+}
+
+void printCountries(int** countries, int quantityOfCapitals, const int* quantityOfCitiesInCountry)
+{
+    for (int i = 0; i < quantityOfCapitals; i++)
+    {
+        printf("%d county consists of cities: ", i + 1);
+        for (int j = 0; j < quantityOfCitiesInCountry[i]; j++)
+        {
+            printf("%d ", countries[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void assignCitiesToCountries(int quantityOfCapitals, int quantityOfCities, int** distance, bool* used,
+                int** countries, int* quantityOfCitiesInCountry)
+{
+    int quantityOfAssignedCities = quantityOfCapitals;
+    while (quantityOfAssignedCities < quantityOfCities)
+    {
+        for (int i = 0; i < quantityOfCapitals && quantityOfAssignedCities < quantityOfCities; ++i)
+        {
+            int numberOfNearestCity =
+                    findNearestCity(quantityOfCitiesInCountry, countries, i, distance, quantityOfCities, used);
+            if (numberOfNearestCity != -1)
+            {
+                used[numberOfNearestCity] = true;
+                countries[i][quantityOfCitiesInCountry[i]] = numberOfNearestCity;
+                quantityOfCitiesInCountry[i]++;
+                quantityOfAssignedCities++;
+            }
+        }
+    }
+}
+
+int main()
+{
+    const int infinity = INT_MAX;
+    int quantityOfCities = 0;
+    int quantityOfRoads = 0;
+    FILE* input = fopen("input.txt", "r");
+    if (!input)
+    {
+        printf("Error. Cannot open file.");
+        return 0;
+    }
+    fscanf(input, "%d %d", &quantityOfCities, &quantityOfRoads);
+
+    int** distance = readDistances(quantityOfCities, quantityOfRoads, input, infinity);
 
     int quantityOfCapitals = 0;
     fscanf(input, "%d", &quantityOfCapitals);
@@ -90,34 +130,10 @@ int main()
         quantityOfCitiesInCountry[i] = 1;
     }
 
-    int quantityOfAssignedCities = quantityOfCapitals;
+    assignCitiesToCountries(quantityOfCapitals, quantityOfCities, distance, used, countries, quantityOfCitiesInCountry);
+    printCountries(countries, quantityOfCapitals, quantityOfCitiesInCountry);
 
-    while (quantityOfAssignedCities < quantityOfCities)
-    {
-        for (int i = 0; i < quantityOfCapitals && quantityOfAssignedCities < quantityOfCities; ++i)
-        {
-            int numberOfNearestCity = findNearestCity(quantityOfCitiesInCountry, countries, i, distance, quantityOfCities, used);
-            if (numberOfNearestCity != -1)
-            {
-                used[numberOfNearestCity] = true;
-                countries[i][quantityOfCitiesInCountry[i]] = numberOfNearestCity;
-                quantityOfCitiesInCountry[i]++;
-                quantityOfAssignedCities++;
-            }
-        }
-    }
-
-    for (int i = 0; i < quantityOfCapitals; i++)
-    {
-        printf("%d county consists of cities: ", i + 1);
-        for (int j = 0; j < quantityOfCitiesInCountry[i]; j++)
-        {
-            printf("%d ", countries[i][j]);
-        }
-        printf("\n");
-    }
-
-    free(quantityOfCitiesInCountry); // удалить countries и distance
+    free(quantityOfCitiesInCountry);
     free(used);
     deleteTwoDimensionalArray(countries, quantityOfCapitals);
     deleteTwoDimensionalArray(distance, quantityOfCities + 1);
