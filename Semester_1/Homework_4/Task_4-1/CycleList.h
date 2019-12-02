@@ -6,7 +6,7 @@ typedef struct CycleList CycleList;
 
 typedef enum Result
 {
-    ok,
+    success,
     fail,
 } Result;
 

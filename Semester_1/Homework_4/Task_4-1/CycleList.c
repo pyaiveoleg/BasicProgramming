@@ -59,7 +59,7 @@ Result goNext(CycleList* list)
         return  fail;
     }
     list->current = list->current->next;
-    return ok;
+    return success;
 }
 
 Result deleteCurrentElement(CycleList* list)
@@ -78,7 +78,7 @@ Result deleteCurrentElement(CycleList* list)
     previousElement->next = nextElement;
 
     free(deletedElement);
-    return ok;
+    return success;
 }
 
 Result getValueOfCurrentElement(CycleList* list, int* value)
@@ -88,7 +88,7 @@ Result getValueOfCurrentElement(CycleList* list, int* value)
         return fail;
     }
     *value = list->current->value;
-    return  ok;
+    return  success;
 }
 
 Result printCurrentElement(CycleList* list)
@@ -98,5 +98,5 @@ Result printCurrentElement(CycleList* list)
         return fail;
     }
     printf("%d", list->current->value);
-    return ok;
+    return success;
 }
