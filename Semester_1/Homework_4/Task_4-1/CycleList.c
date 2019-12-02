@@ -56,17 +56,17 @@ Result goNext(CycleList* list)
 {
     if (isEmpty(list))
     {
-        return  kResult_Fail;
+        return  fail;
     }
     list->current = list->current->next;
-    return kResult_Ok;
+    return ok;
 }
 
 Result deleteCurrentElement(CycleList* list)
 {
     if (isEmpty(list))
     {
-        return kResult_Fail;
+        return fail;
     }
 
     ListElement* previousElement = list->current->previous;
@@ -78,25 +78,25 @@ Result deleteCurrentElement(CycleList* list)
     previousElement->next = nextElement;
 
     free(deletedElement);
-    return kResult_Ok;
+    return ok;
 }
 
 Result getValueOfCurrentElement(CycleList* list, int* value)
 {
     if (isEmpty(list))
     {
-        return kResult_Fail;
+        return fail;
     }
     *value = list->current->value;
-    return  kResult_Ok;
+    return  ok;
 }
 
 Result printCurrentElement(CycleList* list)
 {
     if (isEmpty(list))
     {
-        return kResult_Fail;
+        return fail;
     }
     printf("%d", list->current->value);
-    return kResult_Ok;
+    return ok;
 }

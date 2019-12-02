@@ -6,8 +6,8 @@ typedef struct CycleList CycleList;
 
 typedef enum Result
 {
-    kResult_Ok,
-    kResult_Fail,
+    ok,
+    fail,
 } Result;
 
 CycleList* createList();
