@@ -10,7 +10,7 @@ char* readStringFromFile(bool* hasReachedEndOfFile, const int startingSizeOfStri
     int i = 0;
     do
     {
-        inputString[i] =  (char) fgetc(input);
+        inputString[i] = (char) fgetc(input);
         if (inputString[i] == EOF)
         {
             *hasReachedEndOfFile = true;
