@@ -1,0 +1,6 @@
+Stalin - 1000
+Beria - 999
+Ivanov - 2
+Andreev - 8
+Petrov - 2
+Alexandrov - 0
