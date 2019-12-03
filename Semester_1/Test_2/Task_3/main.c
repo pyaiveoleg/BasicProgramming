@@ -73,7 +73,6 @@ void readInputFromFile(char** surnames, int* loyalties, FILE* input, const int s
             loyalties = realloc(loyalties, sizeof(int) * (*currentSizeOfArray));
         }
     }
-    fclose(input);
     *quantityOfPeople = iterator - 1;
 }
 
@@ -83,7 +82,6 @@ void printKilledPeople(char** surnames, int quantityOfPeople, int quantityToKill
     for (int j = quantityOfPeople - 1; j > quantityOfPeople - 1 - quantityToKill; j--)
     {
         printf("%s\n", surnames[j]);
-        free(surnames[j]);
         (*quantityOfNotKilledPeople)--;
     }
 }
@@ -94,7 +92,6 @@ void printExiledPeople(char** surnames, int quantityOfNotKilledPeople, int quant
     for (int j = quantityOfNotKilledPeople - 1; j > quantityOfNotKilledPeople - 1 - quantityToExile; j--)
     {
         printf("%s\n", surnames[j]);
-        free(surnames[j]);
         (*quantityOfHappyPeople)--;
     }
 }
@@ -105,7 +102,6 @@ void printHappyPeople(char** surnames, int quantityOfHappyPeople)
     for (int j = quantityOfHappyPeople - 1; j >= 0; j--)
     {
         printf("%s\n", surnames[j]);
-        free(surnames[j]);
     }
 }
 
@@ -127,6 +123,7 @@ int main()
 
     int quantityOfPeople = 0;
     readInputFromFile(surnames, loyalties, input, startingSizeOfString, &quantityOfPeople, &currentSizeOfArray);
+    fclose(input);
 
     printf("Please, write down quantity to kill (N) and to exile to Siberia (M):\n");
     int quantityToKill = 0;
@@ -148,6 +145,10 @@ int main()
 
     printHappyPeople(surnames, quantityOfHappyPeople);
 
+    for (int i = 0; i < currentSizeOfArray; i++)
+    {
+        free(surnames[i]);
+    }
     free(surnames);
     free(loyalties);
 
