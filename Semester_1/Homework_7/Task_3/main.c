@@ -82,5 +82,6 @@ int main()
         }
     }
 
+    deleteHashTable(hashTable);
     return 0;
 }

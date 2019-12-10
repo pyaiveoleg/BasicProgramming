@@ -10,7 +10,7 @@ typedef struct Record Record;
 
 struct Record
 {
-    bool hasDeleted;
+    bool wasDeleted;
     int attemptsToInsert;
     int maxAttemptsToInsert;
     String* key;
@@ -19,7 +19,7 @@ struct Record
 
 struct HashTable
 {
-    int sizeOfHash;
+    int size;
     int quantityOfRecords;
     int quantityOfFilledBuckets;
     double maxLoadFactor;
@@ -30,7 +30,7 @@ HashTable* createHashTable(int sizeOfHash, double maxLoadFactor)
 {
     HashTable* newHashTable = (HashTable*) malloc(sizeof(HashTable));
     newHashTable->array = (Record**) malloc(sizeof(Record*) * sizeOfHash);
-    newHashTable->sizeOfHash = sizeOfHash;
+    newHashTable->size = sizeOfHash;
     newHashTable->maxLoadFactor = maxLoadFactor;
     newHashTable->quantityOfRecords = 0;
     newHashTable->quantityOfFilledBuckets = 0;
@@ -40,7 +40,7 @@ HashTable* createHashTable(int sizeOfHash, double maxLoadFactor)
         newHashTable->array[i] = (Record*) malloc(sizeof(Record));
         newHashTable->array[i]->key = createString("\0");
         newHashTable->array[i]->attemptsToInsert = 0;
-        newHashTable->array[i]->hasDeleted = false;
+        newHashTable->array[i]->wasDeleted = false;
         newHashTable->array[i]->maxAttemptsToInsert = 0;
         newHashTable->array[i]->quantityOfEntries = 0;
     }
@@ -56,21 +56,17 @@ unsigned int calculateHash(String* string)
     int lengthOfString = 0;
     getStringLength(string, &lengthOfString);
 
-    char* text = (char*) malloc(sizeof(char) * lengthOfString);
-    convertToPointerToChar(string, &text);
-
     for (int i = 0; i < lengthOfString; i++)
     {
-        hash +=  (int) text[i] * (int) pow(bigPrimaryNumber, i);
+        hash +=  (int) string->text[i] * (int) pow(bigPrimaryNumber, i);
     }
 
-    free(text);
     return hash;
 }
 
 void deleteHashTable(HashTable* hashTable)
 {
-    for (int i = 0; i < hashTable->sizeOfHash; ++i)
+    for (int i = 0; i < hashTable->size; ++i)
     {
         free(hashTable->array[i]->key);
         free(hashTable->array[i]);
@@ -80,7 +76,7 @@ void deleteHashTable(HashTable* hashTable)
 
 HashTable* expandHashTable(HashTable* oldHashTable)
 {
-    int sizeOfOldTable = oldHashTable->sizeOfHash;
+    int sizeOfOldTable = oldHashTable->size;
     int sizeOfNewTable = 2 * sizeOfOldTable;
     HashTable* expandedHashTable = createHashTable(sizeOfNewTable, oldHashTable->maxLoadFactor);
     expandedHashTable->quantityOfRecords = oldHashTable->quantityOfRecords;
@@ -90,25 +86,26 @@ HashTable* expandHashTable(HashTable* oldHashTable)
         addStringToTable(expandedHashTable, oldHashTable->array[i]->key, sizeOfNewTable);
     }
     deleteHashTable(oldHashTable);
+    return expandedHashTable;
 }
 
 void addStringToTable(HashTable* hashTable, String* string, int sizeOfHash)
 {
     unsigned int hash = calculateHash(string) % sizeOfHash;
-    bool hasInserted = false;
+    bool wasInserted = false;
     unsigned int possibleIndex = hash;
 
     String* emptyString = createString("\0");
     int i = 1;
     do
     {
-        bool equalityOfStrings = false;
-        areStringsEqual(string, hashTable->array[possibleIndex]->key, &equalityOfStrings);
+        bool areEqual = false;
+        areStringsEqual(string, hashTable->array[possibleIndex]->key, &areEqual);
 
         bool isKeyEmpty = false;
         areStringsEqual(hashTable->array[possibleIndex]->key, emptyString, &isKeyEmpty);
 
-        if (isKeyEmpty || hashTable->array[possibleIndex]->hasDeleted || equalityOfStrings)
+        if (isKeyEmpty || hashTable->array[possibleIndex]->wasDeleted || areEqual)
         {
             hashTable->array[possibleIndex]->key = string;
             hashTable->array[possibleIndex]->quantityOfEntries++;
@@ -118,19 +115,19 @@ void addStringToTable(HashTable* hashTable, String* string, int sizeOfHash)
             }
             hashTable->array[possibleIndex]->attemptsToInsert += i;
             hashTable->quantityOfRecords++;
-            if (isKeyEmpty || hashTable->array[possibleIndex]->hasDeleted)
+            if (isKeyEmpty || hashTable->array[possibleIndex]->wasDeleted)
             {
                 hashTable->quantityOfFilledBuckets++;
             }
-            hasInserted = true;
+            wasInserted = true;
         }
 
         i++;
         possibleIndex = (possibleIndex + (int) pow(i, 2)) % sizeOfHash;
     }
-    while (!hasInserted);
+    while (!wasInserted);
 
-    if ((double) hashTable->quantityOfRecords / hashTable->sizeOfHash > hashTable->maxLoadFactor)
+    if ((double) hashTable->quantityOfRecords / hashTable->size > hashTable->maxLoadFactor)
     {
         expandHashTable(hashTable);
     }
@@ -138,13 +135,13 @@ void addStringToTable(HashTable* hashTable, String* string, int sizeOfHash)
 
 double getLoadFactor(HashTable* hashTable)
 {
-    return (double) hashTable->quantityOfFilledBuckets / hashTable->sizeOfHash;
+    return (double) hashTable->quantityOfFilledBuckets / hashTable->size;
 }
 
 double getAverageAttemptsQuantity(HashTable* hashTable)
 {
     double averageAttemptsQuantity = 0;
-    for (int i = 0; i < hashTable->sizeOfHash; ++i)
+    for (int i = 0; i < hashTable->size; ++i)
     {
         averageAttemptsQuantity += hashTable->array[i]->attemptsToInsert;
     }
@@ -154,7 +151,7 @@ double getAverageAttemptsQuantity(HashTable* hashTable)
 
 void getMaxAttemptsQuantity(HashTable* hashTable, String** valueWithMaxQuantity, int* maxQuantity)
 {
-    for (int i = 0; i < hashTable->sizeOfHash; ++i)
+    for (int i = 0; i < hashTable->size; ++i)
     {
         if (hashTable->array[i]->maxAttemptsToInsert > *maxQuantity)
         {
@@ -178,7 +175,7 @@ void printInformationAboutTable(HashTable* hashTable)
 
     printf("There are %d words at all\n", hashTable->quantityOfRecords);
     printf("There are %d different words\n", hashTable->quantityOfFilledBuckets);
-    printf("Quantity of empty buckets is %d\n", hashTable->sizeOfHash - hashTable->quantityOfFilledBuckets);
+    printf("Quantity of empty buckets is %d\n", hashTable->size - hashTable->quantityOfFilledBuckets);
 }
 
 void getDataFromBucket(HashTable* hashTable, int numberOfBucket, int* value, String** key)
@@ -189,5 +186,42 @@ void getDataFromBucket(HashTable* hashTable, int numberOfBucket, int* value, Str
 
 int getSizeOfHashTable(HashTable* hashTable)
 {
-    return hashTable->sizeOfHash;
+    return hashTable->size;
+}
+
+int search(HashTable* hashTable, String* key)
+{
+    unsigned int hash = calculateHash(key);
+    unsigned int possibleIndex = hash;
+    int i = 1;
+
+    do
+    {
+        bool areEqual = false;
+        areStringsEqual(key, hashTable->array[possibleIndex]->key, &areEqual);
+
+        if (areEqual)
+        {
+            return (int) possibleIndex;
+        }
+
+        i++;
+        possibleIndex = (possibleIndex + (int) pow(i, 2)) % hashTable->size;
+    }
+    while (hashTable->array[possibleIndex] != NULL);
+
+    return -1;
+}
+
+void delete(HashTable* hashTable, String* key)
+{
+    int indexOfDeletingElement = search(hashTable, key);
+    if (indexOfDeletingElement == -1)
+    {
+        return;
+    }
+
+    hashTable->array[indexOfDeletingElement]->key = NULL;
+    hashTable->array[indexOfDeletingElement]->wasDeleted = true;
+    hashTable->quantityOfFilledBuckets--;
 }

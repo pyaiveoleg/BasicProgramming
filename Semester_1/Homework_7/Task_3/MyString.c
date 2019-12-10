@@ -3,13 +3,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-struct String
-{
-    int length;
-    char* text;
-    int maxLength;
-};
-
 int getInputLength(const char value[])
 {
     int length = 0;

@@ -9,3 +9,5 @@ void addStringToTable(HashTable* hashTable, String* string, int sizeOfHash);
 void printInformationAboutTable(HashTable* hashTable);
 void getDataFromBucket(HashTable* hashTable, int numberOfBucket, int* value, String** key);
 int getSizeOfHashTable(HashTable* hashTable);
+int search(HashTable* hashTable, String* key);
+void deleteHashTable(HashTable* hashTable);

@@ -8,7 +8,12 @@ typedef enum Result
     kResult_Fail,
 } Result;
 
-typedef struct String String;
+typedef struct String
+{
+    int length;
+    char* text;
+    int maxLength;
+} String;
 
 String* createString(char value[]);
 Result deleteString(String* string);
