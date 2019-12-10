@@ -124,6 +124,6 @@ int main()
     char* inputExpression = readString(startingSizeOfString);
 
     countValueOfWholeExpression(inputExpression);
-
+    free(inputExpression);
     return 0;
 }

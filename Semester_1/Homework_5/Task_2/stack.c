@@ -85,7 +85,7 @@ Result pushToStackOfDouble(double value, StackOfDouble *stack)
 {
     if (stack == NULL)
     {
-        return kResult_Fail;
+        return fail;
     }
 
     StackOfDoubleElement* stackElement = (StackOfDoubleElement*) malloc(sizeof(struct StackOfDoubleElement));
@@ -93,14 +93,14 @@ Result pushToStackOfDouble(double value, StackOfDouble *stack)
     stackElement->next = stack->head;
 
     stack->head = stackElement;
-    return kResult_Ok;
+    return success;
 }
 
 Result popFromStackOfDouble(StackOfDouble *stack)
 {
     if (stack == NULL)
     {
-        return kResult_Fail;
+        return fail;
     }
 
     if (isStackOfDoubleEmpty(stack))
@@ -111,15 +111,15 @@ Result popFromStackOfDouble(StackOfDouble *stack)
     stack->head = poppedElement->next;
     double value = poppedElement->value;
     free(poppedElement);
-    return kResult_Ok;
+    return success;
 }
 
 Result peakOfStackOfDouble(StackOfDouble* stack, double* value)
 {
     if (stack == NULL)
     {
-        return  kResult_Fail;
+        return  fail;
     }
     *value = stack->head->value;
-    return kResult_Ok;
+    return success;
 }

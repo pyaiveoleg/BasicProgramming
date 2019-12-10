@@ -18,8 +18,8 @@ typedef struct StackOfDouble StackOfDouble;
 
 typedef enum Result
 {
-    kResult_Ok,
-    kResult_Fail,
+    success,
+    fail,
 } Result;
 
 Result pushToStackOfDouble(double value, StackOfDouble *stack);
