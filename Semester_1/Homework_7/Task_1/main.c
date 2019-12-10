@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdbool.h>
-#include <string.h>
 #include <stdlib.h>
 
 #include "AVLtree.h"
@@ -20,112 +19,120 @@ void clearArray(int* array, int* sizeOfArray, int* maxSizeOfArray, const int sta
 void printGreetingMessage()
 {
     printf("There are following commands:\n");
-    printf("Type: Add to add integer to set\n");
-    printf("Type: Delete to delete integer from set\n");
-    printf("Type: Check to check if this integer in set\n");
-    printf("Type: Print in Ascending Order to print elements of set in this order\n");
-    printf("Type: Print in Descending Order to print elements of set in this order\n");
-    printf("Type: Print in (a b c) Order to print elements of set in this order\n");
-    printf("Type: Exit to close the program\n");
+    printf("Type: 1 to add integer to set\n");
+    printf("Type: 2 to delete integer from set\n");
+    printf("Type: 3 to check if this integer in set\n");
+    printf("Type: 4 to print elements of set in ascending order\n");
+    printf("Type: 5 to print elements of set in descending order\n");
+    printf("Type: 6 to print elements of set in (a b c) order\n");
+    printf("Type: 0 to close the program\n");
 }
 
-char* readString(size_t startingSizeOfString)
+void add(bool* isCommand, Tree* set)
 {
-    char *currentString = (char *) malloc(sizeof(char) * startingSizeOfString);
-    int currentStringSize = startingSizeOfString;
-
-    int i = 0;
-    do
-    {
-        currentString[i] = (char) getchar();
-        i++;
-        if (i >= currentStringSize) {
-            currentStringSize *= 2;
-            currentString = (char *) realloc(currentString, sizeof(char) * currentStringSize);
-        }
-    }
-    while (currentString[i - 1] != '\n');
-    currentString[i - 1] = '\0';
-
-    return currentString;
-}
-
-void workWithSet(Tree* set, const int startingSizeOfString, const int startingSizeOfArray)
-{
-    char* inputCommand;
     int numberToAdd = 0;
-    int numberToDelete = 0;
-    int numberToCheck = 0;
-    bool isCommand = false;
+    printf("Write down number to add:\n");
+    scanf("%d", &numberToAdd);
+    *isCommand = true;
+    addElement(set, numberToAdd);
+    printf("Successfully added\n");
+}
 
+void deleteFromSet(bool* isCommand, Tree* set)
+{
+    int numberToDelete = 0;
+    printf("Write down number to delete:\n");
+    scanf("%d", &numberToDelete);
+    *isCommand = true;
+    deleteElement(set, numberToDelete);
+    printf("Successfully deleted\n");
+}
+
+void check(bool* isCommand, Tree* set)
+{
+    int numberToCheck = 0;
+    printf("Write down number to check:\n");
+    scanf("%d", &numberToCheck);
+    *isCommand = true;
+    bool existenceOfElement = false;
+    findElement(set, numberToCheck, &existenceOfElement);
+    printf(existenceOfElement ? "Element exists\n" : "Element haven't found\n");
+}
+
+void printAscendingOrder(bool* isCommand, Tree* set, const int startingSizeOfArray)
+{
+    *isCommand = true;
     int currentArraySize = 0;
     int maxArraySize = startingSizeOfArray;
     int* elementsOfSet = malloc(sizeof(int) * maxArraySize);
     clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
 
+    getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
+    for (int i = 0; i < currentArraySize; i++)
+    {
+        printf("%d ", elementsOfSet[i]);
+    }
+    printf("\n");
+    free(elementsOfSet);
+}
+
+void printDescendingOrder(bool* isCommand, Tree* set, const int startingSizeOfArray)
+{
+    *isCommand = true;
+    int currentArraySize = 0;
+    int maxArraySize = startingSizeOfArray;
+    int* elementsOfSet = malloc(sizeof(int) * maxArraySize);
+    clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
+
+    getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
+    for (int i = currentArraySize - 1; i > 0; i--)
+    {
+        printf("%d ", elementsOfSet[i]);
+    }
+    printf("\n");
+    free(elementsOfSet);
+}
+
+void workWithSet(Tree* set, const int startingSizeOfArray)
+{
+    int inputCommand;
+    bool isCommand = false;
+
     while (true)
     {
-        inputCommand = readString(startingSizeOfString);
+        scanf("%d", &inputCommand);
 
-        if (strcmp(inputCommand, "Help") == 0)
+        if (inputCommand == -1)
         {
             printGreetingMessage();
         }
-        else if (strcmp(inputCommand, "Add") == 0)
+        else if (inputCommand == 1)
         {
-            printf("Write down number to add:\n");
-            scanf("%d", &numberToAdd);
-            isCommand = true;
-            addElement(set, numberToAdd);
-            printf("Successfully added\n");
+            add(&isCommand, set);
         }
-        else if (strcmp(inputCommand, "Delete") == 0)
+        else if (inputCommand == 2)
         {
-            printf("Write down number to delete:\n");
-            scanf("%d", &numberToDelete);
-            isCommand = true;
-            deleteElement(set, numberToDelete);
-            printf("Successfully deleted\n");
+            deleteFromSet(&isCommand, set);
         }
-        else if (strcmp(inputCommand, "Check") == 0)
+        else if (inputCommand == 3)
         {
-            printf("Write down number to check:\n");
-            scanf("%d", &numberToCheck);
-            isCommand = true;
-            bool existenceOfElement = false;
-            findElement(set, numberToCheck, &existenceOfElement);
-            printf(existenceOfElement ? "Element exists\n" : "Element haven't found\n");
+            check(&isCommand, set);
         }
-        else if (strcmp(inputCommand, "Print in Ascending Order") == 0)
+        else if (inputCommand == 4)
         {
-            getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
-            for (int i = 0; i < currentArraySize; i++)
-            {
-                printf("%d ", elementsOfSet[i]);
-            }
-            printf("\n");
-            clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
+            printAscendingOrder(&isCommand, set, startingSizeOfArray);
         }
-        else if (strcmp(inputCommand, "Print in Descending Order") == 0)
+        else if (inputCommand == 5)
         {
-            getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
-            for (int i = currentArraySize - 1; i > 0; i--)
-            {
-                printf("%d ", elementsOfSet[i]);
-            }
-            printf("\n");
-            clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
+            printDescendingOrder(&isCommand, set, startingSizeOfArray);
         }
-        else if (strcmp(inputCommand, "Print in (a b c) Order") == 0)
+        else if (inputCommand == 6)
         {
             printInABCOrder(set);
         }
-        else if (strcmp(inputCommand, "Exit") == 0)
+        else if (inputCommand == 0)
         {
-            deleteTree(set);
-            free(elementsOfSet);
-            free(inputCommand);
-            return;
+            break;
         }
         else if (!isCommand)
         {
@@ -135,20 +142,18 @@ void workWithSet(Tree* set, const int startingSizeOfString, const int startingSi
         {
             isCommand = false;
         }
-
-        free(inputCommand);
     }
 }
 
 int main()
 {
-    printf("If you don't know how to use it, type 'Help'\n");
+    printf("If you don't know how to use it, type '-1'\n");
 
-    const int startingSizeOfString = 10;
     const int startingSizeOfArray = 10;
     Tree* set = createTree();
 
-    workWithSet(set, startingSizeOfString, startingSizeOfArray);
+    workWithSet(set, startingSizeOfArray);
+    deleteTree(set);
 
     return 0;
 }

@@ -7,8 +7,8 @@ typedef struct TreeElement TreeElement;
 
 typedef enum Result
 {
-    kResult_Ok,
-    kResult_Fail,
+    success,
+    fail,
 } Result;
 
 Tree* createTree();
