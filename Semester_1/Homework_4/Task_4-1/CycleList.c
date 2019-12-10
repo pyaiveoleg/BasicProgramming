@@ -56,7 +56,7 @@ Result goNext(CycleList* list)
 {
     if (isEmpty(list))
     {
-        return  fail;
+        return fail;
     }
     list->current = list->current->next;
     return success;
@@ -88,7 +88,7 @@ Result getValueOfCurrentElement(CycleList* list, int* value)
         return fail;
     }
     *value = list->current->value;
-    return  success;
+    return success;
 }
 
 Result printCurrentElement(CycleList* list)
