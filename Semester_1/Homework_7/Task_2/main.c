@@ -20,9 +20,9 @@ void testModuleMyString()
     printf("This is extract from second string (from %d to %d character): ", leftIndex, rightIndex);
     printString(extract);
 
-    bool equalityOfStrings = false;
-    areStringsEqual(testString, anotherString, &equalityOfStrings);
-    printf(equalityOfStrings ? "These strings are equal" : "These strings are different");
+    bool areEqual = false;
+    areStringsEqual(testString, anotherString, &areEqual);
+    printf(areEqual ? "These strings are equal" : "These strings are different");
 
     deleteString(testString);
     deleteString(anotherString);

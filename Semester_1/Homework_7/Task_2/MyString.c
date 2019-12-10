@@ -38,31 +38,31 @@ Result printString(String* string)
     if (string == NULL)
     {
         printf("1");
-        return  kResult_Fail;
+        return  fail;
     }
     printf("%s\n", string->text);
-    return kResult_Ok;
+    return success;
 }
 
 Result deleteString(String* string)
 {
     if (string == NULL)
     {
-        return  kResult_Fail;
+        return  fail;
     }
     free(string->text);
     free(string);
-    return kResult_Ok;
+    return success;
 }
 
 Result cloneString(String* originalString, String* clonedString)
 {
     if (originalString == NULL)
     {
-        return  kResult_Fail;
+        return fail;
     }
     clonedString = createString(originalString->text);
-    return kResult_Ok;
+    return success;
 }
 
 void increaseLengthOfString(String* string)
@@ -75,41 +75,41 @@ Result concatenationOfStrings(String *firstString, String *secondString, String*
 {
     if (firstString == NULL || secondString == NULL)
     {
-        return kResult_Fail;
+        return fail;
     }
 
-    *concatenatedStrings = createString(firstString->text);
-
-
-    while ((*concatenatedStrings)->maxLength < firstString->length + secondString->length)
+    char* concatenatedText = (char*) malloc((firstString->length + secondString->length) * sizeof(char));
+    for (int i = 0; i < firstString->length; i++)
     {
-        increaseLengthOfString(*concatenatedStrings);
+        concatenatedText[i] = firstString->text[i];
     }
-
     for (int i = firstString->length; i < firstString->length + secondString->length; i++)
     {
-        (*concatenatedStrings)->text[i] = secondString->text[i - firstString->length];
+        concatenatedText[i] = secondString->text[i - firstString->length];
     }
+    *concatenatedStrings = createString(concatenatedText);
+    free(concatenatedText);
+
     (*concatenatedStrings)->length = firstString->length + secondString->length;
 
-    return kResult_Ok;
+    return success;
 }
 
 Result getStringLength(String* string, int* lengthOfString)
 {
     if (string == NULL)
     {
-        return  kResult_Fail;
+        return  fail;
     }
     *lengthOfString = string->length;
-    return kResult_Ok;
+    return success;
 }
 
-Result areStringsEqual(String* firstString, String* secondString, bool* equalityOfStrings)
+Result areStringsEqual(String* firstString, String* secondString, bool* areEqual)
 {
     if (firstString == NULL || secondString == NULL)
     {
-        return  kResult_Fail;
+        return  fail;
     }
 
     if (firstString->length == secondString->length)
@@ -118,23 +118,23 @@ Result areStringsEqual(String* firstString, String* secondString, bool* equality
         {
             if (firstString->text[i] != secondString->text[i])
             {
-                *equalityOfStrings = false;
+                *areEqual = false;
             }
         }
-        *equalityOfStrings = true;
+        *areEqual = true;
     }
     else
     {
-        *equalityOfStrings = false;
+        *areEqual = false;
     }
-    return kResult_Ok;
+    return success;
 }
 
 Result getSubstring(String* string, int leftIndex, int rightIndex, String** substring)
 {
     if (string == NULL)
     {
-        return  kResult_Fail;
+        return  fail;
     }
 
     int lengthOfSubstring = rightIndex - leftIndex + 1;
@@ -147,25 +147,25 @@ Result getSubstring(String* string, int leftIndex, int rightIndex, String** subs
     String* pointerToSubstring = createString(substringOfChar);
     *substring = pointerToSubstring;
 
-    return kResult_Ok;
+    return success;
 }
 
 Result isStringEmpty(String* string, bool* isStringEmpty)
 {
     if (string == NULL)
     {
-        return  kResult_Fail;
+        return  fail;
     }
     *isStringEmpty = string->length == 0;
-    return kResult_Ok;
+    return success;
 }
 
-Result convertToPointerToChar(String* string, char* convertedString)
+Result convertToPointerToChar(String* string, char** convertedString)
 {
     if (string == NULL)
     {
-        return  kResult_Fail;
+        return  fail;
     }
-    convertedString = string->text;
-    return kResult_Ok;
+    *convertedString = string->text;
+    return success;
 }
