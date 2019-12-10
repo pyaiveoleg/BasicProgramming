@@ -15,23 +15,22 @@ void clearArray(int array[], int* sizeOfArray)
 void printGreetingMessage()
 {
     printf("There are following commands:\n");
-    printf("Type: Add to add integer to set\n");
-    printf("Type: Delete to delete integer from set\n");
-    printf("Type: Check to check if this integer in set\n");
-    printf("Type: Print in Ascending Order to print elements of set in this order\n");
-    printf("Type: Print in Descending Order to print elements of set in this order\n");
-    printf("Type: Print in (a b c) Order to print elements of set in this order\n");
-    printf("Type: Exit to close the program\n");
+    printf("Type: 1 to add integer to set\n");
+    printf("Type: 2 to delete integer from set\n");
+    printf("Type: 3 to check if this integer in set\n");
+    printf("Type: 4 to print elements of set in this order\n");
+    printf("Type: 5 to print elements of set in this order\n");
+    printf("Type: 6 to print elements of set in this order\n");
+    printf("Type: 0 to close the program\n");
 }
 
 int main()
 {
-    printf("If you don't know how to use it, type 'Help'\n");
+    printf("If you don't know how to use it, type '-1'\n");
 
     const int maxLengthOfCommand = 1000;
     const int maxSizeOfSet = 1000;
-    char inputCommand[maxLengthOfCommand];
-
+    int inputCommand = 0;
 
     Tree* set = createTree();
     int numberToAdd = 0;
@@ -44,13 +43,13 @@ int main()
     clearArray(elementsOfSet, &currentArraySize);
     while (true)
     {
-        gets(inputCommand);
+        scanf("%d", &inputCommand);
 
-        if (strcmp(inputCommand, "Help") == 0)
+        if (inputCommand == -1)
         {
             printGreetingMessage();
         }
-        else if (strcmp(inputCommand, "Add") == 0)
+        else if (inputCommand == 1)
         {
             printf("Write down number to add:\n");
             scanf("%d", &numberToAdd);
@@ -58,7 +57,7 @@ int main()
             addElement(set, numberToAdd);
             printf("Successfully added\n");
         }
-        else if (strcmp(inputCommand, "Delete") == 0)
+        else if (inputCommand == 2)
         {
             printf("Write down number to delete:\n");
             scanf("%d", &numberToDelete);
@@ -66,14 +65,14 @@ int main()
             deleteElement(set, numberToDelete);
             printf("Successfully deleted\n");
         }
-        else if (strcmp(inputCommand, "Check") == 0)
+        else if (inputCommand == 3)
         {
             printf("Write down number to check:\n");
             scanf("%d", &numberToCheck);
             isCommand = true;
             printf(findElement(set, numberToCheck) ? "Element exists\n" : "Element haven't found\n");
         }
-        else if (strcmp(inputCommand, "Print in Ascending Order") == 0)
+        else if (inputCommand == 4)
         {
             getSymmetricOrder(set, elementsOfSet, &currentArraySize);
             for (int i = 0; i < currentArraySize; i++)
@@ -83,7 +82,7 @@ int main()
             printf("\n");
             clearArray(elementsOfSet, &currentArraySize);
         }
-        else if (strcmp(inputCommand, "Print in Descending Order") == 0)
+        else if (inputCommand == 5)
         {
             getSymmetricOrder(set, elementsOfSet, &currentArraySize);
             for (int i = currentArraySize - 1; i > 0; i--)
@@ -93,11 +92,11 @@ int main()
             printf("\n");
             clearArray(elementsOfSet, &currentArraySize);
         }
-        else if (strcmp(inputCommand, "Print in (a b c) Order") == 0)
+        else if (inputCommand == 6)
         {
             printInABCOrder(set);
         }
-        else if (strcmp(inputCommand, "Exit") == 0)
+        else if (inputCommand == 7)
         {
             return 0;
         }
