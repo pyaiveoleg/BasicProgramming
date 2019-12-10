@@ -38,7 +38,7 @@ Result printString(String* string)
     if (string == NULL)
     {
         printf("1");
-        return  fail;
+        return fail;
     }
     printf("%s\n", string->text);
     return success;
@@ -48,7 +48,7 @@ Result deleteString(String* string)
 {
     if (string == NULL)
     {
-        return  fail;
+        return fail;
     }
     free(string->text);
     free(string);
@@ -99,7 +99,7 @@ Result getStringLength(String* string, int* lengthOfString)
 {
     if (string == NULL)
     {
-        return  fail;
+        return fail;
     }
     *lengthOfString = string->length;
     return success;
@@ -109,7 +109,7 @@ Result areStringsEqual(String* firstString, String* secondString, bool* areEqual
 {
     if (firstString == NULL || secondString == NULL)
     {
-        return  fail;
+        return fail;
     }
 
     if (firstString->length == secondString->length)
@@ -134,7 +134,7 @@ Result getSubstring(String* string, int leftIndex, int rightIndex, String** subs
 {
     if (string == NULL)
     {
-        return  fail;
+        return fail;
     }
 
     int lengthOfSubstring = rightIndex - leftIndex + 1;
@@ -154,7 +154,7 @@ Result isStringEmpty(String* string, bool* isStringEmpty)
 {
     if (string == NULL)
     {
-        return  fail;
+        return fail;
     }
     *isStringEmpty = string->length == 0;
     return success;
@@ -164,7 +164,7 @@ Result convertToPointerToChar(String* string, char** convertedString)
 {
     if (string == NULL)
     {
-        return  fail;
+        return fail;
     }
     *convertedString = string->text;
     return success;
