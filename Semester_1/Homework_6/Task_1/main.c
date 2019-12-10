@@ -13,6 +13,13 @@ void convertToExponentialForm(float testVariable, double* normalizedValue, int* 
     unsigned int* pointerToVariable = (unsigned int*) &testVariable;
     unsigned int convertedVariable = *pointerToVariable;
 
+    if (testVariable == 0)
+    {
+        *normalizedValue = 0.0;
+        *exponent = 0;
+        return;
+    }
+
     bool isPositive = true;
     if (convertedVariable & bit)
     {
