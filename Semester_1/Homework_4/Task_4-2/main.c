@@ -73,7 +73,6 @@ void workWithPhoneBook(PhoneBook* phoneBook, const int startingStringLength)
         switch (codeOfAction)
         {
             case 0:
-                deletePhoneBook(phoneBook);
                 return;
             case 1:
                 addNumber(phoneBook, startingStringLength);
@@ -102,4 +101,6 @@ int main()
 
     PhoneBook* phoneBook = importPhoneBookFromFile(startingCapacity);
     workWithPhoneBook(phoneBook, startingStringLength);
+    deletePhoneBook(&phoneBook);
+    return 0;
 }

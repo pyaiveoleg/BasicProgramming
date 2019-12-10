@@ -4,13 +4,11 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define PHONE_NUMBER_LENGTH 11
-
 typedef struct Record Record;
 
 struct Record
 {
-    char phone[PHONE_NUMBER_LENGTH + 1];
+    char* phone;
     char* name;
 };
 
@@ -49,12 +47,8 @@ bool addRecord(PhoneBook* phoneBook, char name[], char phone[])
         expand(&phoneBook);
     }
 
-    if (strlen(phone) != PHONE_NUMBER_LENGTH)
-    {
-        return false;
-    }
-
     Record* addedRecord = createRecord();
+    addedRecord->phone = (char*) malloc(sizeof(char) * strlen(phone));
     strcpy(addedRecord->phone, phone);
 
     addedRecord->name = (char*) malloc(sizeof(char) * strlen(name));
@@ -133,9 +127,7 @@ PhoneBook* importPhoneBookFromFile(int capacity)
     bool hasReachedEndOfFile = false;
     while (!hasReachedEndOfFile)
     {
-        char currentPhone[PHONE_NUMBER_LENGTH + 1];
-        fscanf(phoneBookFile, "%s ", currentPhone);
-
+        char* currentPhone = readStringFromFile(&hasReachedEndOfFile, startingSizeOfString, phoneBookFile);
         char* currentName = readStringFromFile(&hasReachedEndOfFile, startingSizeOfString, phoneBookFile);
 
         if (!hasReachedEndOfFile)
@@ -143,6 +135,7 @@ PhoneBook* importPhoneBookFromFile(int capacity)
             addRecord(phoneBook, currentName, currentPhone);
         }
         free(currentName);
+        free(currentPhone);
     }
     fclose(phoneBookFile);
 
@@ -160,11 +153,11 @@ void saveDataToFile(PhoneBook* phoneBook)
     fclose(phoneBookFile);
 }
 
-void deletePhoneBook(PhoneBook* phoneBook)
+void deletePhoneBook(PhoneBook** phoneBook)
 {
-    for (int i = 0; i < phoneBook->capacity; i++)
+    for (int i = 0; i < (*phoneBook)->capacity; i++)
     {
-        free(phoneBook->records[i]);
+        free((*phoneBook)->records[i]);
     }
-    free(phoneBook);
+    free(*phoneBook);
 }

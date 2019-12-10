@@ -11,4 +11,4 @@ char* searchByName(PhoneBook* phoneBook, char name[]);
 char* searchByPhone(PhoneBook* phoneBook, char phone[]);
 PhoneBook* importPhoneBookFromFile(int capacity);
 void saveDataToFile(PhoneBook* phoneBook);
-void deletePhoneBook(PhoneBook* phoneBook);
+void deletePhoneBook(PhoneBook** phoneBook);
