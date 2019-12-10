@@ -272,14 +272,6 @@ int findMaxInSubTree(TreeElement* currentElement)
 
 void delete(TreeElement* currentElement, int value, Tree* tree, TreeElement* parentElement)
 {
-    if (currentElement == tree->root)
-    {
-        tree->root = currentElement->leftChild;
-        free(currentElement);
-        balance(tree->root, tree, NULL);
-        return;
-    }
-
     if (value < currentElement->value)
     {
         delete(currentElement->leftChild, value, tree, currentElement);
@@ -290,9 +282,13 @@ void delete(TreeElement* currentElement, int value, Tree* tree, TreeElement* par
     }
     else if (value == currentElement->value)
     {
-        bool isLeftChild = parentElement->value > currentElement->value;
+        bool isLeftChild = false;
+        if (currentElement != tree->root)
+        {
+            isLeftChild = parentElement->value > currentElement->value;
+        }
 
-        if ((currentElement->leftChild == NULL) && (currentElement->rightChild = NULL))
+        if ((currentElement->leftChild == NULL) && (currentElement->rightChild == NULL))
         {
             if (currentElement == tree->root)
             {
@@ -339,9 +335,9 @@ void delete(TreeElement* currentElement, int value, Tree* tree, TreeElement* par
         }
         else //внутренняя вершина
         {
-            printf("123");
-            currentElement->value = findMaxInSubTree(currentElement->leftChild);
-            delete(currentElement, findMaxInSubTree(currentElement->leftChild), tree, parentElement);
+            int newValueForElement = findMaxInSubTree(currentElement->leftChild);
+            delete(currentElement->leftChild, findMaxInSubTree(currentElement->leftChild), tree, currentElement);
+            currentElement->value = newValueForElement;
         }
 
         free(currentElement);
@@ -363,10 +359,9 @@ Result deleteElement(Tree* tree, int value)
     }
     else
     {
-        bool existenceOfElement = false;
-        findElement(tree, value, &existenceOfElement);
-
-        if (existenceOfElement)
+        bool elementExists = false;
+        findElement(tree, value, &elementExists);
+        if (elementExists)
         {
             delete(tree->root, value, tree, NULL);
         }
@@ -392,15 +387,18 @@ void deleteAllElementsInTree(TreeElement* treeElement)
     free(treeElement);
 }
 
-Result deleteTree(Tree* tree)
+Result deleteTree(Tree** tree)
 {
     if (tree == NULL)
     {
         return fail;
     }
 
-    deleteAllElementsInTree(tree->root);
-    free(tree);
+    if (!isTreeEmpty(*tree))
+    {
+        deleteAllElementsInTree((*tree)->root);
+    }
+    free(*tree);
 
     return success;
 }

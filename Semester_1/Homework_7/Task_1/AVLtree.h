@@ -17,4 +17,4 @@ Result getSymmetricOrder(Tree* tree, int array[], int* sizeOfArray, int* maxSize
 Result findElement(Tree* tree, int value, bool* existenceOfElement);
 Result deleteElement(Tree* tree, int value);
 Result printInABCOrder(Tree* tree);
-Result deleteTree(Tree* tree);
+Result deleteTree(Tree** tree);

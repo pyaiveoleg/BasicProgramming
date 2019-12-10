@@ -85,7 +85,7 @@ void printDescendingOrder(bool* isCommand, Tree* set, const int startingSizeOfAr
     clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
 
     getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
-    for (int i = currentArraySize - 1; i > 0; i--)
+    for (int i = currentArraySize - 1; i >= 0; i--)
     {
         printf("%d ", elementsOfSet[i]);
     }
@@ -153,7 +153,7 @@ int main()
     Tree* set = createTree();
 
     workWithSet(set, startingSizeOfArray);
-    deleteTree(set);
+    deleteTree(&set);
 
     return 0;
 }
