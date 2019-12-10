@@ -30,14 +30,14 @@ Result pushToStack(int value, Stack *stack)
 {
     if (stack == NULL)
     {
-        return kResult_Fail;
+        return fail;
     }
     StackElement* stackElement = (StackElement*) malloc(sizeof(StackElement));
     stackElement->value = value;
     stackElement->next = stack->first;
 
     stack->first = stackElement;
-    return kResult_Ok
+    return success
 }
 
 int popFromStack(Stack *stack)

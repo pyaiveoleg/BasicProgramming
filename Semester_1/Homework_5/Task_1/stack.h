@@ -6,8 +6,8 @@ typedef struct Stack Stack;
 
 typedef enum Result
 {
-    kResult_Ok,
-    kResult_Fail,
+    success,
+    fail,
 } Result;
 
 bool isStackEmpty(Stack *stack);
