@@ -31,13 +31,13 @@ void addNumber(PhoneBook* phoneBook, const int startingStringLength)
     char* currentName = readString(startingStringLength);
     printf("Please, write down the phone:\n");
     char* currentPhone = readString(startingStringLength);
-    if (addRecord(phoneBook, currentName, currentPhone))
+    if (addRecord(&phoneBook, currentName, currentPhone))
     {
         printf("Added successfully.\n");
     }
     else
     {
-        printf("Not 11 digits in number.\n");
+        printf("Error.\n");
     }
     free(currentName);
     free(currentPhone);

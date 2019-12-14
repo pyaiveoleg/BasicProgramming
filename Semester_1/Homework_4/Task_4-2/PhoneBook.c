@@ -1,4 +1,5 @@
 #include "PhoneBook.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -40,11 +41,11 @@ Record* createRecord()
     return newRecord;
 }
 
-bool addRecord(PhoneBook* phoneBook, char name[], char phone[])
+bool addRecord(PhoneBook** phoneBook, char name[], char phone[])
 {
-    if (phoneBook->size == phoneBook->capacity)
+    if ((*phoneBook)->size == (*phoneBook)->capacity)
     {
-        expand(&phoneBook);
+        expand(phoneBook);
     }
 
     Record* addedRecord = createRecord();
@@ -54,8 +55,8 @@ bool addRecord(PhoneBook* phoneBook, char name[], char phone[])
     addedRecord->name = (char*) malloc(sizeof(char) * strlen(name));
     strcpy(addedRecord->name, name);
 
-    phoneBook->records[phoneBook->size] = addedRecord;
-    phoneBook->size++;
+    (*phoneBook)->records[(*phoneBook)->size] = addedRecord;
+    (*phoneBook)->size++;
     return true;
 }
 
@@ -105,7 +106,7 @@ char* readStringFromFile(bool* hasReachedEndOfFile, const int startingSizeOfStri
             inputString = (char*) realloc (inputString, sizeof(char) * inputStringSize);
         }
     }
-    while (inputString[i - 1] != '\n');
+    while (inputString[i - 1] != '\n' && inputString[i - 1] != ' ');
     inputString[i - 1] = '\0';
 
     return inputString;
@@ -132,7 +133,7 @@ PhoneBook* importPhoneBookFromFile(int capacity)
 
         if (!hasReachedEndOfFile)
         {
-            addRecord(phoneBook, currentName, currentPhone);
+            addRecord(&phoneBook, currentName, currentPhone);
         }
         free(currentName);
         free(currentPhone);
@@ -159,5 +160,7 @@ void deletePhoneBook(PhoneBook** phoneBook)
     {
         free((*phoneBook)->records[i]);
     }
+
+    free((*phoneBook)->records);
     free(*phoneBook);
 }
