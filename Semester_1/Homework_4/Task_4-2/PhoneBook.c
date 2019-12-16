@@ -153,6 +153,8 @@ void deletePhoneBook(PhoneBook** phoneBook)
 {
     for (int i = 0; i < (*phoneBook)->capacity; i++)
     {
+        free((*phoneBook)->records[i]->name);
+        free((*phoneBook)->records[i]->phone);
         free((*phoneBook)->records[i]);
     }
 
