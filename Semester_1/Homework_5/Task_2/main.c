@@ -39,21 +39,29 @@ double binaryOperation(char currentSymbol, double firstOperand, double secondOpe
     }
 }
 
-void printValueOfWholeExpression(double value)
+void countBinaryOperation(StackOfDouble* stack, char currentSymbol, bool* error)
 {
-    const double eps = 0.0001;
-    printf("This is the value of your expression:\n");
-    if (fabs(value - (int) value) < eps)
+    if (isStackOfDoubleEmpty(stack))
     {
-        printf("%d", (int) value);
+        *error = true;
+        return;
     }
-    else
+    double secondOperand = 0;
+    peakOfStackOfDouble(stack, &secondOperand);
+    popFromStackOfDouble(stack);
+
+    if (isStackOfDoubleEmpty(stack))
     {
-        printf("%lf", value);
+        *error = true;
+        return;
     }
+    double firstOperand = 0;
+    peakOfStackOfDouble(stack, &firstOperand);
+    popFromStackOfDouble(stack);
+    pushToStackOfDouble(binaryOperation(currentSymbol, firstOperand, secondOperand), stack);
 }
 
-void countValueOfWholeExpression(char *inputExpression)
+bool countValueOfWholeExpression(char *inputExpression, double* resultingValue)
 {
     char currentSymbol = 0;
     StackOfDouble* stack = createStackOfDouble();
@@ -65,15 +73,14 @@ void countValueOfWholeExpression(char *inputExpression)
         int currentNumber = 0;
         currentSymbol = inputExpression[i];
 
-        if (isOperator( (char) currentSymbol))
+        if (isOperator(currentSymbol))
         {
-            double secondOperand = 0;
-            peakOfStackOfDouble(stack, &secondOperand);
-            popFromStackOfDouble(stack);
-            double firstOperand = 0;
-            peakOfStackOfDouble(stack, &firstOperand);
-            popFromStackOfDouble(stack);
-            pushToStackOfDouble(binaryOperation(currentSymbol, firstOperand, secondOperand), stack);
+            bool error = false;
+            countBinaryOperation(stack, currentSymbol, &error);
+            if (error)
+            {
+                return false;
+            }
         }
         else if (isDigit(currentSymbol))
         {
@@ -86,14 +93,24 @@ void countValueOfWholeExpression(char *inputExpression)
             pushToStackOfDouble(currentNumber, stack);
             i--;
         }
+        else if (currentSymbol == ' ')
+        {
+            continue;
+        }
+        else
+        {
+            return false;
+        }
     }
-
-    double resultingValue = 0;
-    peakOfStackOfDouble(stack, &resultingValue);
-    printValueOfWholeExpression(resultingValue);
+    peakOfStackOfDouble(stack, resultingValue);
 
     popFromStackOfDouble(stack);
+    if (!isStackOfDoubleEmpty(stack))
+    {
+        return false;
+    }
     free(stack);
+    return true;
 }
 
 char* readString(size_t startingSizeOfString)
@@ -123,7 +140,16 @@ int main()
     printf("Please, write down the expression:\n");
     char* inputExpression = readString(startingSizeOfString);
 
-    countValueOfWholeExpression(inputExpression);
+    double resultingValue = 0;
+    if (!countValueOfWholeExpression(inputExpression, &resultingValue))
+    {
+        printf("Error.\n");
+    }
+    else
+    {
+        printf("Resulting value is %lf", resultingValue);
+    }
+
     free(inputExpression);
     return 0;
 }

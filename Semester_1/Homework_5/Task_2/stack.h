@@ -7,12 +7,6 @@ struct StackElement;
 typedef struct Stack Stack;
 typedef struct StackElement StackElement;
 
-bool isStackEmpty(Stack *stack);
-bool pushToStack(int value, Stack *stack);
-int popFromStack(Stack *stack);
-int peakOfStack(Stack* stack);
-Stack* createStack();
-
 struct StackOfDouble;
 typedef struct StackOfDouble StackOfDouble;
 
@@ -22,6 +16,7 @@ typedef enum Result
     fail,
 } Result;
 
+bool isStackOfDoubleEmpty(StackOfDouble* stack);
 Result pushToStackOfDouble(double value, StackOfDouble *stack);
 Result popFromStackOfDouble(StackOfDouble *stack);
 Result peakOfStackOfDouble(StackOfDouble* stackOfDouble, double* value);

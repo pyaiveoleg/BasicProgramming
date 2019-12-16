@@ -2,59 +2,6 @@
 #include <stdbool.h>
 #include "stack.h"
 
-//---------------------------StackOfInt-------------------------//
-
-struct StackElement
-{
-    int value;
-    StackElement* next;
-};
-
-struct Stack
-{
-    struct StackElement* head;
-};
-
-Stack* createStack()
-{
-    Stack* stck1 = malloc(sizeof(Stack));
-    stck1->head = NULL;
-    return stck1;
-}
-
-bool isStackEmpty(Stack *stack)
-{
-    return stack->head == NULL;
-}
-
-bool pushToStack(int value, Stack *stack)
-{
-    StackElement* stackElement = (StackElement*) malloc(sizeof(StackElement));
-    stackElement->value = value;
-    stackElement->next = stack->head;
-
-    stack->head = stackElement;
-    return true;
-}
-
-int popFromStack(Stack *stack)
-{
-    if (isStackEmpty(stack))
-    {
-        return 0;
-    }
-    StackElement* poppedElement = stack->head;
-    stack->head = poppedElement->next;
-    int value = poppedElement->value;
-    free(poppedElement);
-    return value;
-}
-
-int peakOfStack(Stack* stack)
-{
-    return stack->head->value;
-}
-
 //------------------------StackOfDouble-----------------------------//
 
 typedef struct StackOfDoubleElement StackOfDoubleElement;
@@ -71,14 +18,17 @@ struct StackOfDouble
 
 StackOfDouble* createStackOfDouble()
 {
-    StackOfDouble* newStack = malloc(sizeof(Stack));
+    StackOfDouble* newStack = malloc(sizeof(StackOfDouble));
     newStack->head = NULL;
     return newStack;
 }
 
 bool isStackOfDoubleEmpty(StackOfDouble *stack)
 {
-    return stack->head == NULL;
+    if (stack != NULL)
+    {
+        return stack->head == NULL;
+    }
 }
 
 Result pushToStackOfDouble(double value, StackOfDouble *stack)
