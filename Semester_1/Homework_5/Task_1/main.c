@@ -11,7 +11,7 @@ bool isOperator(char symbol)
 
 bool isDigit(char symbol)
 {
-    return ((int) symbol >= (int) '0') && ((int) symbol <= (int) '9');
+    return (symbol >= '0') && (symbol <= '9');
 }
 
 int getPriority(char symbol)
@@ -29,7 +29,7 @@ int getPriority(char symbol)
 
 int getcode(char symbol, const int maxNumber) //код сдвигается, чтобы случайно не совпал с введённым числом
 {
-    return (int) symbol + maxNumber;
+    return symbol + maxNumber;
 }
 
 void addToResultingArray(int resultingArray[], int* currentIndex, int value)
@@ -106,16 +106,16 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
     return true;
 }
 
-void convertResultingArrayToString(int resultingArray[], int sizeOfResultingArray, const int maxNumber,
-                                   const int maxInputLength, char* resultingString)
+void convertResultingArrayToString(int* resultingArray, int sizeOfResultingArray, const int shiftForOperators,
+                                   int stringLength, char* resultingString)
 {
-    char tempString[maxInputLength];
+    char* tempString = (char*) malloc(sizeof(char) * stringLength);
 
     for (int i = 0; i < sizeOfResultingArray; i++)
     {
-        if (isOperator((char) (resultingArray[i] - maxNumber)))
+        if (isOperator((char) (resultingArray[i] - shiftForOperators)))
         {
-            sprintf(tempString, "%c ", (char) resultingArray[i] - maxNumber);
+            sprintf(tempString, "%c ", (char) resultingArray[i] - shiftForOperators);
             strcat(resultingString, tempString);
         }
         else
@@ -124,6 +124,7 @@ void convertResultingArrayToString(int resultingArray[], int sizeOfResultingArra
             strcat(resultingString, tempString);
         }
     }
+    free(tempString);
 }
 
 char* readString(size_t startingSizeOfString)
@@ -150,10 +151,9 @@ char* readString(size_t startingSizeOfString)
 
 int main() 
 {
-    const int maxNumber = 1000;
-    const int maxInputLength = 1000;
+    const int shiftForOperators = -1000;
+    const int startingStringLength = 10;
 
-    const int startingStringLength = 1000;
     printf("Please, write down the expression:\n");
     char* inputExpression = readString(startingStringLength);
 
@@ -164,15 +164,16 @@ int main()
     }
     int currentIndexInResultingArray = 0;
 
-    if (!convertInfixToPostfix(inputExpression, resultingArray, &currentIndexInResultingArray, maxNumber))
+    if (!convertInfixToPostfix(inputExpression, resultingArray, &currentIndexInResultingArray, shiftForOperators))
     {
         return 0;
     }
 
-    char* resultingString = (char*) malloc(sizeof(char) * maxInputLength);
+    char* resultingString = (char*) malloc(sizeof(char) * strlen(inputExpression));
     resultingString[0] = '\0';
 
-    convertResultingArrayToString(resultingArray, currentIndexInResultingArray, maxNumber, maxInputLength, resultingString);
+    convertResultingArrayToString(resultingArray, currentIndexInResultingArray, shiftForOperators,
+            strlen(inputExpression), resultingString);
     printf("This is your expression in postfix format:\n%s", resultingString);
     free(resultingString);
 

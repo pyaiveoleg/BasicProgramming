@@ -23,7 +23,10 @@ Stack* createStack()
 
 bool isStackEmpty(Stack *stack)
 {
-    return stack->first == NULL;
+    if (stack != NULL)
+    {
+        return stack->first == NULL;
+    }
 }
 
 Result pushToStack(int value, Stack *stack)
@@ -37,7 +40,7 @@ Result pushToStack(int value, Stack *stack)
     stackElement->next = stack->first;
 
     stack->first = stackElement;
-    return success
+    return success;
 }
 
 int popFromStack(Stack *stack)
