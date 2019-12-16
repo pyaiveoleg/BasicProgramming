@@ -32,7 +32,7 @@ PhoneBook* createPhoneBook(int capacity)
 void expand(PhoneBook** phoneBook)
 {
     (*phoneBook)->capacity *= 2;
-    (*phoneBook)->records = realloc((*phoneBook)->records, (*phoneBook)->capacity);
+    (*phoneBook)->records = realloc((*phoneBook)->records, (*phoneBook)->capacity * sizeof(Record*));
 }
 
 Record* createRecord()
@@ -91,19 +91,18 @@ char* readStringFromFile(bool* hasReachedEndOfFile, const int startingSizeOfStri
     int i = 0;
     do
     {
-        inputString[i] =  (char) fgetc(input);
+        inputString[i] =  fgetc(input);
         if (inputString[i] == EOF)
         {
             *hasReachedEndOfFile = true;
             i++;
             break;
         }
-
         i++;
         if (i >= inputStringSize)
         {
             inputStringSize *= 2;
-            inputString = (char*) realloc (inputString, sizeof(char) * inputStringSize);
+            inputString = (char*) realloc(inputString, sizeof(char) * inputStringSize);
         }
     }
     while (inputString[i - 1] != '\n' && inputString[i - 1] != ' ');
@@ -116,8 +115,7 @@ PhoneBook* importPhoneBookFromFile(int capacity)
 {
     const int startingSizeOfString = 1000;
     PhoneBook* phoneBook = createPhoneBook(capacity);
-    FILE *phoneBookFile;
-    phoneBookFile = fopen("PhoneBook.txt", "r");
+    FILE* phoneBookFile = fopen("PhoneBook.txt", "r");
 
     if (!phoneBookFile)
     {
@@ -130,11 +128,8 @@ PhoneBook* importPhoneBookFromFile(int capacity)
     {
         char* currentPhone = readStringFromFile(&hasReachedEndOfFile, startingSizeOfString, phoneBookFile);
         char* currentName = readStringFromFile(&hasReachedEndOfFile, startingSizeOfString, phoneBookFile);
+        addRecord(&phoneBook, currentName, currentPhone);
 
-        if (!hasReachedEndOfFile)
-        {
-            addRecord(&phoneBook, currentName, currentPhone);
-        }
         free(currentName);
         free(currentPhone);
     }
