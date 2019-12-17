@@ -89,14 +89,13 @@ void printSortedArrayWithQuantityOfElements(int* array, int quantityOfNumbersInA
         currentNumber = array[i];
         quantityOfCurrentNumber = 1;
     }
-    printf("%d, repeated %d times\n", currentNumber, quantityOfCurrentNumber);//на последней итерации нужно вывести обязательно
-
+    printf("%d, repeated %d times\n", currentNumber, quantityOfCurrentNumber);//на последней итерации нужно вывести
 }
 
 int main()
 {
     const int startingSizeOfArray = 10;
-    printf("Please, write down sequence of numbers with 0 at the end:\n");
+    printf("Please, write down sequence of integers with 0 at the end:\n");
     int quantityOfNumbersInArray = 0;
     int* array = readArrayWithZeroOnEnd(&quantityOfNumbersInArray, startingSizeOfArray);
 
