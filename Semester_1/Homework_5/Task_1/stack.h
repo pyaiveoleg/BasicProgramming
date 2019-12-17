@@ -1,8 +1,14 @@
 #pragma once
 
 #include <stdbool.h>
+
 struct Stack;
+struct StackElement;
 typedef struct Stack Stack;
+typedef struct StackElement StackElement;
+
+struct StackOfDouble;
+typedef struct StackOfDouble StackOfDouble;
 
 typedef enum Result
 {
@@ -10,8 +16,8 @@ typedef enum Result
     fail,
 } Result;
 
-bool isStackEmpty(Stack *stack);
-Result pushToStack(int value, Stack *stack);
-int popFromStack(Stack *stack);
-int frontValueOfStack(Stack* stack);
-Stack* createStack();
+bool isStackOfDoubleEmpty(StackOfDouble* stack);
+Result pushToStackOfDouble(double value, StackOfDouble *stack);
+Result popFromStackOfDouble(StackOfDouble *stack);
+Result peakOfStackOfDouble(StackOfDouble* stackOfDouble, double* value);
+StackOfDouble* createStackOfDouble();

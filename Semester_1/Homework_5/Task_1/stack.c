@@ -2,65 +2,74 @@
 #include <stdbool.h>
 #include "stack.h"
 
-typedef struct StackElement StackElement;
-struct StackElement
+//------------------------StackOfDouble-----------------------------//
+
+typedef struct StackOfDoubleElement StackOfDoubleElement;
+struct StackOfDoubleElement
 {
-    int value;
-    StackElement* next;
+    double value;
+    StackOfDoubleElement* next;
 };
 
-struct Stack
+struct StackOfDouble
 {
-    struct StackElement* first;
+    struct StackOfDoubleElement* head;
 };
 
-Stack* createStack()
+StackOfDouble* createStackOfDouble()
 {
-    Stack* stck1 = malloc(sizeof(Stack));
-    stck1->first = NULL;
-    return stck1;
+    StackOfDouble* newStack = malloc(sizeof(StackOfDouble));
+    newStack->head = NULL;
+    return newStack;
 }
 
-bool isStackEmpty(Stack *stack)
+bool isStackOfDoubleEmpty(StackOfDouble *stack)
 {
     if (stack != NULL)
     {
-        return stack->first == NULL;
+        return stack->head == NULL;
     }
 }
 
-Result pushToStack(int value, Stack *stack)
+Result pushToStackOfDouble(double value, StackOfDouble *stack)
 {
     if (stack == NULL)
     {
         return fail;
     }
-    StackElement* stackElement = (StackElement*) malloc(sizeof(StackElement));
-    stackElement->value = value;
-    stackElement->next = stack->first;
 
-    stack->first = stackElement;
+    StackOfDoubleElement* stackElement = (StackOfDoubleElement*) malloc(sizeof(struct StackOfDoubleElement));
+    stackElement->value = value;
+    stackElement->next = stack->head;
+
+    stack->head = stackElement;
     return success;
 }
 
-int popFromStack(Stack *stack)
+Result popFromStackOfDouble(StackOfDouble *stack)
 {
-    if (isStackEmpty(stack))
+    if (stack == NULL)
     {
-        return -1;
+        return fail;
     }
-    StackElement* poppedElement = stack->first;
-    stack->first = poppedElement->next;
-    int value = poppedElement->value;
+
+    if (isStackOfDoubleEmpty(stack))
+    {
+        return 0;
+    }
+    StackOfDoubleElement* poppedElement = stack->head;
+    stack->head = poppedElement->next;
+    double value = poppedElement->value;
     free(poppedElement);
-    return(value);
+    return success;
 }
 
-int frontValueOfStack(Stack* stack)
+Result peakOfStackOfDouble(StackOfDouble* stack, double* value)
 {
-    if (isStackEmpty(stack))
+    if (stack == NULL)
     {
-        return -1;
+        return  fail;
     }
-    return stack->first->value;
+    *value = stack->head->value;
+    return success;
 }
