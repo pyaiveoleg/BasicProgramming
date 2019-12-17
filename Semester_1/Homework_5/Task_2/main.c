@@ -41,7 +41,9 @@ double binaryOperation(char currentSymbol, double firstOperand, double secondOpe
 
 void countBinaryOperation(StackOfDouble* stack, char currentSymbol, bool* error)
 {
-    if (isStackOfDoubleEmpty(stack))
+    bool isStackEmpty = false;
+    isStackOfDoubleEmpty(stack, &isStackEmpty);
+    if (isStackEmpty)
     {
         *error = true;
         return;
@@ -50,7 +52,8 @@ void countBinaryOperation(StackOfDouble* stack, char currentSymbol, bool* error)
     peakOfStackOfDouble(stack, &secondOperand);
     popFromStackOfDouble(stack);
 
-    if (isStackOfDoubleEmpty(stack))
+    isStackOfDoubleEmpty(stack, &isStackEmpty);
+    if (isStackEmpty)
     {
         *error = true;
         return;
@@ -105,7 +108,9 @@ bool countValueOfWholeExpression(char *inputExpression, double* resultingValue)
     peakOfStackOfDouble(stack, resultingValue);
 
     popFromStackOfDouble(stack);
-    if (!isStackOfDoubleEmpty(stack))
+    bool isStackEmpty = false;
+    isStackOfDoubleEmpty(stack, &isStackEmpty);
+    if (!isStackEmpty)
     {
         return false;
     }

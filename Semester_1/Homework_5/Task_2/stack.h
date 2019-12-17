@@ -16,7 +16,7 @@ typedef enum Result
     fail,
 } Result;
 
-bool isStackOfDoubleEmpty(StackOfDouble* stack);
+Result isStackOfDoubleEmpty(StackOfDouble *stack, bool* isEmpty);
 Result pushToStackOfDouble(double value, StackOfDouble *stack);
 Result popFromStackOfDouble(StackOfDouble *stack);
 Result peakOfStackOfDouble(StackOfDouble* stackOfDouble, double* value);

@@ -23,12 +23,14 @@ StackOfDouble* createStackOfDouble()
     return newStack;
 }
 
-bool isStackOfDoubleEmpty(StackOfDouble *stack)
+Result isStackOfDoubleEmpty(StackOfDouble *stack, bool* isEmpty)
 {
-    if (stack != NULL)
+    if (stack == NULL)
     {
-        return stack->head == NULL;
+        return fail;
     }
+    *isEmpty = stack->head == NULL;
+    return success;
 }
 
 Result pushToStackOfDouble(double value, StackOfDouble *stack)
@@ -53,9 +55,11 @@ Result popFromStackOfDouble(StackOfDouble *stack)
         return fail;
     }
 
-    if (isStackOfDoubleEmpty(stack))
+    bool isStackEmpty = false;
+    isStackOfDoubleEmpty(stack, &isStackEmpty);
+    if (isStackEmpty)
     {
-        return 0;
+        return fail;
     }
     StackOfDoubleElement* poppedElement = stack->head;
     stack->head = poppedElement->next;
