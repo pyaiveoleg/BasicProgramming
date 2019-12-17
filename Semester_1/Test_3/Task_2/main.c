@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
 
 double** createTwoDimensionalArray(int height, int width, int defaultValue)
 {
@@ -45,7 +44,7 @@ void printSaddlePoints(double** array, const double* maxInColumn, const double* 
         {
             if (array[i][j] == maxInColumn[j] && array[i][j] == minInLine[i])
             {
-                printf("(%d %d %lf)\n", i, j, array[i][j]);
+                printf("(%d %d) %lf\n", i, j, array[i][j]);
             }
         }
     }
@@ -93,6 +92,7 @@ int main()
 
     printf("Please, write down the two-dimensional array:\n");
     readArray(array, height, width);
+
     countMaxInColumnsAndMinInLines(array, height, width, maxInColumn, minInLine);
     printSaddlePoints(array, maxInColumn, minInLine, height, width);
 
