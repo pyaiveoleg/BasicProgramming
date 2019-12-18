@@ -102,6 +102,7 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
         else
         {
             printf("There is unexpected symbol in input expression.");
+            free(stack);
             return false;
         }
     }
@@ -115,6 +116,7 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
         if (frontValue == getcode('(', shiftForOperators))
         {
             printf("Closing bracket missed in input expression.");
+            free(stack);
             return false;
         }
         int poppedValue = 0;
@@ -198,5 +200,7 @@ int main()
     printf("This is your expression in postfix format:\n%s", resultingString);
     free(resultingString);
 
+    free(resultingArray);
+    free(inputExpression);
     return 0;
 }
