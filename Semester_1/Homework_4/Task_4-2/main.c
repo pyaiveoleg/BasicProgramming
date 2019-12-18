@@ -12,6 +12,11 @@ char* readString(size_t startingSizeOfString)
     do
     {
         currentString[i] = (char) getchar();
+        if (currentString[i] == '\n' && i == 0)//игнорирует пустые строки
+        {
+            currentString[0] = '\0';
+            continue;
+        }
         i++;
         if (i >= currentStringSize) {
             currentStringSize *= 2;
@@ -27,7 +32,6 @@ char* readString(size_t startingSizeOfString)
 void addNumber(PhoneBook* phoneBook, const int startingStringLength)
 {
     printf("Please, write down the name:\n");
-    fflush(stdin);
     char* currentName = readString(startingStringLength);
     printf("Please, write down the phone:\n");
     char* currentPhone = readString(startingStringLength);
@@ -46,7 +50,6 @@ void addNumber(PhoneBook* phoneBook, const int startingStringLength)
 void findNumber(PhoneBook* phoneBook, const int startingStringLength)
 {
     printf("Please, write down the name:\n");
-    fflush(stdin);
     char* currentName = readString(startingStringLength);
     printf("Number: %s\n", searchByName(phoneBook, currentName));
     free(currentName);
@@ -55,7 +58,6 @@ void findNumber(PhoneBook* phoneBook, const int startingStringLength)
 void findName(PhoneBook* phoneBook, const int startingStringLength)
 {
     printf("Please, write down the phone number:\n");
-    fflush(stdin);
     char* currentPhone = readString(startingStringLength);
     printf("Name: %s\n", searchByPhone(phoneBook, currentPhone));
     free(currentPhone);
@@ -96,7 +98,7 @@ void workWithPhoneBook(PhoneBook* phoneBook, const int startingStringLength)
 
 int main()
 {
-    const int startingCapacity = 1;
+    const int startingCapacity = 10;
     const int startingStringLength = 1;
 
     PhoneBook* phoneBook = importPhoneBookFromFile(startingCapacity);

@@ -91,7 +91,7 @@ char* readStringFromFile(bool* hasReachedEndOfFile, const int startingSizeOfStri
     int i = 0;
     do
     {
-        inputString[i] =  fgetc(input);
+        inputString[i] =  (char) fgetc(input);
         if (inputString[i] == EOF)
         {
             *hasReachedEndOfFile = true;
@@ -151,13 +151,11 @@ void saveDataToFile(PhoneBook* phoneBook)
 
 void deletePhoneBook(PhoneBook** phoneBook)
 {
-    for (int i = 0; i < (*phoneBook)->capacity; i++)
+    for (int i = 0; i < (*phoneBook)->size; i++)
     {
         free((*phoneBook)->records[i]->name);
         free((*phoneBook)->records[i]->phone);
-        free((*phoneBook)->records[i]);
     }
-
     free((*phoneBook)->records);
     free(*phoneBook);
 }
