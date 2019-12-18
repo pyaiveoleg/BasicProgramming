@@ -1,10 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
-#include <assert.h>
-#include <stdlib.h>
-
 #include "stack.h"
+#include <stdbool.h>
+#include <stdlib.h>
 
 bool isOperator(char symbol)
 {
@@ -13,74 +11,59 @@ bool isOperator(char symbol)
 
 bool isDigit(char symbol)
 {
-    return ((int) symbol >= (int) '0') && ((int) symbol <= (int) '9');
+    return (symbol >= '0') && (symbol <= '9');
 }
 
-double binaryOperation(char currentSymbol, double firstOperand, double secondOperand)
+int getPriority(char symbol)
 {
-    switch (currentSymbol)
+    if ((symbol == '+') || (symbol == '-'))
     {
-        case '+':
-        {
-            return firstOperand + secondOperand;
-        }
-        case '-':
-        {
-            return firstOperand - secondOperand;
-        }
-        case '*':
-        {
-            return firstOperand * secondOperand;
-        }
-        case '/':
-        {
-            return firstOperand / secondOperand;
-        }
+        return 1;
     }
+    if ((symbol == '*') || (symbol == '/'))
+    {
+        return 2;
+    }
+    return 0;
 }
 
-void countBinaryOperation(StackOfDouble* stack, char currentSymbol, bool* error)
+int getcode(char symbol, const int shiftForOperators) //код сдвигается, чтобы случайно не совпал с введённым числом
 {
-    if (isStackOfDoubleEmpty(stack))
-    {
-        *error = true;
-        return;
-    }
-    double secondOperand = 0;
-    peakOfStackOfDouble(stack, &secondOperand);
-    popFromStackOfDouble(stack);
-
-    if (isStackOfDoubleEmpty(stack))
-    {
-        *error = true;
-        return;
-    }
-    double firstOperand = 0;
-    peakOfStackOfDouble(stack, &firstOperand);
-    popFromStackOfDouble(stack);
-    pushToStackOfDouble(binaryOperation(currentSymbol, firstOperand, secondOperand), stack);
+    return symbol + shiftForOperators;
 }
 
-bool countValueOfWholeExpression(char *inputExpression, double* resultingValue)
+void addToResultingArray(int resultingArray[], int* currentIndex, int value)
 {
-    char currentSymbol = 0;
-    StackOfDouble* stack = createStackOfDouble();
+    resultingArray[*currentIndex] = value;
+    (*currentIndex)++;
+}
 
-    int inputExpressionLength = (int) strlen(inputExpression);
+bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
+                           int* currentIndexInResultingArray, const int shiftForOperators)
+{
+    int currentNumber = 0;
+    Stack* stack = createStack();
 
-    for (int i = 0; i < inputExpressionLength; i++)
+    size_t inputExpressionLength = strlen(inputExpression);
+
+    for (size_t i = 0; i < inputExpressionLength; i++)
     {
-        int currentNumber = 0;
-        currentSymbol = inputExpression[i];
-
+        char currentSymbol = inputExpression[i];
         if (isOperator(currentSymbol))
         {
-            bool error = false;
-            countBinaryOperation(stack, currentSymbol, &error);
-            if (error)
+            int frontValue = 0;
+            bool isEmpty = false;
+            peakOfStack(stack, &frontValue);
+            while (!isEmpty && (getPriority( (char) (frontValue - shiftForOperators)) >= getPriority(currentSymbol)))
             {
-                return false;
+                int poppedValue = 0;
+                popFromStack(stack, &poppedValue);
+                addToResultingArray(resultingArray, currentIndexInResultingArray, poppedValue);
+                peakOfStack(stack, &frontValue);
+                isStackEmpty(stack, &isEmpty);
             }
+
+            pushToStack(getcode(currentSymbol, shiftForOperators), stack);
         }
         else if (isDigit(currentSymbol))
         {
@@ -90,8 +73,27 @@ bool countValueOfWholeExpression(char *inputExpression, double* resultingValue)
                 i++;
                 currentSymbol = inputExpression[i];
             }
-            pushToStackOfDouble(currentNumber, stack);
+            addToResultingArray(resultingArray, currentIndexInResultingArray, currentNumber);
+            currentNumber = 0;
             i--;
+        }
+        else if (currentSymbol == '(')
+        {
+            pushToStack(getcode('(', shiftForOperators), stack);
+        }
+        else if (currentSymbol == ')')
+        {
+            int frontValue = 0;
+            peakOfStack(stack, &frontValue);
+            while (frontValue != getcode ('(', shiftForOperators))
+            {
+                int poppedValue = 0;
+                popFromStack(stack, &poppedValue);
+                addToResultingArray(resultingArray, currentIndexInResultingArray, poppedValue);
+                peakOfStack(stack, &frontValue);
+            }
+            int poppedValue = 0;
+            popFromStack(stack, &poppedValue);
         }
         else if (currentSymbol == ' ')
         {
@@ -99,18 +101,51 @@ bool countValueOfWholeExpression(char *inputExpression, double* resultingValue)
         }
         else
         {
+            printf("There is unexpected symbol in input expression.");
             return false;
         }
     }
-    peakOfStackOfDouble(stack, resultingValue);
 
-    popFromStackOfDouble(stack);
-    if (!isStackOfDoubleEmpty(stack))
+    bool isEmpty = false;
+    isStackEmpty(stack, &isEmpty);
+    while (!isEmpty)
     {
-        return false;
+        int frontValue = 0;
+        peakOfStack(stack, &frontValue);
+        if (frontValue == getcode('(', shiftForOperators))
+        {
+            printf("Closing bracket missed in input expression.");
+            return false;
+        }
+        int poppedValue = 0;
+        popFromStack(stack, &poppedValue);
+        addToResultingArray(resultingArray, currentIndexInResultingArray, poppedValue);
+        isStackEmpty(stack, &isEmpty);
     }
+
     free(stack);
     return true;
+}
+
+void convertResultingArrayToString(int* resultingArray, int sizeOfResultingArray, const int shiftForOperators,
+                                   size_t stringLength, char* resultingString)
+{
+    char* tempString = (char*) malloc(sizeof(char) * stringLength);
+
+    for (int i = 0; i < sizeOfResultingArray; i++)
+    {
+        if (isOperator((char) (resultingArray[i] - shiftForOperators)))
+        {
+            sprintf(tempString, "%c ", (char) resultingArray[i] - shiftForOperators);
+            strcat(resultingString, tempString);
+        }
+        else
+        {
+            sprintf(tempString, "%d ", resultingArray[i]);
+            strcat(resultingString, tempString);
+        }
+    }
+    free(tempString);
 }
 
 char* readString(size_t startingSizeOfString)
@@ -123,7 +158,8 @@ char* readString(size_t startingSizeOfString)
     {
         currentString[i] = (char) getchar();
         i++;
-        if (i >= currentStringSize) {
+        if (i >= currentStringSize)
+        {
             currentStringSize *= 2;
             currentString = (char *) realloc(currentString, sizeof(char) * currentStringSize);
         }
@@ -136,20 +172,31 @@ char* readString(size_t startingSizeOfString)
 
 int main() 
 {
-    const size_t startingSizeOfString = 1000;
-    printf("Please, write down the expression:\n");
-    char* inputExpression = readString(startingSizeOfString);
+    const int shiftForOperators = -1000;
+    const int startingStringLength = 10;
 
-    double resultingValue = 0;
-    if (!countValueOfWholeExpression(inputExpression, &resultingValue))
+    printf("Please, write down the expression (with gaps between numbers and operators):\n");
+    char* inputExpression = readString(startingStringLength);
+
+    int* resultingArray = (int*) malloc(sizeof(int) * strlen(inputExpression));
+    for (size_t i = 0; i < strlen(inputExpression); i++)
     {
-        printf("Error.\n");
+        resultingArray[i] = 0;
     }
-    else
+    int currentIndexInResultingArray = 0;
+
+    if (!convertInfixToPostfix(inputExpression, resultingArray, &currentIndexInResultingArray, shiftForOperators))
     {
-        printf("Resulting value is %lf", resultingValue);
+        return 0;
     }
 
-    free(inputExpression);
+    char* resultingString = (char*) malloc(sizeof(char) * strlen(inputExpression));
+    resultingString[0] = '\0';
+
+    convertResultingArrayToString(resultingArray, currentIndexInResultingArray, shiftForOperators,
+            strlen(inputExpression), resultingString);
+    printf("This is your expression in postfix format:\n%s", resultingString);
+    free(resultingString);
+
     return 0;
 }

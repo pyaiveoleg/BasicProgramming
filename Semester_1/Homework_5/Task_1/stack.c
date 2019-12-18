@@ -2,74 +2,80 @@
 #include <stdbool.h>
 #include "stack.h"
 
-//------------------------StackOfDouble-----------------------------//
-
-typedef struct StackOfDoubleElement StackOfDoubleElement;
-struct StackOfDoubleElement
+typedef struct StackElement StackElement;
+struct StackElement
 {
-    double value;
-    StackOfDoubleElement* next;
+    int value;
+    StackElement* next;
 };
 
-struct StackOfDouble
+struct Stack
 {
-    struct StackOfDoubleElement* head;
+    struct StackElement* first;
 };
 
-StackOfDouble* createStackOfDouble()
+Stack* createStack()
 {
-    StackOfDouble* newStack = malloc(sizeof(StackOfDouble));
-    newStack->head = NULL;
-    return newStack;
+    Stack* stck1 = malloc(sizeof(Stack));
+    stck1->first = NULL;
+    return stck1;
 }
 
-bool isStackOfDoubleEmpty(StackOfDouble *stack)
-{
-    if (stack != NULL)
-    {
-        return stack->head == NULL;
-    }
-}
-
-Result pushToStackOfDouble(double value, StackOfDouble *stack)
+Result isStackEmpty(Stack *stack, bool* isEmpty)
 {
     if (stack == NULL)
     {
         return fail;
     }
-
-    StackOfDoubleElement* stackElement = (StackOfDoubleElement*) malloc(sizeof(struct StackOfDoubleElement));
-    stackElement->value = value;
-    stackElement->next = stack->head;
-
-    stack->head = stackElement;
+    *isEmpty = stack->first == NULL;
     return success;
 }
 
-Result popFromStackOfDouble(StackOfDouble *stack)
+Result pushToStack(int value, Stack *stack)
 {
     if (stack == NULL)
     {
         return fail;
     }
+    StackElement* stackElement = (StackElement*) malloc(sizeof(StackElement));
+    stackElement->value = value;
+    stackElement->next = stack->first;
 
-    if (isStackOfDoubleEmpty(stack))
+    stack->first = stackElement;
+    return success;
+}
+
+Result popFromStack(Stack *stack, int* value)
+{
+    if (stack == NULL)
     {
-        return 0;
+        return fail;
     }
-    StackOfDoubleElement* poppedElement = stack->head;
-    stack->head = poppedElement->next;
-    double value = poppedElement->value;
+    bool isEmpty = false;
+    isStackEmpty(stack, &isEmpty);
+    if (isEmpty)
+    {
+        return fail;
+    }
+    StackElement* poppedElement = stack->first;
+    stack->first = poppedElement->next;
+    *value = poppedElement->value;
     free(poppedElement);
     return success;
 }
 
-Result peakOfStackOfDouble(StackOfDouble* stack, double* value)
+Result peakOfStack(Stack* stack, int* value)
 {
     if (stack == NULL)
     {
-        return  fail;
+        return fail;
     }
-    *value = stack->head->value;
+    bool isEmpty = false;
+    isStackEmpty(stack, &isEmpty);
+    if (isEmpty)
+    {
+        return fail;
+    }
+    *value = stack->first->value;
     return success;
 }
