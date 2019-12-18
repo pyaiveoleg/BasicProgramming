@@ -121,7 +121,7 @@ void fractionalPartParsing(char currentSymbol, State* state)
     }
     else
     {
-        *state = false;
+        *state = error;
     }
 }
 
@@ -149,7 +149,7 @@ void firstDigitOfExponentParsing(char currentSymbol, State* state)
     }
     else
     {
-        *state = false;
+        *state = error;
     }
 }
 
@@ -161,11 +161,11 @@ void integerPartOfExponentParsing(char currentSymbol, State* state)
     }
     else if (currentSymbol == '\0')
     {
-        *state = true;
+        *state = success;
     }
     else
     {
-        *state = false;
+        *state = error;
     }
 }
 
