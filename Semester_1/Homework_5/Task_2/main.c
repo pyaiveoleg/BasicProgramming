@@ -82,6 +82,7 @@ bool countValueOfWholeExpression(char *inputExpression, double* resultingValue)
             countBinaryOperation(stack, currentSymbol, &error);
             if (error)
             {
+                free(stack);
                 return false;
             }
         }
@@ -102,19 +103,19 @@ bool countValueOfWholeExpression(char *inputExpression, double* resultingValue)
         }
         else
         {
+            free(stack);
             return false;
         }
     }
     peakOfStackOfDouble(stack, resultingValue);
-
     popFromStackOfDouble(stack);
+    free(stack);
     bool isStackEmpty = false;
     isStackOfDoubleEmpty(stack, &isStackEmpty);
     if (!isStackEmpty)
     {
         return false;
     }
-    free(stack);
     return true;
 }
 
