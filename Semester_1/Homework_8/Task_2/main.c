@@ -27,7 +27,7 @@ int findNearestCity(const int* quantityOfCitiesInCountry, int** countries, int n
     for (int i = 0; i < quantityOfCitiesInCountry[numberOfCapital]; i++)
     {
         int currentCity = countries[numberOfCapital][i];
-        for (int j = 0; j < quantityOfCities; j++)
+        for (int j = 1; j <= quantityOfCities; j++)
         {
             if (distance[currentCity][j] < minDistance && !used[j])
             {
@@ -64,7 +64,6 @@ int** readDistances(const int quantityOfCities, const int quantityOfRoads, FILE*
     }
 
     return distance;
-
 }
 
 void printCountries(int** countries, int quantityOfCapitals, const int* quantityOfCitiesInCountry)
