@@ -8,7 +8,7 @@ void testModuleMyString()
     String* testString = createString(a);
     String* anotherString = createString("56789");
 
-    String* concatenatedString = NULL;
+    String* concatenatedString = createString("1");
     concatenationOfStrings(testString, anotherString, &concatenatedString);
     printf("This is concatenated string: ");
     printString(concatenatedString);

@@ -82,7 +82,7 @@ Result concatenationOfStrings(String *firstString, String *secondString, String*
         return fail;
     }
 
-    char* concatenatedText = (char*) malloc((firstString->length + secondString->length) * sizeof(char));
+    char* concatenatedText = (char*) malloc((firstString->length + secondString->length + 1) * sizeof(char));
     for (int i = 0; i < firstString->length; i++)
     {
         concatenatedText[i] = firstString->text[i];
@@ -91,6 +91,7 @@ Result concatenationOfStrings(String *firstString, String *secondString, String*
     {
         concatenatedText[i] = secondString->text[i - firstString->length];
     }
+    concatenatedText[firstString->length + secondString->length] = '\0';
     *concatenatedStrings = createString(concatenatedText);
     free(concatenatedText);
     return success;
