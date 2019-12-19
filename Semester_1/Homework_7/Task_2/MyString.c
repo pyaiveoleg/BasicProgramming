@@ -147,10 +147,7 @@ Result getSubstring(String* string, int leftIndex, int rightIndex, String** subs
     {
         substringOfChar[i] = string->text[leftIndex + i];
     }
-
-    String* pointerToSubstring = createString(substringOfChar);
-    *substring = pointerToSubstring;
-
+    *substring = createString(substringOfChar);
     return success;
 }
 
