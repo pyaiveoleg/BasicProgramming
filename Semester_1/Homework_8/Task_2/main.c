@@ -121,7 +121,7 @@ int main()
 
     int** countries = createTwoDimensionalArray(quantityOfCapitals, quantityOfCities - quantityOfCapitals, -1);
     int* quantityOfCitiesInCountry = (int*) malloc(sizeof(int) * quantityOfCapitals);
-    bool* used = (bool*) malloc(sizeof(bool) * (quantityOfCities + 1)); // нумерация должна быть с 1
+    bool* used = (bool*) calloc(quantityOfCities + 1, sizeof(bool)); // нумерация должна быть с 1
     for (int i = 0; i < quantityOfCapitals; ++i)
     {
         int currentCapital = 0;
