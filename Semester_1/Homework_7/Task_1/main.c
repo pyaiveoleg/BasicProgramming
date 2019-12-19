@@ -68,9 +68,16 @@ void printAscendingOrder(bool* isCommand, Tree* set, const int startingSizeOfArr
     clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
 
     getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
-    for (int i = 0; i < currentArraySize; i++)
+    if (currentArraySize == 0)
     {
-        printf("%d ", elementsOfSet[i]);
+        printf("Tree is empty.");
+    }
+    else
+    {
+        for (int i = 0; i < currentArraySize; i++)
+        {
+            printf("%d ", elementsOfSet[i]);
+        }
     }
     printf("\n");
     free(elementsOfSet);
@@ -85,12 +92,31 @@ void printDescendingOrder(bool* isCommand, Tree* set, const int startingSizeOfAr
     clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
 
     getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
-    for (int i = currentArraySize - 1; i >= 0; i--)
+    if (currentArraySize == 0)
     {
-        printf("%d ", elementsOfSet[i]);
+        printf("Tree is empty.");
+    }
+    else
+    {
+        for (int i = currentArraySize - 1; i >= 0; i--)
+        {
+            printf("%d ", elementsOfSet[i]);
+        }
     }
     printf("\n");
     free(elementsOfSet);
+}
+
+void printABCOrder(bool* isCommand, Tree* set)
+{
+    *isCommand = true;
+    bool isTreeEmpty = false;
+    printInABCOrder(set, &isTreeEmpty);
+    if (isTreeEmpty)
+    {
+        printf("Tree is empty.");
+    }
+    printf("\n");
 }
 
 void workWithSet(Tree* set, const int startingSizeOfArray)
@@ -128,7 +154,7 @@ void workWithSet(Tree* set, const int startingSizeOfArray)
         }
         else if (inputCommand == 6)
         {
-            printInABCOrder(set);
+            printABCOrder(&isCommand, set);
         }
         else if (inputCommand == 0)
         {

@@ -63,6 +63,10 @@ Result getSymmetricOrder(Tree* tree, int array[], int* sizeOfArray, int* maxSize
     {
         return fail;
     }
+    if (tree->root == NULL)
+    {
+        return success;
+    }
     processSymmetricOrder(tree->root, array, sizeOfArray, maxSizeOfArray);
     return success;
 }
@@ -121,14 +125,19 @@ void printElementsInABCOrder(TreeElement* treeElement)
         printElementsInABCOrder(treeElement->rightChild);
     }
 
-    printf(")\n");
+    printf(")");
 }
 
-Result printInABCOrder(Tree* tree)
+Result printInABCOrder(Tree* tree, bool* isTreeEmpty)
 {
     if (tree == NULL)
     {
         return fail;
+    }
+    if (tree->root == NULL)
+    {
+        *isTreeEmpty = true;
+        return success;
     }
     printElementsInABCOrder(tree->root);
     return success;
