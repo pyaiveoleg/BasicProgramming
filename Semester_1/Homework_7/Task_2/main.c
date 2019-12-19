@@ -8,12 +8,12 @@ void testModuleMyString()
     String* testString = createString(a);
     String* anotherString = createString("56789");
 
-    String* concatenatedString = createString("1");
+    String* concatenatedString = NULL;
     concatenationOfStrings(testString, anotherString, &concatenatedString);
     printf("This is concatenated string: ");
     printString(concatenatedString);
 
-    String* extract = NULL;
+    String* extract = createString("");
     const int leftIndex = 2;
     const int rightIndex = 4;
     getSubstring(anotherString, leftIndex, rightIndex, &extract);

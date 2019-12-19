@@ -92,6 +92,7 @@ Result concatenationOfStrings(String *firstString, String *secondString, String*
         concatenatedText[i] = secondString->text[i - firstString->length];
     }
     concatenatedText[firstString->length + secondString->length] = '\0';
+    deleteString(*concatenatedStrings);
     *concatenatedStrings = createString(concatenatedText);
     free(concatenatedText);
     return success;
@@ -140,11 +141,13 @@ Result getSubstring(String* string, int leftIndex, int rightIndex, String** subs
     }
 
     int lengthOfSubstring = rightIndex - leftIndex + 1;
-    char substringOfChar[lengthOfSubstring];
+    char substringOfChar[lengthOfSubstring + 1];
     for (int i = 0; i < lengthOfSubstring; i++)
     {
         substringOfChar[i] = string->text[leftIndex + i];
     }
+    substringOfChar[lengthOfSubstring] = '\0';
+    deleteString(*substring);
     *substring = createString(substringOfChar);
     return success;
 }
