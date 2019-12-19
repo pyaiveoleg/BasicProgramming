@@ -24,12 +24,13 @@ String* createString(char* value)
 {
     String* newString = (String*) malloc(sizeof(String));
     newString->length = getInputLength(value);
-    newString->text = (char*) malloc(newString->length * sizeof(char));
+    newString->text = (char*) malloc((newString->length + 1) * sizeof(char));//для завершающего символа \0
     newString->maxLength = newString->length;
-    for (int i = 0; i <= newString->length; i++)
+    for (int i = 0; i < newString->length; i++)
     {
         newString->text[i] = value[i];
     }
+    newString->text[newString->length] = '\0';
     return newString;
 }
 
@@ -37,10 +38,13 @@ Result printString(String* string)
 {
     if (string == NULL)
     {
-        printf("1");
         return fail;
     }
-    printf("%s\n", string->text);
+    for (int i = 0; i < string->length; i++)
+    {
+        printf("%c", string->text[i]);
+    }
+    printf("\n");
     return success;
 }
 
