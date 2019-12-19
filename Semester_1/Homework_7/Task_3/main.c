@@ -38,19 +38,18 @@ int main()
     const int startingStringLength = 1000;
     const int startingSizeOfHash = 1000;
 
-    int sizeOfHash = startingSizeOfHash;
-
-    HashTable* hashTable = createHashTable(sizeOfHash, maxLoadFactor);
-
     FILE *input;
     input = fopen("input.txt", "r");
 
-    char* inputString = NULL;
     if (!input)
     {
         printf("Error. Cannot open file.");
         return 0;
     }
+
+    int sizeOfHash = startingSizeOfHash;
+    HashTable* hashTable = createHashTable(sizeOfHash, maxLoadFactor);
+    char* inputString = NULL;
 
     bool hasReachedEndOfFile = false;
     while (!hasReachedEndOfFile)
@@ -59,6 +58,7 @@ int main()
         String* addedString = createString(inputString);
         addStringToTable(hashTable, addedString, sizeOfHash);
         free(inputString);
+        deleteString(addedString);
     }
     fclose(input);
 
@@ -83,5 +83,7 @@ int main()
     }
 
     deleteHashTable(hashTable);
+    deleteString(currentString);
+    deleteString(emptyString);
     return 0;
 }
