@@ -6,8 +6,8 @@
 struct String
 {
     int length;
-    char* text;
     int maxLength;
+    char* text;
 };
 
 int getInputLength(const char value[])
