@@ -93,9 +93,6 @@ Result concatenationOfStrings(String *firstString, String *secondString, String*
     }
     *concatenatedStrings = createString(concatenatedText);
     free(concatenatedText);
-
-    (*concatenatedStrings)->length = firstString->length + secondString->length;
-
     return success;
 }
 
