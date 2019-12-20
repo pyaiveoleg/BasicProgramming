@@ -38,6 +38,60 @@ void addToResultingArray(int resultingArray[], int* currentIndex, int value)
     (*currentIndex)++;
 }
 
+void addRemainingOperators(Stack* stack, const int shiftForOperators, int* resultingArray,
+        int* currentIndexInResultingArray, bool* error)
+{
+    bool isEmpty = false;
+    isStackEmpty(stack, &isEmpty);
+    while (!isEmpty)
+    {
+        int frontValue = 0;
+        peakOfStack(stack, &frontValue);
+        if (frontValue == getcode('(', shiftForOperators))
+        {
+            printf("Closing bracket missed in input expression.");
+            *error = true;
+        }
+        int poppedValue = 0;
+        popFromStack(stack, &poppedValue);
+        addToResultingArray(resultingArray, currentIndexInResultingArray, poppedValue);
+        isStackEmpty(stack, &isEmpty);
+    }
+}
+void parseOperator(char currentSymbol, const int shiftForOperators, Stack* stack, int* resultingArray,
+        int* currentIndexInResultingArray)
+{
+    int frontValue = 0;
+    bool isEmpty = false;
+    peakOfStack(stack, &frontValue);
+    while (!isEmpty && (getPriority( (char) (frontValue - shiftForOperators)) >= getPriority(currentSymbol)))
+    {
+        int poppedValue = 0;
+        popFromStack(stack, &poppedValue);
+        addToResultingArray(resultingArray, currentIndexInResultingArray, poppedValue);
+        peakOfStack(stack, &frontValue);
+        isStackEmpty(stack, &isEmpty);
+    }
+
+    pushToStack(getcode(currentSymbol, shiftForOperators), stack);
+}
+
+void parseClosingBracket(Stack* stack, const int shiftForOperators, int* resultingArray,
+        int* currentIndexInResultingArray)
+{
+    int frontValue = 0;
+    peakOfStack(stack, &frontValue);
+    while (frontValue != getcode ('(', shiftForOperators))
+    {
+        int poppedValue = 0;
+        popFromStack(stack, &poppedValue);
+        addToResultingArray(resultingArray, currentIndexInResultingArray, poppedValue);
+        peakOfStack(stack, &frontValue);
+    }
+    int poppedValue = 0;
+    popFromStack(stack, &poppedValue);
+}
+
 bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
                            int* currentIndexInResultingArray, const int shiftForOperators)
 {
@@ -51,19 +105,7 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
         char currentSymbol = inputExpression[i];
         if (isOperator(currentSymbol))
         {
-            int frontValue = 0;
-            bool isEmpty = false;
-            peakOfStack(stack, &frontValue);
-            while (!isEmpty && (getPriority( (char) (frontValue - shiftForOperators)) >= getPriority(currentSymbol)))
-            {
-                int poppedValue = 0;
-                popFromStack(stack, &poppedValue);
-                addToResultingArray(resultingArray, currentIndexInResultingArray, poppedValue);
-                peakOfStack(stack, &frontValue);
-                isStackEmpty(stack, &isEmpty);
-            }
-
-            pushToStack(getcode(currentSymbol, shiftForOperators), stack);
+            parseOperator(currentSymbol, shiftForOperators, stack, resultingArray, currentIndexInResultingArray);
         }
         else if (isDigit(currentSymbol))
         {
@@ -83,17 +125,7 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
         }
         else if (currentSymbol == ')')
         {
-            int frontValue = 0;
-            peakOfStack(stack, &frontValue);
-            while (frontValue != getcode ('(', shiftForOperators))
-            {
-                int poppedValue = 0;
-                popFromStack(stack, &poppedValue);
-                addToResultingArray(resultingArray, currentIndexInResultingArray, poppedValue);
-                peakOfStack(stack, &frontValue);
-            }
-            int poppedValue = 0;
-            popFromStack(stack, &poppedValue);
+            parseClosingBracket(stack, shiftForOperators, resultingArray, currentIndexInResultingArray);
         }
         else if (currentSymbol == ' ')
         {
@@ -107,25 +139,13 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
         }
     }
 
-    bool isEmpty = false;
-    isStackEmpty(stack, &isEmpty);
-    while (!isEmpty)
-    {
-        int frontValue = 0;
-        peakOfStack(stack, &frontValue);
-        if (frontValue == getcode('(', shiftForOperators))
-        {
-            printf("Closing bracket missed in input expression.");
-            deleteStack(stack);
-            return false;
-        }
-        int poppedValue = 0;
-        popFromStack(stack, &poppedValue);
-        addToResultingArray(resultingArray, currentIndexInResultingArray, poppedValue);
-        isStackEmpty(stack, &isEmpty);
-    }
-
+    bool error = false;
+    addRemainingOperators(stack, shiftForOperators, resultingArray, currentIndexInResultingArray, &error);
     deleteStack(stack);
+    if (error)
+    {
+        return false;
+    }
     return true;
 }
 
