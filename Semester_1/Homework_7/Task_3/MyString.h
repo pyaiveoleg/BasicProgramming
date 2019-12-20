@@ -16,7 +16,7 @@ typedef struct String
 } String;
 
 String* createString(char value[]);
-Result deleteString(String* string);
+Result deleteString(String** string);
 Result cloneString(String* originalString, String* clonedString);
 Result concatenationOfStrings(String* firstString, String* secondString, String** concatenatedStrings);
 Result printString(String* string);

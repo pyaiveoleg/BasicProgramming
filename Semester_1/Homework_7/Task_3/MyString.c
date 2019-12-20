@@ -41,14 +41,14 @@ Result printString(String* string)
     return success;
 }
 
-Result deleteString(String* string)
+Result deleteString(String** string)
 {
     if (string == NULL)
     {
         return fail;
     }
-    free(string->text);
-    free(string);
+    free((*string)->text);
+    free(*string);
     return success;
 }
 
@@ -85,7 +85,7 @@ Result concatenationOfStrings(String *firstString, String *secondString, String*
         concatenatedText[i] = secondString->text[i - firstString->length];
     }
     concatenatedText[firstString->length + secondString->length] = '\0';
-    deleteString(*concatenatedStrings);
+    deleteString(concatenatedStrings);
     *concatenatedStrings = createString(concatenatedText);
     free(concatenatedText);
     return success;
@@ -140,7 +140,7 @@ Result getSubstring(String* string, int leftIndex, int rightIndex, String** subs
         substringOfChar[i] = string->text[leftIndex + i];
     }
     substringOfChar[lengthOfSubstring] = '\0';
-    deleteString(*substring);
+    deleteString(substring);
     *substring = createString(substringOfChar);
     return success;
 }

@@ -68,9 +68,10 @@ void deleteHashTable(HashTable* hashTable)
 {
     for (int i = 0; i < hashTable->size; ++i)
     {
-        free(hashTable->array[i]->key);
+        deleteString(&hashTable->array[i]->key);
         free(hashTable->array[i]);
     }
+    free(hashTable->array);
     free(hashTable);
 }
 
@@ -107,6 +108,7 @@ void addStringToTable(HashTable* hashTable, String* string, int sizeOfHash)
 
         if (isKeyEmpty || hashTable->array[possibleIndex]->wasDeleted || areEqual)
         {
+            deleteString(&hashTable->array[possibleIndex]->key);
             hashTable->array[possibleIndex]->key = string;
             hashTable->array[possibleIndex]->quantityOfEntries++;
             if (i > hashTable->array[possibleIndex]->maxAttemptsToInsert)
@@ -126,6 +128,8 @@ void addStringToTable(HashTable* hashTable, String* string, int sizeOfHash)
         possibleIndex = (possibleIndex + (int) pow(i, 2)) % sizeOfHash;
     }
     while (!wasInserted);
+
+    deleteString(&emptyString);
 
     if ((double) hashTable->quantityOfRecords / hashTable->size > hashTable->maxLoadFactor)
     {

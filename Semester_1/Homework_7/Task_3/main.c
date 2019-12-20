@@ -58,7 +58,6 @@ int main()
         String* addedString = createString(inputString);
         addStringToTable(hashTable, addedString, sizeOfHash);
         free(inputString);
-        deleteString(addedString);
     }
     fclose(input);
 
@@ -83,7 +82,6 @@ int main()
     }
 
     deleteHashTable(hashTable);
-    deleteString(currentString);
-    deleteString(emptyString);
+    deleteString(&emptyString);
     return 0;
 }
