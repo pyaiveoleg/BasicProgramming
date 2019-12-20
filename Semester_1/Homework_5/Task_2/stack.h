@@ -21,3 +21,4 @@ Result pushToStackOfDouble(double value, StackOfDouble *stack);
 Result popFromStackOfDouble(StackOfDouble *stack);
 Result peakOfStackOfDouble(StackOfDouble* stackOfDouble, double* value);
 StackOfDouble* createStackOfDouble();
+Result deleteStackOfDouble(StackOfDouble* stack);

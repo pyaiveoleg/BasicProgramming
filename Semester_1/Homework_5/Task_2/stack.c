@@ -77,3 +77,22 @@ Result peakOfStackOfDouble(StackOfDouble* stack, double* value)
     *value = stack->head->value;
     return success;
 }
+
+Result deleteStackOfDouble(StackOfDouble* stack)
+{
+    if (stack == NULL)
+    {
+        return fail;
+    }
+
+    StackOfDoubleElement* currentElement = stack->head;
+    StackOfDoubleElement** elementForDelete = &currentElement;
+    while (currentElement != NULL)
+    {
+        elementForDelete = &currentElement;
+        currentElement = currentElement->next;
+        free(*elementForDelete);
+    }
+    free(stack);
+    return success;
+}
