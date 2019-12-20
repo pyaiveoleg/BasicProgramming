@@ -5,26 +5,28 @@
 
 char* readString(size_t startingSizeOfString)
 {
-    char *currentString = (char *) malloc(sizeof(char) * startingSizeOfString);
+    char* currentString = (char*) calloc(startingSizeOfString, sizeof(char));
     int currentStringSize = startingSizeOfString;
 
     int i = 0;
-    do
+    currentString[0] = (char) getchar();
+    while (currentString[i] != '\n' || i == 0)
     {
-        currentString[i] = (char) getchar();
         if (currentString[i] == '\n' && i == 0)//игнорирует пустые строки
         {
-            currentString[0] = '\0';
-            continue;
+            currentString[i] = '\0';
+            i--;
         }
         i++;
-        if (i >= currentStringSize) {
+
+        if (i >= currentStringSize)
+        {
             currentStringSize *= 2;
             currentString = (char *) realloc(currentString, sizeof(char) * currentStringSize);
         }
+        currentString[i] = (char) getchar();
     }
-    while (currentString[i - 1] != '\n');
-    currentString[i - 1] = '\0';
+    currentString[i] = '\0';
 
     return currentString;
 }
@@ -98,8 +100,8 @@ void workWithPhoneBook(PhoneBook* phoneBook, const int startingStringLength)
 
 int main()
 {
-    const int startingCapacity = 10;
-    const int startingStringLength = 1;
+    const int startingCapacity = 100;
+    const int startingStringLength = 100;
 
     PhoneBook* phoneBook = importPhoneBookFromFile(startingCapacity);
     workWithPhoneBook(phoneBook, startingStringLength);

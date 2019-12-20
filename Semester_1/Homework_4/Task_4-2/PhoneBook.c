@@ -49,10 +49,10 @@ bool addRecord(PhoneBook** phoneBook, char name[], char phone[])
     }
 
     Record* addedRecord = createRecord();
-    addedRecord->phone = (char*) malloc(sizeof(char) * strlen(phone));
+    addedRecord->phone = (char*) malloc(sizeof(char) * (strlen(phone) + 1)); // для \0
     strcpy(addedRecord->phone, phone);
 
-    addedRecord->name = (char*) malloc(sizeof(char) * strlen(name));
+    addedRecord->name = (char*) malloc(sizeof(char) * (strlen(name) + 1)); // для \0
     strcpy(addedRecord->name, name);
 
     (*phoneBook)->records[(*phoneBook)->size] = addedRecord;
@@ -155,6 +155,7 @@ void deletePhoneBook(PhoneBook** phoneBook)
     {
         free((*phoneBook)->records[i]->name);
         free((*phoneBook)->records[i]->phone);
+        free((*phoneBook)->records[i]);
     }
     free((*phoneBook)->records);
     free(*phoneBook);
