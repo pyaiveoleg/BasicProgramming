@@ -16,9 +16,9 @@ struct Stack
 
 Stack* createStack()
 {
-    Stack* stck1 = malloc(sizeof(Stack));
-    stck1->first = NULL;
-    return stck1;
+    Stack* newStack = malloc(sizeof(Stack));
+    newStack->first = NULL;
+    return newStack;
 }
 
 Result isStackEmpty(Stack *stack, bool* isEmpty)
@@ -77,5 +77,24 @@ Result peakOfStack(Stack* stack, int* value)
         return fail;
     }
     *value = stack->first->value;
+    return success;
+}
+
+Result deleteStack(Stack* stack)
+{
+    if (stack == NULL)
+    {
+        return fail;
+    }
+
+    StackElement* currentElement = stack->first;
+    StackElement** elementForDelete = &currentElement;
+    while (currentElement != NULL)
+    {
+        elementForDelete = &currentElement;
+        currentElement = currentElement->next;
+        free(*elementForDelete);
+    }
+    free(stack);
     return success;
 }

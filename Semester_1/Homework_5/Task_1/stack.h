@@ -15,3 +15,4 @@ Result pushToStack(int value, Stack *stack);
 Result popFromStack(Stack *stack, int* value);
 Result peakOfStack(Stack* stack, int* value);
 Stack* createStack();
+Result deleteStack(Stack* stack);

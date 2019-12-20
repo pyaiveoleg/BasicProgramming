@@ -102,7 +102,7 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
         else
         {
             printf("There is unexpected symbol in input expression.");
-            free(stack);
+            deleteStack(stack);
             return false;
         }
     }
@@ -116,7 +116,7 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
         if (frontValue == getcode('(', shiftForOperators))
         {
             printf("Closing bracket missed in input expression.");
-            free(stack);
+            deleteStack(stack);
             return false;
         }
         int poppedValue = 0;
@@ -125,7 +125,7 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
         isStackEmpty(stack, &isEmpty);
     }
 
-    free(stack);
+    deleteStack(stack);
     return true;
 }
 
@@ -163,7 +163,7 @@ char* readString(size_t startingSizeOfString)
         if (i >= currentStringSize)
         {
             currentStringSize *= 2;
-            currentString = (char *) realloc(currentString, sizeof(char) * currentStringSize);
+            currentString = (char*) realloc(currentString, sizeof(char) * currentStringSize);
         }
     }
     while (currentString[i - 1] != '\n');
@@ -189,6 +189,8 @@ int main()
 
     if (!convertInfixToPostfix(inputExpression, resultingArray, &currentIndexInResultingArray, shiftForOperators))
     {
+        free(resultingArray);
+        free(inputExpression);
         return 0;
     }
 
@@ -198,8 +200,8 @@ int main()
     convertResultingArrayToString(resultingArray, currentIndexInResultingArray, shiftForOperators,
             strlen(inputExpression), resultingString);
     printf("This is your expression in postfix format:\n%s", resultingString);
-    free(resultingString);
 
+    free(resultingString);
     free(resultingArray);
     free(inputExpression);
     return 0;
