@@ -87,6 +87,10 @@ void integerPartParsing(char currentSymbol, State* state)
     {
         *state = dotInMantissa;
     }
+    else if (currentSymbol == 'E')
+    {
+        *state = charE;
+    }
     else
     {
         *state = error;
@@ -234,7 +238,14 @@ bool isRealNumber(char* inputString)
         }
     }
 
-    return true;
+    if (state == success)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 int main()
