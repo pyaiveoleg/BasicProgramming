@@ -68,8 +68,9 @@ void findName(PhoneBook* phoneBook, const int startingStringLength)
 void workWithPhoneBook(PhoneBook* phoneBook, const int startingStringLength)
 {
     int codeOfAction = 0;
+    bool isInterrupted = false;
 
-    while (1)
+    while (!isInterrupted)
     {
         printf("Press 1 to add phone number. Press 2 to find number by name.\n"
                "Press 3 to find name by number. Press 4 to export data to file. Press 0 to quit.\n");
@@ -77,23 +78,36 @@ void workWithPhoneBook(PhoneBook* phoneBook, const int startingStringLength)
         switch (codeOfAction)
         {
             case 0:
-                return;
+            {
+                isInterrupted = true;
+                break;
+            }
             case 1:
+            {
                 addNumber(phoneBook, startingStringLength);
                 break;
+            }
             case 2:
+            {
                 findNumber(phoneBook, startingStringLength);
                 break;
+            }
             case 3:
+            {
                 findName(phoneBook, startingStringLength);
                 break;
+            }
             case 4:
+            {
                 saveDataToFile(phoneBook);
                 printf("Saved successfully.\n");
                 break;
+            }
             default:
+            {
                 printf("Error. Invalid command.\n");
                 break;
+            }
         }
     }
 }
