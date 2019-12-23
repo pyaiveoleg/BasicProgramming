@@ -59,8 +59,15 @@ void addRemainingOperators(Stack* stack, const int shiftForOperators, int* resul
     }
 }
 void parseOperator(char currentSymbol, const int shiftForOperators, Stack* stack, int* resultingArray,
-        int* currentIndexInResultingArray)
+        int* currentIndexInResultingArray, bool* wasOperatorBefore, bool* error)
 {
+    if (*wasOperatorBefore)
+    {
+        printf("Error.\n");
+        *error = true;
+        return;
+    }
+
     int frontValue = 0;
     bool isEmpty = false;
     peakOfStack(stack, &frontValue);
@@ -74,6 +81,7 @@ void parseOperator(char currentSymbol, const int shiftForOperators, Stack* stack
     }
 
     pushToStack(getcode(currentSymbol, shiftForOperators), stack);
+    *wasOperatorBefore = true;
 }
 
 void parseClosingBracket(Stack* stack, const int shiftForOperators, int* resultingArray,
@@ -92,6 +100,28 @@ void parseClosingBracket(Stack* stack, const int shiftForOperators, int* resulti
     popFromStack(stack, &poppedValue);
 }
 
+void parseNumber(bool* wasOperatorBefore, Stack* stack, bool* error, char currentSymbol, int* resultingArray,
+        char* inputExpression, int* i, int* currentNumber, int* currentIndexInResultingArray)
+{
+    if (!*wasOperatorBefore)
+    {
+        printf("Error.\n");
+        *error = true;
+        return;
+    }
+
+    while (isDigit(currentSymbol))
+    {
+        *currentNumber = *currentNumber * 10 + (int) currentSymbol - (int) '0';
+        (*i)++;
+        currentSymbol = inputExpression[*i];
+    }
+    addToResultingArray(resultingArray, currentIndexInResultingArray, *currentNumber);
+    *currentNumber = 0;
+    (*i)--;
+    *wasOperatorBefore = false;
+}
+
 bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
                            int* currentIndexInResultingArray, const int shiftForOperators)
 {
@@ -99,25 +129,26 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
     Stack* stack = createStack();
 
     size_t inputExpressionLength = strlen(inputExpression);
+    bool wasOperatorBefore = true;//начинаться должно с цифры
+    bool error = false;
 
-    for (size_t i = 0; i < inputExpressionLength; i++)
+    for (int i = 0; i < inputExpressionLength; i++)
     {
         char currentSymbol = inputExpression[i];
+        if (error)
+        {
+            deleteStack(stack);
+            return false;
+        }
         if (isOperator(currentSymbol))
         {
-            parseOperator(currentSymbol, shiftForOperators, stack, resultingArray, currentIndexInResultingArray);
+            parseOperator(currentSymbol, shiftForOperators, stack, resultingArray, currentIndexInResultingArray,
+                    &wasOperatorBefore, &error);
         }
         else if (isDigit(currentSymbol))
         {
-            while (isDigit(currentSymbol))
-            {
-                currentNumber = currentNumber * 10 + (int) currentSymbol - (int) '0';
-                i++;
-                currentSymbol = inputExpression[i];
-            }
-            addToResultingArray(resultingArray, currentIndexInResultingArray, currentNumber);
-            currentNumber = 0;
-            i--;
+            parseNumber(&wasOperatorBefore, stack, &error, currentSymbol, resultingArray,
+                             inputExpression, &i, &currentNumber, currentIndexInResultingArray);
         }
         else if (currentSymbol == '(')
         {
@@ -139,7 +170,6 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
         }
     }
 
-    bool error = false;
     addRemainingOperators(stack, shiftForOperators, resultingArray, currentIndexInResultingArray, &error);
     deleteStack(stack);
     if (error)
@@ -201,7 +231,7 @@ int main()
     printf("Please, write down the expression (with gaps between numbers and operators):\n");
     char* inputExpression = readString(startingStringLength);
 
-    int* resultingArray = (int*) malloc(sizeof(int) * strlen(inputExpression));
+    int* resultingArray = (int*) malloc(sizeof(int) * (2 * strlen(inputExpression)));
     for (size_t i = 0; i < strlen(inputExpression); i++)
     {
         resultingArray[i] = 0;
@@ -215,7 +245,7 @@ int main()
         return 0;
     }
 
-    char* resultingString = (char*) malloc(sizeof(char) * (strlen(inputExpression) + 2));
+    char* resultingString = (char*) malloc(sizeof(char) * (2 * strlen(inputExpression) + 1));
     resultingString[0] = '\0';
 
     convertResultingArrayToString(resultingArray, currentIndexInResultingArray, shiftForOperators,

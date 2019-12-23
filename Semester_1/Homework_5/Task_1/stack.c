@@ -88,12 +88,12 @@ Result deleteStack(Stack* stack)
     }
 
     StackElement* currentElement = stack->first;
-    StackElement** elementForDelete = &currentElement;
+    StackElement* elementForDelete = currentElement;
     while (currentElement != NULL)
     {
-        elementForDelete = &currentElement;
+        elementForDelete = currentElement;
         currentElement = currentElement->next;
-        free(*elementForDelete);
+        free(elementForDelete);
     }
     free(stack);
     return success;
