@@ -167,6 +167,7 @@ void convertResultingArrayToString(int* resultingArray, int sizeOfResultingArray
             strcat(resultingString, tempString);
         }
     }
+
     free(tempString);
 }
 
@@ -214,7 +215,7 @@ int main()
         return 0;
     }
 
-    char* resultingString = (char*) malloc(sizeof(char) * strlen(inputExpression));
+    char* resultingString = (char*) malloc(sizeof(char) * (strlen(inputExpression) + 2));
     resultingString[0] = '\0';
 
     convertResultingArrayToString(resultingArray, currentIndexInResultingArray, shiftForOperators,
