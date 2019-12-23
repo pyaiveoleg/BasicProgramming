@@ -40,7 +40,8 @@ Result pushToStackOfDouble(double value, StackOfDouble *stack)
         return fail;
     }
 
-    StackOfDoubleElement* stackElement = (StackOfDoubleElement*) malloc(sizeof(struct StackOfDoubleElement));
+
+    StackOfDoubleElement* stackElement = (StackOfDoubleElement*) malloc(sizeof(StackOfDoubleElement));
     stackElement->value = value;
     stackElement->next = stack->head;
 
@@ -86,12 +87,12 @@ Result deleteStackOfDouble(StackOfDouble* stack)
     }
 
     StackOfDoubleElement* currentElement = stack->head;
-    StackOfDoubleElement** elementForDelete = &currentElement;
+    StackOfDoubleElement* elementForDelete = currentElement;
     while (currentElement != NULL)
     {
-        elementForDelete = &currentElement;
+        elementForDelete = currentElement;
         currentElement = currentElement->next;
-        free(*elementForDelete);
+        free(elementForDelete);
     }
     free(stack);
     return success;
