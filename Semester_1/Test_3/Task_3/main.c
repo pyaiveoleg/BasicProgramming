@@ -137,6 +137,12 @@ int main()
     int quantityOfVertexes = 0;
     scanf("%d", &quantityOfVertexes);
 
+    if (quantityOfVertexes <= 0)
+    {
+        printf("Error. Threre need to be at least 1 vertex.\n");
+        return 0;
+    }
+
     printf("Please, write down quantity of edges in graph.\n");
     int quantityOfEdges = 0;
     scanf("%d", &quantityOfEdges);
