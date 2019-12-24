@@ -141,7 +141,7 @@ int main()
     int quantityOfEdges = 0;
     scanf("%d", &quantityOfEdges);
 
-    if (quantityOfEdges != 0)
+    if (quantityOfEdges > 0)
     {
         printf("Please, write down graph as Incidence matrix: -1 if vertex is end of edge,\n");
         printf("1 if vertex is begin of edge and 0 if they are not incident.\n");
