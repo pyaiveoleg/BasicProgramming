@@ -63,21 +63,8 @@ int** readArray(int height, int width)
     return array;
 }
 
-int main()
+void createMatrixOfReachability(int quantityOfEdges, int quantityOfVertexes, int** graph, bool** reachable)
 {
-    printf("Please, write down quantity of vertexes in graph.\n");
-    int quantityOfVertexes = 0;
-    scanf("%d", &quantityOfVertexes);
-
-    printf("Please, write down quantity of edges in graph.\n");
-    int quantityOfEdges = 0;
-    scanf("%d", &quantityOfEdges);
-
-    printf("Please, write down graph as Incidence matrix: -1 if vertex is end of edge,\n");
-    printf("1 if vertex is begin of edge and 0 if they are not incident.\n");
-
-    int** graph = readArray(quantityOfVertexes, quantityOfEdges);
-    bool** reachable = createTwoDimensionalBoolArray(quantityOfVertexes, quantityOfVertexes, false);
     for (int i = 0; i < quantityOfEdges; i++)
     {
         int numberOfBegin = -1;
@@ -99,7 +86,10 @@ int main()
     {
         reachable[i][i] = true;
     }
+}
 
+void findAllReachablePairs(int quantityOfVertexes, bool** reachable)
+{
     for (int k = 0; k < quantityOfVertexes; k++)
     {
         for (int i = 0; i < quantityOfVertexes; i++)
@@ -113,8 +103,12 @@ int main()
             }
         }
     }
+}
 
+void printVertexesReachableFromAllOthers(int quantityOfVertexes, bool** reachable)
+{
     printf("This is list of vertexes that are reachable from all other vertexes.\n");
+    int quantityOfRequiredVertexes = 0;
     for (int i = 0; i < quantityOfVertexes; i++)
     {
         bool allReachable = true;
@@ -128,8 +122,41 @@ int main()
         if (allReachable)
         {
             printf("%d\n", i + 1);
+            quantityOfRequiredVertexes++;
         }
     }
+    if (quantityOfRequiredVertexes == 0)
+    {
+        printf("List is empty.\n");
+    }
+}
+
+int main()
+{
+    printf("Please, write down quantity of vertexes in graph.\n");
+    int quantityOfVertexes = 0;
+    scanf("%d", &quantityOfVertexes);
+
+    printf("Please, write down quantity of edges in graph.\n");
+    int quantityOfEdges = 0;
+    scanf("%d", &quantityOfEdges);
+
+    if (quantityOfEdges != 0)
+    {
+        printf("Please, write down graph as Incidence matrix: -1 if vertex is end of edge,\n");
+        printf("1 if vertex is begin of edge and 0 if they are not incident.\n");
+    }
+    else
+    {
+        printf("There aren't edges at all.\n");
+    }
+
+    int** graph = readArray(quantityOfVertexes, quantityOfEdges);
+    bool** reachable = createTwoDimensionalBoolArray(quantityOfVertexes, quantityOfVertexes, false);
+
+    createMatrixOfReachability(quantityOfEdges, quantityOfVertexes, graph, reachable);
+    findAllReachablePairs(quantityOfVertexes, reachable);
+    printVertexesReachableFromAllOthers(quantityOfVertexes, reachable);
 
     deleteTwoDimensionalBoolArray(reachable, quantityOfVertexes);
     deleteTwoDimensionalArray(graph, quantityOfVertexes);
