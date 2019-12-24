@@ -74,7 +74,13 @@ void workWithPhoneBook(PhoneBook* phoneBook, const int startingStringLength)
     {
         printf("Press 1 to add phone number. Press 2 to find number by name.\n"
                "Press 3 to find name by number. Press 4 to export data to file. Press 0 to quit.\n");
-        scanf("%d", &codeOfAction);
+        while (scanf("%d", &codeOfAction) == 0)
+        {
+            printf("Error.\n");
+            scanf("%*[^\n]");
+        }
+        scanf("%*[^\n]");
+
         switch (codeOfAction)
         {
             case 0:

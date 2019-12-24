@@ -126,10 +126,9 @@ PhoneBook* importPhoneBookFromFile(int capacity)
     bool hasReachedEndOfFile = false;
     while (!hasReachedEndOfFile)
     {
-        char* currentPhone = readStringFromFile(&hasReachedEndOfFile, startingSizeOfString, phoneBookFile);
         char* currentName = readStringFromFile(&hasReachedEndOfFile, startingSizeOfString, phoneBookFile);
+        char* currentPhone = readStringFromFile(&hasReachedEndOfFile, startingSizeOfString, phoneBookFile);
         addRecord(&phoneBook, currentName, currentPhone);
-
         free(currentName);
         free(currentPhone);
     }
