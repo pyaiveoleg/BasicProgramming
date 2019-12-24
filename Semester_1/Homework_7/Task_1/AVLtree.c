@@ -46,7 +46,7 @@ void processSymmetricOrder(TreeElement* treeElement, int *array, int* sizeOfArra
     }
     processSymmetricOrder(treeElement->leftChild, array, sizeOfArray, maxSizeOfArray);
 
-    if (*sizeOfArray == *maxSizeOfArray)
+    if (*sizeOfArray == *maxSizeOfArray - 1)
     {
         (*maxSizeOfArray) *= 2;
         array = (int*) realloc(array, *maxSizeOfArray);
@@ -354,7 +354,7 @@ void delete(TreeElement* currentElement, int value, Tree* tree, TreeElement* par
     balance(currentElement, tree, parentElement);
 }
 
-Result deleteElement(Tree* tree, int value)
+Result deleteElement(Tree* tree, int value, bool* exists)
 {
     if (tree == NULL)
     {
@@ -364,6 +364,7 @@ Result deleteElement(Tree* tree, int value)
     if (tree->root == NULL)
     {
         printf("Tree is already empty.\n");
+        *exists = false;
         return success;
     }
     else
@@ -376,6 +377,7 @@ Result deleteElement(Tree* tree, int value)
         }
         else
         {
+            *exists = false;
             printf("There aren't such element.\n");
         }
     }

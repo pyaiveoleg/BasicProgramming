@@ -4,18 +4,6 @@
 
 #include "AVLtree.h"
 
-void clearArray(int* array, int* sizeOfArray, int* maxSizeOfArray, const int staringSizeOfArray)
-{
-    free(array);
-    array = malloc(sizeof(int) * staringSizeOfArray);
-    for (int i = 0; i < staringSizeOfArray; i++)
-    {
-        array[i] = 0;
-    }
-    *sizeOfArray = 0;
-    *maxSizeOfArray = staringSizeOfArray;
-}
-
 void printGreetingMessage()
 {
     printf("There are following commands:\n");
@@ -32,7 +20,13 @@ void add(bool* isCommand, Tree* set)
 {
     int numberToAdd = 0;
     printf("Write down number to add:\n");
-    scanf("%d", &numberToAdd);
+    while (scanf("%d", &numberToAdd) == 0)
+    {
+        printf("Error.\n");
+        scanf("%*[^\n]");
+    }
+    scanf("%*[^\n]");
+
     *isCommand = true;
     addElement(set, numberToAdd);
     printf("Successfully added\n");
@@ -42,17 +36,32 @@ void deleteFromSet(bool* isCommand, Tree* set)
 {
     int numberToDelete = 0;
     printf("Write down number to delete:\n");
-    scanf("%d", &numberToDelete);
+    while (scanf("%d", &numberToDelete) == 0)
+    {
+        printf("Error.\n");
+        scanf("%*[^\n]");
+    }
+    scanf("%*[^\n]");
+
     *isCommand = true;
-    deleteElement(set, numberToDelete);
-    printf("Successfully deleted\n");
+    bool exists = true;
+    deleteElement(set, numberToDelete, &exists);
+    if (exists)
+    {
+        printf("Successfully deleted\n");
+    }
 }
 
 void check(bool* isCommand, Tree* set)
 {
     int numberToCheck = 0;
     printf("Write down number to check:\n");
-    scanf("%d", &numberToCheck);
+    while (scanf("%d", &numberToCheck) == 0)
+    {
+        printf("Error.\n");
+        scanf("%*[^\n]");
+    }
+    scanf("%*[^\n]");
     *isCommand = true;
     bool existenceOfElement = false;
     findElement(set, numberToCheck, &existenceOfElement);
@@ -64,8 +73,7 @@ void printAscendingOrder(bool* isCommand, Tree* set, const int startingSizeOfArr
     *isCommand = true;
     int currentArraySize = 0;
     int maxArraySize = startingSizeOfArray;
-    int* elementsOfSet = malloc(sizeof(int) * maxArraySize);
-    clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
+    int* elementsOfSet = calloc(maxArraySize, sizeof(int));
 
     getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
     if (currentArraySize == 0)
@@ -88,8 +96,7 @@ void printDescendingOrder(bool* isCommand, Tree* set, const int startingSizeOfAr
     *isCommand = true;
     int currentArraySize = 0;
     int maxArraySize = startingSizeOfArray;
-    int* elementsOfSet = malloc(sizeof(int) * maxArraySize);
-    clearArray(elementsOfSet, &currentArraySize, &maxArraySize, startingSizeOfArray);
+    int* elementsOfSet = calloc(maxArraySize, sizeof(int));
 
     getSymmetricOrder(set, elementsOfSet, &currentArraySize, &maxArraySize);
     if (currentArraySize == 0)
@@ -121,12 +128,17 @@ void printABCOrder(bool* isCommand, Tree* set)
 
 void workWithSet(Tree* set, const int startingSizeOfArray)
 {
-    int inputCommand;
+    int inputCommand = 0;
     bool isCommand = false;
 
     while (true)
     {
-        scanf("%d", &inputCommand);
+        while (scanf("%d", &inputCommand) == 0)
+        {
+            printf("Error.\n");
+            scanf("%*[^\n]");
+        }
+        scanf("%*[^\n]");
 
         if (inputCommand == -1)
         {
