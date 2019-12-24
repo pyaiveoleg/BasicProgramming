@@ -16,7 +16,7 @@ bool isDigit(char symbol)
     return ((int) symbol >= (int) '0') && ((int) symbol <= (int) '9');
 }
 
-double binaryOperation(char currentSymbol, double firstOperand, double secondOperand)
+double binaryOperation(char currentSymbol, double firstOperand, double secondOperand, bool* dividingByZero)
 {
     switch (currentSymbol)
     {
@@ -34,6 +34,11 @@ double binaryOperation(char currentSymbol, double firstOperand, double secondOpe
         }
         case '/':
         {
+            if (secondOperand == 0)
+            {
+                *dividingByZero = true;
+                return 0;
+            }
             return firstOperand / secondOperand;
         }
     }
@@ -61,7 +66,14 @@ void countBinaryOperation(StackOfDouble* stack, char currentSymbol, bool* error)
     double firstOperand = 0;
     peakOfStackOfDouble(stack, &firstOperand);
     popFromStackOfDouble(stack);
-    pushToStackOfDouble(binaryOperation(currentSymbol, firstOperand, secondOperand), stack);
+    bool dividingByZero = false;
+    binaryOperation(currentSymbol, firstOperand, secondOperand, &dividingByZero);
+    if (dividingByZero)
+    {
+        *error = true;
+        return;
+    }
+    pushToStackOfDouble(binaryOperation(currentSymbol, firstOperand, secondOperand, &dividingByZero), stack);
 }
 
 bool countValueOfWholeExpression(char *inputExpression, double* resultingValue)
@@ -130,7 +142,8 @@ char* readString(size_t startingSizeOfString)
     {
         currentString[i] = (char) getchar();
         i++;
-        if (i >= currentStringSize) {
+        if (i >= currentStringSize)
+        {
             currentStringSize *= 2;
             currentString = (char *) realloc(currentString, sizeof(char) * currentStringSize);
         }
@@ -141,11 +154,11 @@ char* readString(size_t startingSizeOfString)
     return currentString;
 }
 
-int main() 
+int main()
 {
     const size_t startingSizeOfString = 1000;
     printf("Please, write down the expression:\n");
-    char* inputExpression = readString(startingSizeOfString);
+    char *inputExpression = readString(startingSizeOfString);
 
     double resultingValue = 0;
     if (!countValueOfWholeExpression(inputExpression, &resultingValue))
