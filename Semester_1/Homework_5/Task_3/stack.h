@@ -1,29 +1,31 @@
-#ifndef REALISATION_OF_STACK_STACK_H
-#define REALISATION_OF_STACK_STACK_H
+#pragma once
 
 #include <stdbool.h>
+
 struct Stack;
 struct StackElement;
 typedef struct Stack Stack;
 typedef struct StackElement StackElement;
 
-bool isStackEmpty(Stack *stack);
-bool pushToStack(int value, Stack *stack);
-int popFromStack(Stack *stack);
-int frontValueOfStack(Stack* stack);
-Stack* createStack();
-
-
 struct StackOfDouble;
-struct StackOfDoubleElement;
 typedef struct StackOfDouble StackOfDouble;
-typedef struct StackOfDoubleElement StackOfDoubleElement;
 
-bool isStackOfDoubleEmpty(StackOfDouble *stack);
-bool pushToStackOfDouble(double value, StackOfDouble *stack);
-double popFromStackOfDouble(StackOfDouble *stack);
-double frontValueOfStackOfDouble(StackOfDouble* stack);
+typedef enum Result
+{
+    success,
+    fail,
+} Result;
+
+Result isStackEmpty(Stack *stack, bool* isEmpty);
+Result pushToStack(int value, Stack *stack);
+Result popFromStack(Stack *stack, int* value);
+Result peakOfStack(Stack* stack, int* value);
+Stack* createStack();
+Result deleteStack(Stack* stack);
+
+Result isStackOfDoubleEmpty(StackOfDouble *stack, bool* isEmpty);
+Result pushToStackOfDouble(double value, StackOfDouble *stack);
+Result popFromStackOfDouble(StackOfDouble *stack);
+Result peakOfStackOfDouble(StackOfDouble* stackOfDouble, double* value);
 StackOfDouble* createStackOfDouble();
-
-
-#endif //REALISATION_OF_STACK_STACK_H
+Result deleteStackOfDouble(StackOfDouble* stack);
