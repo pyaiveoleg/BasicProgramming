@@ -279,6 +279,54 @@ int findMaxInSubTree(TreeElement* currentElement)
     return currentElement->rightChild == NULL ? currentElement->value : findMaxInSubTree(currentElement->rightChild);
 }
 
+void parseLeaf(TreeElement* currentElement, Tree* tree, bool isLeftChild, TreeElement* parentElement)
+{
+    if (currentElement == tree->root)
+    {
+        tree->root = NULL;
+    }
+    else if (isLeftChild)
+    {
+        parentElement->leftChild = NULL;
+    }
+    else
+    {
+        parentElement->rightChild = NULL;
+    }
+}
+
+void parseLeftNULL(TreeElement* currentElement, Tree* tree, bool isLeftChild, TreeElement* parentElement)
+{
+    if (currentElement == tree->root)
+    {
+        tree->root = currentElement->rightChild;
+    }
+    else if (isLeftChild)
+    {
+        parentElement->leftChild = currentElement->rightChild;
+    }
+    else
+    {
+        parentElement->rightChild = currentElement->rightChild;
+    }
+}
+
+void parseRightNULL(TreeElement* currentElement, Tree* tree, bool isLeftChild, TreeElement* parentElement)
+{
+    if (currentElement == tree->root)
+    {
+        tree->root = currentElement->leftChild;
+    }
+    if (isLeftChild)
+    {
+        parentElement->leftChild = currentElement->leftChild;
+    }
+    else
+    {
+        parentElement->rightChild = currentElement->leftChild;
+    }
+}
+
 void delete(TreeElement* currentElement, int value, Tree* tree, TreeElement* parentElement)
 {
     if (value < currentElement->value)
@@ -299,48 +347,15 @@ void delete(TreeElement* currentElement, int value, Tree* tree, TreeElement* par
 
         if ((currentElement->leftChild == NULL) && (currentElement->rightChild == NULL))
         {
-            if (currentElement == tree->root)
-            {
-                tree->root = NULL;
-            }
-            else if (isLeftChild)
-            {
-                parentElement->leftChild = NULL;
-            }
-            else
-            {
-                parentElement->rightChild = NULL;
-            }
+            parseLeaf(currentElement, tree, isLeftChild, parentElement);
         }
         else if (currentElement->leftChild == NULL)
         {
-            if (currentElement == tree->root)
-            {
-                tree->root = currentElement->rightChild;
-            }
-            else if (isLeftChild)
-            {
-                parentElement->leftChild = currentElement->rightChild;
-            }
-            else
-            {
-                parentElement->rightChild = currentElement->rightChild;
-            }
+            parseLeftNULL(currentElement, tree, isLeftChild, parentElement);
         }
         else if (currentElement->rightChild == NULL)
         {
-            if (currentElement == tree->root)
-            {
-                tree->root = currentElement->leftChild;
-            }
-            if (isLeftChild)
-            {
-                parentElement->leftChild = currentElement->leftChild;
-            }
-            else
-            {
-                parentElement->rightChild = currentElement->leftChild;
-            }
+            parseRightNULL(currentElement, tree, isLeftChild, parentElement);
         }
         else //внутренняя вершина
         {
@@ -348,8 +363,6 @@ void delete(TreeElement* currentElement, int value, Tree* tree, TreeElement* par
             delete(currentElement->leftChild, findMaxInSubTree(currentElement->leftChild), tree, currentElement);
             currentElement->value = newValueForElement;
         }
-
-
     }
 
     balance(currentElement, tree, parentElement);
