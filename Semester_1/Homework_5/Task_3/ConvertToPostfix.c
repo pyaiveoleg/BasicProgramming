@@ -175,11 +175,7 @@ bool convertInfixToPostfix(char *inputExpression, int resultingArray[],
 
     addRemainingOperators(stack, shiftForOperators, resultingArray, currentIndexInResultingArray, &error);
     deleteStack(stack);
-    if (error)
-    {
-        return false;
-    }
-    return true;
+    return !error;
 }
 
 void convertResultingArrayToString(int* resultingArray, int sizeOfResultingArray, int shiftForOperators,
