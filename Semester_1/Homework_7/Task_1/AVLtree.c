@@ -349,9 +349,14 @@ void delete(TreeElement* currentElement, int value, Tree* tree, TreeElement* par
             currentElement->value = newValueForElement;
         }
 
+
+    }
+
+    balance(currentElement, tree, parentElement);
+    if (value == currentElement->value)
+    {
         free(currentElement);
     }
-    balance(currentElement, tree, parentElement);
 }
 
 Result deleteElement(Tree* tree, int value, bool* exists)
