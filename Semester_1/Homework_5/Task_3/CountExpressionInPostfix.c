@@ -113,9 +113,5 @@ bool countValueOfWholeExpression(char *inputExpression, double* resultingValue)
     bool isStackEmpty = false;
     isStackOfDoubleEmpty(stack, &isStackEmpty);
     deleteStackOfDouble(stack);
-    if (!isStackEmpty)
-    {
-        return false;
-    }
-    return true;
+    return isStackEmpty;
 }
