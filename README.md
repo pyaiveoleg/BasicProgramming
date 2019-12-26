@@ -21,27 +21,27 @@ Here you can find the task and their solutions
 ## Semester №1 [:arrow_up:](https://github.com/pyaiveoleg/BasicProgramming/blob/master/README.md#navigation-menu)
 
 ### Homework №1 [:arrow_up:](https://github.com/pyaiveoleg/BasicProgramming/blob/master/README.md#navigation-menu)
-1. Написать программу, считающую значение формулы `x^4 + x^3 + x^2 + x + 1` за два умножения. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+1. Написать программу, считающую значение формулы `x^4 + x^3 + x^2 + x + 1` за два умножения. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_1/main.c)
 
-2. Реализовать алгоритм нахождения неполного частного от деления `a` на `b` (целые числа), используя только операции сложения, вычитания и умножения. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+2. Реализовать алгоритм нахождения неполного частного от деления `a` на `b` (целые числа), используя только операции сложения, вычитания и умножения. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_2/main.c)
 
-3. Дан массив целых чисел `x[1]...x[m+n]`, рассматриваемый как соединение двух его отрезков: начала `x[1]...x[m]` длины `m` и конца `x[m+1]...x[m+n]` длины `n`. Не используя дополнительных массивов, переставить начало и конец. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+3. Дан массив целых чисел `x[1]...x[m+n]`, рассматриваемый как соединение двух его отрезков: начала `x[1]...x[m]` длины `m` и конца `x[m+1]...x[m+n]` длины `n`. Не используя дополнительных массивов, переставить начало и конец. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_3/main.c)
 
-4. Посчитать число "счастливых билетов" (билет считается "счастливым", если сумма первых трёх цифр его номера равна сумме трёх последних). [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+4. Посчитать число "счастливых билетов" (билет считается "счастливым", если сумма первых трёх цифр его номера равна сумме трёх последних). [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_4/main.c)
 
-5. Написать программу проверки баланса скобок в исходной строке (т.е. число открывающих скобок равно числу закрывающих и выполняется правило вложенности скобок). [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+5. Написать программу проверки баланса скобок в исходной строке (т.е. число открывающих скобок равно числу закрывающих и выполняется правило вложенности скобок). [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_5/main.c)
 
-6. Заданы две строки: `s1` и `s2`. Найти количество вхождений `s2` в `s1` как подстроки. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+6. Заданы две строки: `s1` и `s2`. Найти количество вхождений `s2` в `s1` как подстроки. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_6/main.c)
 
-7. Написать программу, печатающую все простые числа, не превосходящие заданного числа. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+7. Написать программу, печатающую все простые числа, не превосходящие заданного числа. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_7/main.c)
 
-8. Реализовать подсчет факториала (рекурсивно и итеративно). [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+8. Реализовать подсчет факториала (рекурсивно и итеративно). [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_8/main.c)
 
-9. Посчитать целую степень числа: `a^n`. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+9. Посчитать целую степень числа: `a^n`. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_9/main.c)
 
-10. Реализовать программу, проверяющую, является ли строка палинромом. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+10. Реализовать программу, проверяющую, является ли строка палинромом. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_10/main.c)
 
-11. Реализовать быструю сортировку (в рекурсивном варианте). [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/main.c)
+11. Реализовать быструю сортировку (в рекурсивном варианте). [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_1/Task_11/main.c)
 
 ### Homework №2 [:arrow_up:](https://github.com/pyaiveoleg/BasicProgramming/blob/master/README.md#navigation-menu)
 1. Напечатать все представления натурального числа `N` суммой натуральных слагаемых. Перестановка слагаемых нового способа не дает. [[Solution]](https://github.com/pyaiveoleg/BasicProgramming/blob/master/Semester_1/Homework_2/Task_1/main.c)
