@@ -1,0 +1,7 @@
+Test string
+There
+All
+lines
+are
+not
+empty, quantity is seven
