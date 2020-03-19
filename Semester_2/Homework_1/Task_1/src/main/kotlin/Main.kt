@@ -15,6 +15,14 @@ fun reverse(start: Int, end: Int, array: IntArray)
     }
 }
 
+fun exchangeStartAndEnd(beginningLength: Int, endingLength: Int, array: IntArray)
+{
+    val arrayLength = beginningLength + endingLength
+    reverse(0, endingLength, array)
+    reverse(endingLength, arrayLength, array)
+    reverse(0, arrayLength, array)
+}
+
 fun main()
 {
     println("Please, write down length of beginning (M) and ending (N) of the array: ")
@@ -29,9 +37,7 @@ fun main()
         array[i] = scan.nextInt()
     }
 
-    reverse(0, beginningLength, array)
-    reverse(beginningLength, arrayLength, array)
-    reverse(0, arrayLength, array)
+    exchangeStartAndEnd(beginningLength, endingLength, array)
 
     println("Parsed array: ")
     for (i in 0 until arrayLength)
