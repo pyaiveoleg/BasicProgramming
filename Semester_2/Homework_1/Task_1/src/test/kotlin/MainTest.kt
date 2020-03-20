@@ -1,12 +1,9 @@
 import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
-import java.lang.IllegalArgumentException
 
 internal class MainTest {
-
     @Test
-    fun reverse_OneItemInArray() {
+    fun reverse_oneItemInArray() {
         val expected = intArrayOf(1)
         val actual = intArrayOf(1)
         reverse(0, 0, expected)
@@ -14,7 +11,7 @@ internal class MainTest {
     }
 
     @Test
-    fun reverse_StartLessThanZero() {
+    fun reverse_startLessThanZero() {
         val array = intArrayOf(1, 2)
         assertThrows(ArrayIndexOutOfBoundsException::class.java) {
             reverse(-1, 1, array)
@@ -22,7 +19,7 @@ internal class MainTest {
     }
 
     @Test
-    fun reverse_EndGreaterThanSize() {
+    fun reverse_endGreaterThanSize() {
         val array = intArrayOf(1, 2)
         assertThrows(ArrayIndexOutOfBoundsException::class.java) {
             reverse(1, 5, array)
@@ -30,7 +27,7 @@ internal class MainTest {
     }
 
     @Test
-    fun reverse_StartGreaterThanEnd() {
+    fun reverse_startGreaterThanEnd() {
         val expected = intArrayOf(1, 2, 3, 4)
         val actual = intArrayOf(1, 2, 3, 4)
         reverse(3, 1, expected)
@@ -38,7 +35,7 @@ internal class MainTest {
     }
 
     @Test
-    fun reverse_UsualCase() {
+    fun reverse_usualCase() {
         val expected = intArrayOf(1, 2, 3, 4, 5, 6)
         val actual = intArrayOf(6, 5, 4, 3, 2, 1)
         reverse(0, 6, expected)
@@ -46,7 +43,7 @@ internal class MainTest {
     }
 
     @Test
-    fun exchangeStartAndEnd_UsualCase() {
+    fun exchangeStartAndEnd_usualCase() {
         val expected = intArrayOf(1, 2, 3, 4, 5, 6)
         val actual = intArrayOf(5, 6, 1, 2, 3, 4)
         exchangeStartAndEnd(4, 2, actual)
@@ -54,7 +51,7 @@ internal class MainTest {
     }
 
     @Test
-    fun exchangeStartAndEnd_EndingIsZero() {
+    fun exchangeStartAndEnd_endingIsZero() {
         val expected = intArrayOf(1, 2, 3, 4, 5, 6)
         val actual = intArrayOf(1, 2, 3, 4, 5, 6)
         exchangeStartAndEnd(6, 0, actual)
@@ -62,7 +59,7 @@ internal class MainTest {
     }
 
     @Test
-    fun exchangeStartAndEnd_BeginningIsZero() {
+    fun exchangeStartAndEnd_beginningIsZero() {
         val expected = intArrayOf(1, 2, 3, 4, 5, 6)
         val actual = intArrayOf(1, 2, 3, 4, 5, 6)
         exchangeStartAndEnd(0, 6, actual)
@@ -70,7 +67,7 @@ internal class MainTest {
     }
 
     @Test
-    fun exchangeStartAndEnd_BeginPlusEndNotEqualToArrayLength() {
+    fun exchangeStartAndEnd_beginPlusEndNotEqualToArrayLength() {
         val expected = intArrayOf(1, 2, 3, 4, 5, 6)
         val actual = intArrayOf(2, 3, 4, 1, 5, 6)
         exchangeStartAndEnd(1, 3, actual)
@@ -78,7 +75,7 @@ internal class MainTest {
     }
 
     @Test
-    fun swap_Test() {
+    fun swap_test() {
         val expected = intArrayOf(1, 2, 3, 4, 5, 6)
         val actual = intArrayOf(1, 4, 3, 2, 5, 6)
         swap(1, 3, actual)
