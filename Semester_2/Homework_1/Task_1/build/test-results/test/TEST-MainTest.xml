@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="MainTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2020-03-19T10:21:33" hostname="WIN-HV7CF7SOVVU" time="0.033">
+<testsuite name="MainTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2020-03-20T08:28:54" hostname="WIN-HV7CF7SOVVU" time="0.035">
   <properties/>
-  <testcase name="swap_Test()" classname="MainTest" time="0.019"/>
-  <testcase name="exchangeStartAndEnd_UsualCase()" classname="MainTest" time="0.001"/>
-  <testcase name="exchangeStartAndEnd_BeginPlusEndNotEqualToArrayLength()" classname="MainTest" time="0.001"/>
-  <testcase name="reverse_OneItemInArray()" classname="MainTest" time="0.0"/>
-  <testcase name="reverse_StartLessThanZero()" classname="MainTest" time="0.002"/>
-  <testcase name="reverse_EndGreaterThanSize()" classname="MainTest" time="0.001"/>
-  <testcase name="exchangeStartAndEnd_BeginningIsZero()" classname="MainTest" time="0.0"/>
-  <testcase name="reverse_UsualCase()" classname="MainTest" time="0.001"/>
-  <testcase name="exchangeStartAndEnd_EndingIsZero()" classname="MainTest" time="0.001"/>
-  <testcase name="reverse_StartGreaterThanEnd()" classname="MainTest" time="0.0"/>
+  <testcase name="reverse_endGreaterThanSize()" classname="MainTest" time="0.018"/>
+  <testcase name="swap_test()" classname="MainTest" time="0.003"/>
+  <testcase name="reverse_usualCase()" classname="MainTest" time="0.001"/>
+  <testcase name="reverse_startGreaterThanEnd()" classname="MainTest" time="0.001"/>
+  <testcase name="reverse_oneItemInArray()" classname="MainTest" time="0.001"/>
+  <testcase name="reverse_startLessThanZero()" classname="MainTest" time="0.001"/>
+  <testcase name="exchangeStartAndEnd_endingIsZero()" classname="MainTest" time="0.001"/>
+  <testcase name="exchangeStartAndEnd_usualCase()" classname="MainTest" time="0.0"/>
+  <testcase name="exchangeStartAndEnd_beginningIsZero()" classname="MainTest" time="0.001"/>
+  <testcase name="exchangeStartAndEnd_beginPlusEndNotEqualToArrayLength()" classname="MainTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
