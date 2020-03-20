@@ -29,6 +29,11 @@ fun main() {
     println("Please, write down N:");
     val number = scan.nextInt()
 
-    println("Factorial of N (recursive): ${recursiveFactorial(number)}");
-    println("Factorial of N (iterative): ${iterativeFactorial(number)}")
+    try {
+        println("Factorial of N (recursive): ${recursiveFactorial(number)}");
+        println("Factorial of N (iterative): ${iterativeFactorial(number)}")
+    }
+    catch (exception: java.lang.IllegalArgumentException) {
+        println("Number must be positive. Try again.")
+    }
 }
