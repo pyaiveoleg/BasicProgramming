@@ -1,4 +1,4 @@
-package semester_2.homework_1.task_2
+package homeworks.homework_1.task_2
 
 fun recursiveFactorial(number: Int): Int {
     if (number < 0) {
