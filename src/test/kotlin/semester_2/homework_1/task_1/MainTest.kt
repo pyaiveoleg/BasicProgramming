@@ -1,5 +1,9 @@
+package semester_2.homework_1.task_1
+
 import org.junit.jupiter.api.Test
+
 import org.junit.jupiter.api.Assertions.*
+import java.util.*
 
 internal class MainTest {
     @Test
@@ -13,7 +17,7 @@ internal class MainTest {
     @Test
     fun reverse_startLessThanZero() {
         val array = intArrayOf(1, 2)
-        assertThrows(ArrayIndexOutOfBoundsException::class.java) {
+        assertThrows(IndexOutOfBoundsException::class.java) {
             reverse(-1, 1, array)
         }
     }
@@ -21,7 +25,7 @@ internal class MainTest {
     @Test
     fun reverse_endGreaterThanSize() {
         val array = intArrayOf(1, 2)
-        assertThrows(ArrayIndexOutOfBoundsException::class.java) {
+        assertThrows(IndexOutOfBoundsException::class.java) {
             reverse(1, 5, array)
         }
     }
@@ -39,6 +43,7 @@ internal class MainTest {
         val expected = intArrayOf(1, 2, 3, 4, 5, 6)
         val actual = intArrayOf(6, 5, 4, 3, 2, 1)
         reverse(0, 6, expected)
+        print(Arrays.toString(expected))
         assertArrayEquals(expected, actual)
     }
 
@@ -71,14 +76,6 @@ internal class MainTest {
         val expected = intArrayOf(1, 2, 3, 4, 5, 6)
         val actual = intArrayOf(2, 3, 4, 1, 5, 6)
         exchangeStartAndEnd(1, 3, actual)
-        assertArrayEquals(expected, actual)
-    }
-
-    @Test
-    fun swap_test() {
-        val expected = intArrayOf(1, 2, 3, 4, 5, 6)
-        val actual = intArrayOf(1, 4, 3, 2, 5, 6)
-        swap(1, 3, actual)
         assertArrayEquals(expected, actual)
     }
 }

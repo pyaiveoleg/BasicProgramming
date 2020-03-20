@@ -1,21 +1,17 @@
-fun swap(firstElement: Int, secondElement: Int, array: IntArray) {
-    val temporary = array.get(firstElement)
-    array.set(firstElement, array.get(secondElement))
-    array.set(secondElement, temporary)
-}
+package semester_2.homework_1.task_1
 
 fun reverse(start: Int, end: Int, array: IntArray) {
-    val endOfCycle = (start + end) / 2
-    for (i in start until endOfCycle) {
-        swap(i, start + end - 1 - i, array)
-    }
+    array.toList().subList(start, end).toTypedArray().reverse()
 }
 
 fun exchangeStartAndEnd(beginningLength: Int, endingLength: Int, array: IntArray) {
     val arrayLength = beginningLength + endingLength
-    reverse(0, endingLength, array)
-    reverse(endingLength, arrayLength, array)
-    reverse(0, arrayLength, array)
+    array.toList().subList(0, endingLength).toTypedArray().reverse()
+    array.toList().subList(endingLength, arrayLength).toTypedArray().reverse()
+    array.toList().subList(0, arrayLength).toTypedArray().reverse()
+//    reverse(0, endingLength, array)
+//    reverse(endingLength, arrayLength, array)
+//    reverse(0, arrayLength, array)
 }
 
 fun main() {
