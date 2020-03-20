@@ -21,6 +21,11 @@ internal class MainTest {
     }
 
     @Test
+    fun recursiveFactorial_numberIsBigPositive() {
+        assertEquals(39916800, recursiveFactorial(11))
+    }
+
+    @Test
     fun iterativeFactorial_numberIsZero() {
         assertEquals(1, recursiveFactorial(0))
     }
@@ -35,5 +40,10 @@ internal class MainTest {
         assertThrows(IllegalArgumentException::class.java) {
             iterativeFactorial(-4)
         }
+    }
+
+    @Test
+    fun iterativeFactorial_numberIsBigPositive() {
+        assertEquals(39916800, recursiveFactorial(11))
     }
 }
