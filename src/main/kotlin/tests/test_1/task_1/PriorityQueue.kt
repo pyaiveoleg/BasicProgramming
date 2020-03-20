@@ -3,7 +3,7 @@ package tests.test_1.task_1
 import java.io.InvalidObjectException
 
 class PriorityQueue {
-    var size = 0
+    private var size = 0
     val list = mutableListOf<Int>()
     val values = mutableListOf<Any>()
 
@@ -11,13 +11,13 @@ class PriorityQueue {
         this.size += 1
         list.add(priority)
         values.add(value)
-        var i: Int = this.size - 1
-        var parent = (i - 1) / 2
-        while (i > 0 && list.get(parent) > list.get(i)) {
-            swap(this.list.toMutableList(), i, parent)
-            swap(values, i, parent)
-            i = parent
-            parent = (i - 1) / 2
+        var currentElement = this.size - 1
+        var parent = (currentElement - 1) / 2
+        while (currentElement > 0 && list.get(parent) > list.get(currentElement)) {
+            swap(this.list.toMutableList(), currentElement, parent)
+            swap(values, currentElement, parent)
+            currentElement = parent
+            parent = (currentElement - 1) / 2
         }
     }
 
@@ -46,6 +46,6 @@ class PriorityQueue {
 
     public fun printQueue()
     {
-        print(this.list.toString())
+        print(this.values.toString())
     }
 }
