@@ -1,36 +1,28 @@
 val scan = java.util.Scanner(System.`in`)
 
-fun countInclusions(inputString: String, pattern: String) : Int
-{
+fun countInclusions(inputString: String, pattern: String): Int {
     val patternLength = pattern.length
     val stringLength = inputString.length
     var isIncluded = true
     var quantityOfInclusions = 0
 
-    for (i in 0 .. stringLength - patternLength)
-    {
-        for (j in 0 .. patternLength - 1)
-        {
-            if (pattern[j] != inputString[i + j])
-            {
+    for (i in 0..stringLength - patternLength) {
+        for (j in 0..patternLength - 1) {
+            if (pattern[j] != inputString[i + j]) {
                 isIncluded = false
                 break
             }
         }
-        if (isIncluded)
-        {
+        if (isIncluded) {
             quantityOfInclusions++
-        }
-        else
-        {
+        } else {
             isIncluded = true
         }
     }
     return quantityOfInclusions
 }
 
-fun main()
-{
+fun main() {
     println("Please, write down pattern (s1): ")
     val pattern = scan.nextLine()
     println("Please, write down string (s2): ")
