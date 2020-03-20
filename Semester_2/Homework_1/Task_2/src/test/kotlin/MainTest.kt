@@ -1,10 +1,8 @@
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
-import java.lang.IllegalArgumentException
 
 internal class MainTest {
-
     @Test
     fun recursiveFactorial_numberIsZero() {
         assertEquals(1, recursiveFactorial(0))

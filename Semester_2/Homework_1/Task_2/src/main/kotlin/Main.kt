@@ -1,49 +1,36 @@
-import java.lang.Exception
-import java.lang.IllegalArgumentException
-
-val scan = java.util.Scanner(System.`in`)
-
-fun recursiveFactorial(number: Int) : Int
-{
-    if (number < 0)
-    {
+fun recursiveFactorial(number: Int): Int {
+    if (number < 0) {
         throw IllegalArgumentException("Number must be positive")
     }
 
-    if (number == 0)
-    {
+    if (number == 0) {
         return 1
     }
 
-    if (number > 1)
-    {
+    if (number > 1) {
         return number * recursiveFactorial(number - 1)
     }
     return number
 }
 
-fun iterativeFactorial(number: Int) : Int?
-{
-    if (number < 0)
-    {
+fun iterativeFactorial(number: Int): Int? {
+    if (number < 0) {
         throw IllegalArgumentException("Number must be positive")
     }
 
-    if (number == 0)
-    {
+    if (number == 0) {
         return 1
     }
 
     var factorial = 1
-    for (i in 2 .. number)
-    {
+    for (i in 2..number) {
         factorial = factorial * i
     }
     return factorial
 }
 
-fun main()
-{
+fun main() {
+    val scan = java.util.Scanner(System.`in`)
     println("Please, write down N:");
     val number = scan.nextInt()
 
