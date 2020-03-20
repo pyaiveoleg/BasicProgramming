@@ -32,8 +32,7 @@ fun main() {
     try {
         println("Factorial of N (recursive): ${recursiveFactorial(number)}")
         println("Factorial of N (iterative): ${iterativeFactorial(number)}")
-    }
-    catch (exception: java.lang.IllegalArgumentException) {
+    } catch (exception: java.lang.IllegalArgumentException) {
         println("Number must be positive. Try again.")
     }
 }
