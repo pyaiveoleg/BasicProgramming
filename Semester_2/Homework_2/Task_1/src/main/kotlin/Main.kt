@@ -1,9 +1,9 @@
 import java.util.Scanner
 val scan = Scanner(System.`in`)
 
-fun distinct(originalList: List<Int>) : List<Int>
+fun removeRepeatingElements(originalArray: Array<Int>) : Array<Int>
 {
-    return originalList.distinct()
+    return originalArray.distinct().toTypedArray()
 }
 
 fun main()
@@ -16,5 +16,5 @@ fun main()
     {
         originalList[i] = scan.nextInt()
     }
-    println("This is distincted list:\n" + originalList.distinct())
+    println("This is distincted list:\n" + removeRepeatingElements(originalList))
 }
