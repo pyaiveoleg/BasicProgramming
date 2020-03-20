@@ -1,3 +1,5 @@
+package semester_2.homework_1.task_2
+
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test

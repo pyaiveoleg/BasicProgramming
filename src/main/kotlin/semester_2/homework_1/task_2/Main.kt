@@ -1,3 +1,5 @@
+package semester_2.homework_1.task_2
+
 fun recursiveFactorial(number: Int): Int {
     if (number < 0) {
         throw IllegalArgumentException("Number must be positive")
@@ -7,19 +9,12 @@ fun recursiveFactorial(number: Int): Int {
         return 1
     }
 
-    if (number > 1) {
-        return number * recursiveFactorial(number - 1)
-    }
-    return number
+    return number * recursiveFactorial(number - 1)
 }
 
-fun iterativeFactorial(number: Int): Int? {
+fun iterativeFactorial(number: Int): Int {
     if (number < 0) {
         throw IllegalArgumentException("Number must be positive")
-    }
-
-    if (number == 0) {
-        return 1
     }
 
     var factorial = 1
