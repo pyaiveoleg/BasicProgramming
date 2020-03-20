@@ -1,4 +1,4 @@
-package homeworks.homework_1.task_2
+package homeworks.homework1.task2
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
