@@ -32,7 +32,7 @@ internal class MainTest {
     }
 
     @Test
-    fun removeRepeatingElements_allEqualAreNotInRowAnd() {
+    fun removeRepeatingElements_allEqualAreNotInRow() {
         val expected = intArrayOf(2, 1).toTypedArray()
         val actual = removeRepeatingElements(intArrayOf(2, 1, 2, 1, 2, 1, 1, 2).toTypedArray())
         assertArrayEquals(expected, actual)
