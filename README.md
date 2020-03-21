@@ -17,7 +17,6 @@ Here you can find the task and their solutions
 [Test №3](https://github.com/pyaiveoleg/BasicProgramming/blob/master/README.md#test-3-arrow_up) |
 
 
-
 ## Semester №1 [:arrow_up:](https://github.com/pyaiveoleg/BasicProgramming/blob/master/README.md#navigation-menu)
 
 ### Homework №1 [:arrow_up:](https://github.com/pyaiveoleg/BasicProgramming/blob/master/README.md#navigation-menu)
