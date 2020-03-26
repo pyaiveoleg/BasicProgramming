@@ -14,7 +14,12 @@ fun checkPalindrome(inputString: String): Boolean {
 
 fun main() {
     println("Please, write down the string: ")
-    val inputString = readLine()!!
+    val inputString = readLine()
+    if (inputString == null)
+    {
+        print("The input string cannot be null.\n")
+        return
+    }
 
     if (checkPalindrome(inputString)) {
         println("String is palindrome")
