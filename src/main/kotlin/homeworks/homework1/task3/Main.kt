@@ -7,20 +7,11 @@ fun countInclusions(inputString: String?, pattern: String?): Int {
 
     val patternLength = pattern.length
     val stringLength = inputString.length
-    var isIncluded = true
     var quantityOfInclusions = 0
 
     for (i in 0..stringLength - patternLength) {
-        for (j in 0..patternLength - 1) {
-            if (pattern[j] != inputString[i + j]) {
-                isIncluded = false
-                break
-            }
-        }
-        if (isIncluded) {
+        if (inputString.slice(i until i + patternLength) == pattern) {
             quantityOfInclusions++
-        } else {
-            isIncluded = true
         }
     }
     return quantityOfInclusions

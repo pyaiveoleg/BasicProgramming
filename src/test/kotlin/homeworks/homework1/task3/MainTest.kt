@@ -1,9 +1,28 @@
 package homeworks.homework1.task3
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
 
 internal class MainTest {
+    @Test
+    fun countInclusions_stringIsNull() {
+        val inputString = null
+        val pattern = "Test_string"
+        assertThrows(IllegalArgumentException::class.java) {
+            countInclusions(inputString, pattern)
+        }
+    }
+
+    @Test
+    fun countInclusions_patternIsNull() {
+        val inputString = "Test_string"
+        val pattern = null
+        assertThrows(IllegalArgumentException::class.java) {
+            countInclusions(inputString, pattern)
+        }
+    }
+
     @Test
     fun countInclusions_stringsAreEqual() {
         val inputString = "Test_string"
