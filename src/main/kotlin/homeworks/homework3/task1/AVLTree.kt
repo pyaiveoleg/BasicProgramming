@@ -134,23 +134,24 @@ class AVLTree<K : Comparable<K>, V> {
     }
 
     private fun find(key: K, currentNode: Node<K, V>): V? {
+        var value: V? = currentNode.value
         if (key < currentNode.key) {
             val leftChild = currentNode.leftChild
-            return if (leftChild == null) {
-                null
+            if (leftChild == null) {
+                value = null
             } else {
-                find(key, leftChild)
+                value = find(key, leftChild)
             }
         }
         if (key > currentNode.key) {
             val rightChild = currentNode.rightChild
-            return if (rightChild == null) {
-                null
+            if (rightChild == null) {
+                value = null
             } else {
-                find(key, rightChild)
+                value = find(key, rightChild)
             }
         }
-        return currentNode.value
+        return value
     }
 
     fun containsElement(key: K): Boolean {
