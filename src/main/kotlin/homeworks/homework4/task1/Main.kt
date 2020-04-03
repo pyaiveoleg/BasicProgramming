@@ -13,6 +13,7 @@ private const val CODE_OF_IMPORT = 6
 private const val CODE_OF_EXIT = 7
 private const val SIZE_OF_HASH = 1000
 private const val MAX_LOAD_FACTOR = 0.9
+private const val BIG_PRIMARY_NUMBER = 1000000009.0
 
 fun main() {
     val hashTable = HashTable(SIZE_OF_HASH, MAX_LOAD_FACTOR) { string: String -> calculatePolynomialHash(string) }
@@ -29,11 +30,10 @@ private fun calculateSimpleHash(string: String): Int {
 }
 
 fun calculatePolynomialHash(string: String): Int {
-    val bigPrimaryNumber = 1000000009.0
     var hash = 0
     var index = 0
     for (character in string) {
-        hash += (character.toInt() * bigPrimaryNumber.pow(index)).toInt()
+        hash += (character.toInt() * BIG_PRIMARY_NUMBER.pow(index)).toInt()
         index++
     }
     return hash
