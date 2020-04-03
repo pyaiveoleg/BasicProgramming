@@ -98,7 +98,7 @@ internal class HashTableTest {
     }
 
     private fun calculatePolynomialHash(string: String): Int {
-        val bigPrimaryNumber = (10.0.pow(9.0) + 9)
+        val bigPrimaryNumber = 1000000009.0
         var hash = 0
         var index = 0
         for (character in string) {

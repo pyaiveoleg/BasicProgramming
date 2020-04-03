@@ -24,7 +24,8 @@ class HashTable(private var sizeOfHash: Int, private var maxLoadFactor: Double, 
     }
 
     private fun expandHashTable() {
-        sizeOfHash *= 2
+        val valueForExpand = 2
+        sizeOfHash *= valueForExpand
         redistributeElements()
     }
 
@@ -67,10 +68,7 @@ class HashTable(private var sizeOfHash: Int, private var maxLoadFactor: Double, 
             return false
         }
         val hash = abs(calculateHash(string)) % sizeOfHash
-        if (string in array[hash].key) {
-            return true
-        }
-        return false
+        return string in array[hash].key
     }
 
     fun printStatistics() {

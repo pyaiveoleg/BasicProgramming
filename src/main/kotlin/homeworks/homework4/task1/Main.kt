@@ -20,7 +20,7 @@ private fun calculateSimpleHash(string: String): Int {
 }
 
 fun calculatePolynomialHash(string: String): Int {
-    val bigPrimaryNumber = (10.0.pow(9.0) + 9)
+    val bigPrimaryNumber = 1000000009.0
     var hash = 0
     var index = 0
     for (character in string) {
@@ -51,15 +51,24 @@ fun changeHash(codeOfHash: Int): (String) -> Int {
 
 fun workWithTable(hashTable: HashTable) {
     println("Type '0' for list of commands.")
+    val codeOfHelp = 0
+    val codeOfAdd = 1
+    val codeOfSearch = 2
+    val codeOfRemove = 3
+    val codeOfChangeHash = 4
+    val codeOfPrintStatistics = 5
+    val codeOfImport = 6
+    val codeOfExit = 7
+
     while (true) {
         when (readLine()?.toInt() ?: 0) {
-            0 -> printHelp()
-            1 -> {
+            codeOfHelp -> printHelp()
+            codeOfAdd -> {
                 println("Write down value for adding:")
                 hashTable.addToTable(readLine())
                 println("Successfully added")
             }
-            2 -> {
+            codeOfSearch -> {
                 println("Write down value for search:")
                 if (hashTable.search(readLine())) {
                     println("This string is in table")
@@ -67,27 +76,27 @@ fun workWithTable(hashTable: HashTable) {
                     println("This string is not in table")
                 }
             }
-            3 -> {
+            codeOfRemove -> {
                 println("Write down value to remove")
                 hashTable.deleteFromTable(readLine())
                 println("Successfully deleted")
             }
-            4 -> {
+            codeOfChangeHash -> {
                 print("Choose hash-function: 1 for polynomial hash, 2 for simple hash")
                 val hashFunction =
                     changeHash(readLine()?.toInt() ?: throw IllegalArgumentException("invalid code of hash"))
                 hashTable.changeHash(hashFunction)
             }
-            5 -> {
+            codeOfPrintStatistics -> {
                 hashTable.printStatistics()
             }
-            6 -> {
+            codeOfImport -> {
                 val inputFile = File("./src/resources/kotlin/homeworks/homework4/task1/testFile.txt")
                 for (string in inputFile.readLines()) {
                     hashTable.addToTable(string)
                 }
             }
-            7 -> return
+            codeOfExit -> return
         }
     }
 }
