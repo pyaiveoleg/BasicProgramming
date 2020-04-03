@@ -15,10 +15,17 @@ class ArithmeticTree {
 
         fun calculateValue(): Double {
             val operator = this.operator ?: return value
-            leftChild?.calculateValue()
-            rightChild?.calculateValue()
-            val leftValue = leftChild?.value ?: throw IllegalArgumentException("First operand doesn't exist.")
-            val rightValue = rightChild?.value ?: throw IllegalArgumentException("Second operand doesn't exist.")
+            val leftChild = this.leftChild
+            val rightChild = this.rightChild
+            if (leftChild == null || rightChild == null) {
+                throw IllegalArgumentException("One of operands doesn't exist.")
+            }
+
+            leftChild.calculateValue()
+            rightChild.calculateValue()
+            val leftValue = leftChild.value
+            val rightValue = rightChild.value
+
             if (operator in listOfOperators) {
                 when (operator) {
                     '+' -> value = leftValue + rightValue
@@ -28,17 +35,18 @@ class ArithmeticTree {
                 }
                 return value
             }
-            throw IllegalArgumentException("Illegal operator") //Operator isn't in list of operators
+            throw IllegalArgumentException("Illegal operator")
         }
 
         fun importSubtree(currentIndex: Int, stringWithTree: String): Int {
             var leftChildWasCreated = false
-            if (stringWithTree[currentIndex].isDigit()) { //tree contains of one element
-                this.value = stringWithTree.slice(currentIndex until stringWithTree.length - 1).toDouble()
-                return stringWithTree.length
-            }
             var index = currentIndex
-            while (index < stringWithTree.length){
+            if (stringWithTree[currentIndex].isDigit()) {
+                this.value = stringWithTree.slice(currentIndex until stringWithTree.length - 1).toDouble()
+                index = stringWithTree.length
+            }
+
+            while (index < stringWithTree.length) {
                 when {
                     stringWithTree[index] in listOfOperators -> {
                         this.operator = stringWithTree[index]
@@ -82,7 +90,7 @@ class ArithmeticTree {
         }
 
         fun printSubtree(): String {
-            return "([operator: $operator, value: $value] ${leftChild?.printSubtree()} ${rightChild?.printSubtree()})" //а если оператор
+            return "([operator: $operator, value: $value] ${leftChild?.printSubtree()} ${rightChild?.printSubtree()})"
         }
     }
 
