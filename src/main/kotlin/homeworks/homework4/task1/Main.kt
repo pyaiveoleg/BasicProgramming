@@ -3,10 +3,19 @@ package homeworks.homework4.task1
 import java.io.File
 import kotlin.math.pow
 
+private const val CODE_OF_HELP = 0
+private const val CODE_OF_ADD = 1
+private const val CODE_OF_SEARCH = 2
+private const val CODE_OF_REMOVE = 3
+private const val CODE_OF_CHANGE_HASH = 4
+private const val CODE_OF_PRINT_STATISTICS = 5
+private const val CODE_OF_IMPORT = 6
+private const val CODE_OF_EXIT = 7
+private const val SIZE_OF_HASH = 1000
+private const val MAX_LOAD_FACTOR = 0.9
+
 fun main() {
-    val sizeOfHash = 1000
-    val maxLoadFactor = 0.9
-    val hashTable = HashTable(sizeOfHash, maxLoadFactor) { string: String -> calculatePolynomialHash(string) }
+    val hashTable = HashTable(SIZE_OF_HASH, MAX_LOAD_FACTOR) { string: String -> calculatePolynomialHash(string) }
 
     workWithTable(hashTable)
 }
@@ -31,14 +40,14 @@ fun calculatePolynomialHash(string: String): Int {
 }
 
 fun printHelp() {
-    println("0 - show help")
-    println("1 - add value to table")
-    println("2 - find value in the table")
-    println("3 - remove value from table")
-    println("4 - change hash-function (from list of built-in functions)")
-    println("5 - show statistics")
-    println("6 - import table from file")
-    println("7 - exit")
+    println("$CODE_OF_HELP - show help")
+    println("$CODE_OF_ADD - add value to table")
+    println("$CODE_OF_SEARCH - find value in the table")
+    println("$CODE_OF_REMOVE - remove value from table")
+    println("$CODE_OF_CHANGE_HASH - change hash-function (from list of built-in functions)")
+    println("$CODE_OF_PRINT_STATISTICS - show statistics")
+    println("$CODE_OF_IMPORT - import table from file")
+    println("$CODE_OF_EXIT - exit")
 }
 
 fun changeHash(codeOfHash: Int): (String) -> Int {
@@ -50,25 +59,16 @@ fun changeHash(codeOfHash: Int): (String) -> Int {
 }
 
 fun workWithTable(hashTable: HashTable) {
-    println("Type '0' for list of commands.")
-    val codeOfHelp = 0
-    val codeOfAdd = 1
-    val codeOfSearch = 2
-    val codeOfRemove = 3
-    val codeOfChangeHash = 4
-    val codeOfPrintStatistics = 5
-    val codeOfImport = 6
-    val codeOfExit = 7
-
+    println("Type '$CODE_OF_HELP' for list of commands.")
     while (true) {
         when (readLine()?.toInt() ?: 0) {
-            codeOfHelp -> printHelp()
-            codeOfAdd -> {
+            CODE_OF_HELP -> printHelp()
+            CODE_OF_ADD -> {
                 println("Write down value for adding:")
                 hashTable.addToTable(readLine())
                 println("Successfully added")
             }
-            codeOfSearch -> {
+            CODE_OF_SEARCH -> {
                 println("Write down value for search:")
                 if (hashTable.search(readLine())) {
                     println("This string is in table")
@@ -76,27 +76,27 @@ fun workWithTable(hashTable: HashTable) {
                     println("This string is not in table")
                 }
             }
-            codeOfRemove -> {
+            CODE_OF_REMOVE -> {
                 println("Write down value to remove")
                 hashTable.deleteFromTable(readLine())
                 println("Successfully deleted")
             }
-            codeOfChangeHash -> {
+            CODE_OF_CHANGE_HASH -> {
                 print("Choose hash-function: 1 for polynomial hash, 2 for simple hash")
                 val hashFunction =
                     changeHash(readLine()?.toInt() ?: throw IllegalArgumentException("invalid code of hash"))
                 hashTable.changeHash(hashFunction)
             }
-            codeOfPrintStatistics -> {
+            CODE_OF_PRINT_STATISTICS -> {
                 hashTable.printStatistics()
             }
-            codeOfImport -> {
+            CODE_OF_IMPORT -> {
                 val inputFile = File("./src/resources/kotlin/homeworks/homework4/task1/testFile.txt")
                 for (string in inputFile.readLines()) {
                     hashTable.addToTable(string)
                 }
             }
-            codeOfExit -> return
+            CODE_OF_EXIT -> return
         }
     }
 }

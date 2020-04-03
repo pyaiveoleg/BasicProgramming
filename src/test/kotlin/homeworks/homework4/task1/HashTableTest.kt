@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.math.pow
 
+private const val BIG_PRIMARY_NUMBER = 1000000009.0
+
 internal class HashTableTest {
     private val sizeOfHash = 1000
     private val maxLoadFactor = 0.9
@@ -98,11 +100,10 @@ internal class HashTableTest {
     }
 
     private fun calculatePolynomialHash(string: String): Int {
-        val bigPrimaryNumber = 1000000009.0
         var hash = 0
         var index = 0
         for (character in string) {
-            hash += (character.toInt() * bigPrimaryNumber.pow(index)).toInt()
+            hash += (character.toInt() * BIG_PRIMARY_NUMBER.pow(index)).toInt()
             index++
         }
         return hash
