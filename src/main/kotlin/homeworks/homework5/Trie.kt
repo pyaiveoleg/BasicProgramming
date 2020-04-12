@@ -24,7 +24,9 @@ class Trie {
         if (element[currentIndex] !in currentNode.edges.keys) {
             notContainsString = true
         }
-        return addElement(element, currentIndex + 1, currentNode.edges.getOrPut(element[currentIndex], { Node() }), notContainsString)
+        return addElement(element, currentIndex + 1,
+            currentNode.edges.getOrPut(element[currentIndex], { Node() }), notContainsString
+        )
     }
 
     fun add(element: String): Boolean {
@@ -35,7 +37,9 @@ class Trie {
         return when {
             currentIndex == element.length -> true
             element[currentIndex] !in currentNode.edges.keys -> false
-            else -> containsElement(element, currentIndex + 1, currentNode.edges.getOrPut(element[currentIndex], { Node() }))
+            else -> containsElement(element, currentIndex + 1,
+                currentNode.edges.getOrPut(element[currentIndex], { Node() })
+            )
         }
     }
 
@@ -84,14 +88,18 @@ class Trie {
     }
 
     fun howManyStartWithPrefix(prefix: String): Int {
-        return howManyStartWithPrefixRecursive(prefix,0, root)
+        return howManyStartWithPrefixRecursive(prefix, 0, root)
     }
 
     private fun areSubtriesEqual(firstRoot: Node, secondRoot: Node): Boolean {
         var areEquals = true
         if (firstRoot.isTerminal == secondRoot.isTerminal && firstRoot.edges.size == secondRoot.edges.size) {
             for (character in firstRoot.edges.keys) {
-                if (!areSubtriesEqual(firstRoot.edges[character] ?: break, secondRoot.edges[character] ?: return false)) {
+                if (!areSubtriesEqual(
+                        firstRoot.edges[character] ?: break,
+                        secondRoot.edges[character] ?: return false
+                    )
+                ) {
                     areEquals = false
                 }
             }
@@ -132,7 +140,7 @@ class Trie {
                     letter = jsonList[index]
                     index++
                 }
-                jsonList[index] == ' ' || jsonList[index] == ',' ||  jsonList[index] == ':' -> {
+                jsonList[index] == ' ' || jsonList[index] == ',' || jsonList[index] == ':' -> {
                     index++
                 }
                 jsonList[index] == '{' -> {
@@ -148,23 +156,27 @@ class Trie {
         return index + 1
     }
 
-    private fun deserializeSubtrie(currentIndex: Int, stringWithTrie: String): Pair <Node, Int> {
+    private fun deserializeSubtrie(currentIndex: Int, stringWithTrie: String): Pair<Node, Int> {
         val node = Node()
         var index = currentIndex
         loop@ while (index < stringWithTrie.length) {
             when {
                 stringWithTrie[index] == '\"' -> {
-                    val endOfParameter = stringWithTrie.slice(index + 1 until stringWithTrie.length).indexOf('\"')
-                    val parameter = stringWithTrie.slice(index + 1 .. index + endOfParameter)
+                    val endOfParameter = stringWithTrie.slice(
+                        index + 1 until stringWithTrie.length
+                    ).indexOf('\"')
+                    val parameter = stringWithTrie.slice(index + 1..index + endOfParameter)
                     index += endOfParameter + 4
                     if (parameter == "isTerminal") {
-                        val endOfValue = stringWithTrie.slice(index + 1 until stringWithTrie.length).indexOf('\"')
-                        val value = stringWithTrie.slice(index + 1.. index + endOfValue).toBoolean()
+                        val endOfValue = stringWithTrie.slice(
+                            index + 1 until stringWithTrie.length
+                        ).indexOf('\"')
+                        val value = stringWithTrie.slice(index + 1..index + endOfValue).toBoolean()
                         index += endOfValue + 4
                         node.isTerminal = value
                     }
                 }
-                stringWithTrie[index] == '['-> {
+                stringWithTrie[index] == '[' -> {
                     index = parseList(index, stringWithTrie, node)
                 }
                 stringWithTrie[index] == ' ' || stringWithTrie[index] == '{' -> {
