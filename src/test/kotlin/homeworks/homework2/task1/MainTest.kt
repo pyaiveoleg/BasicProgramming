@@ -28,14 +28,14 @@ internal class MainTest {
 
     @Test
     fun removeRepeatingElements_equalAreNotInRow() {
-        val expected = intArrayOf(1, 2, 3)
+        val expected = intArrayOf(2, 3, 1)
         val actual = removeRepeatingElements(intArrayOf(1, 2, 1, 3, 1))
         assertArrayEquals(expected, actual)
     }
 
     @Test
     fun removeRepeatingElements_allEqualAreNotInRow() {
-        val expected = intArrayOf(2, 1)
+        val expected = intArrayOf(1, 2)
         val actual = removeRepeatingElements(intArrayOf(2, 1, 2, 1, 2, 1, 1, 2))
         assertArrayEquals(expected, actual)
     }

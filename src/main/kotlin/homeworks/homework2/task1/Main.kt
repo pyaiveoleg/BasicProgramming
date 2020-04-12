@@ -3,7 +3,7 @@ package homeworks.homework2.task1
 import java.util.Scanner
 
 fun removeRepeatingElements(originalArray: IntArray): IntArray {
-    return originalArray.distinct().toIntArray()
+    return originalArray.reversed().distinct().reversed().toIntArray()
 }
 
 fun main() {
