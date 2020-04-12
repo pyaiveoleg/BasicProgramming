@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.OutputStream
 
 internal class TrieTest {
     @Test
@@ -182,5 +183,39 @@ internal class TrieTest {
         val inp = FileInputStream("./src/test/resources/homeworks/homework5/task1/SerializeComplicatedTrie.txt")
         trieForDeserialize.deserialize(inp)
         assertEquals(true, actualTrie.equalToTrie(trieForDeserialize))
+    }
+
+    @Test
+    fun howManyStartWithPrefix_allWithEqualPrefix() {
+        val trie = Trie()
+        trie.add("abc")
+        trie.add("abd")
+        trie.add("abe")
+        trie.add("ab")
+        trie.add("abcd")
+        print(trie.serialize(OutputStream.nullOutputStream()))
+        assertEquals(5, trie.howManyStartWithPrefix("ab"))
+    }
+
+    @Test
+    fun howManyStartWithPrefix_allWithDifferentPrefixes() {
+        val trie = Trie()
+        trie.add("abc")
+        trie.add("leads")
+        trie.add("fddf")
+        trie.add("bu")
+        trie.add("unt")
+        assertEquals(1, trie.howManyStartWithPrefix("u"))
+    }
+
+    @Test
+    fun howManyStartWithPrefix_equalAndDifferentPrefixes() {
+        val trie = Trie()
+        trie.add("abc")
+        trie.add("leads")
+        trie.add("ab")
+        trie.add("bu")
+        trie.add("unt")
+        assertEquals(2, trie.howManyStartWithPrefix("a"))
     }
 }

@@ -3,6 +3,8 @@ package homeworks.homework5.task1
 import java.io.InputStream
 import java.io.OutputStream
 
+private const val SYMBOLS_TO_SHIFT = 3
+
 class Trie {
     private var size = 0
     private var root = Node()
@@ -10,6 +12,17 @@ class Trie {
     class Node {
         var isTerminal = false
         val edges: MutableMap<Char, Node> = mutableMapOf()
+
+        fun countQuantityOfChildren(): Int {
+            var quantity = 0
+            for (child in edges.values) {
+                if (child.isTerminal) {
+                    quantity++
+                }
+                quantity += child.countQuantityOfChildren()
+            }
+            return quantity
+        }
     }
 
     private fun addElement(element: String, currentIndex: Int, currentNode: Node, isNewString: Boolean): Boolean {
@@ -80,11 +93,20 @@ class Trie {
     }
 
     private fun howManyStartWithPrefixRecursive(prefix: String, currentIndex: Int, currentNode: Node): Int {
-        return when {
-            currentIndex == prefix.length -> currentNode.edges.keys.size
-            prefix[currentIndex] !in currentNode.edges.keys -> 0
-            else -> howManyStartWithPrefixRecursive(prefix, currentIndex + 1, currentNode)
+        var quantity = 0
+        when (currentIndex) {
+            prefix.length -> {
+                quantity = currentNode.countQuantityOfChildren()
+                if (currentNode.isTerminal) {
+                    quantity++
+                }
+            }
+            else -> {
+                val nextNode = currentNode.edges[prefix[currentIndex]] ?: return 0
+                quantity = howManyStartWithPrefixRecursive(prefix, currentIndex + 1, nextNode)
+            }
         }
+        return quantity
     }
 
     fun howManyStartWithPrefix(prefix: String): Int {
@@ -108,7 +130,7 @@ class Trie {
             println(firstRoot.isTerminal)
             println(secondRoot.isTerminal)
             println(firstRoot.edges.size)
-            println(secondRoot.edges)
+            println(secondRoot.edges.size)
         }
         return areEquals
     }
@@ -164,27 +186,27 @@ class Trie {
                 stringWithTrie[index] == '\"' -> {
                     val endOfParameter = stringWithTrie.slice(
                         index + 1 until stringWithTrie.length
-                    ).indexOf('\"')
-                    val parameter = stringWithTrie.slice(index + 1..index + endOfParameter)
-                    index += endOfParameter + 4
+                    ).indexOf('\"') + 1
+                    val parameter = stringWithTrie.slice(index + 1 until index + endOfParameter)
+                    index += endOfParameter + SYMBOLS_TO_SHIFT
                     if (parameter == "isTerminal") {
                         val endOfValue = stringWithTrie.slice(
                             index + 1 until stringWithTrie.length
-                        ).indexOf('\"')
-                        val value = stringWithTrie.slice(index + 1..index + endOfValue).toBoolean()
-                        index += endOfValue + 4
+                        ).indexOf('\"') + 1
+                        val value = stringWithTrie.slice(index + 1 until index + endOfValue).toBoolean()
+                        index += endOfValue + 1
                         node.isTerminal = value
                     }
                 }
                 stringWithTrie[index] == '[' -> {
                     index = parseList(index, stringWithTrie, node)
                 }
-                stringWithTrie[index] == ' ' || stringWithTrie[index] == '{' -> {
-                    index++
-                }
                 stringWithTrie[index] == '}' -> {
                     index++
                     break@loop
+                }
+                else -> {
+                    index++
                 }
             }
         }
