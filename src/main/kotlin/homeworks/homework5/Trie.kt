@@ -13,7 +13,7 @@ class Trie {
         var isTerminal = false
         val edges: MutableMap<Char, Node> = mutableMapOf()
 
-        fun countQuantityOfChildren(): Int {
+        private fun countQuantityOfChildren(): Int {
             var quantity = 0
             for (child in edges.values) {
                 if (child.isTerminal) {
@@ -23,41 +23,87 @@ class Trie {
             }
             return quantity
         }
-    }
 
-    private fun addElement(element: String, currentIndex: Int, currentNode: Node, isNewString: Boolean): Boolean {
-        var notContainsString = isNewString
-        if (currentIndex == element.length) {
-            if (!currentNode.isTerminal) {
-                currentNode.isTerminal = true
-                size++
+        fun addElement(element: String, currentIndex: Int, isNewString: Boolean): Boolean {
+            var notContainsString = isNewString
+            if (currentIndex == element.length) {
+                if (!this.isTerminal) {
+                    this.isTerminal = true
+                }
+                return notContainsString
             }
-            return notContainsString
+            if (element[currentIndex] !in this.edges.keys) {
+                notContainsString = true
+            }
+            return this.edges.getOrPut(element[currentIndex], { Node() }).addElement(
+                element,
+                currentIndex + 1, notContainsString
+            )
         }
-        if (element[currentIndex] !in currentNode.edges.keys) {
-            notContainsString = true
+
+        fun containsElement(element: String, currentIndex: Int): Boolean {
+            return when {
+                currentIndex == element.length -> true
+                element[currentIndex] !in this.edges.keys -> false
+                else -> this.edges.getOrPut(element[currentIndex], { Node() }).containsElement(
+                    element, currentIndex + 1
+                )
+            }
         }
-        return addElement(element, currentIndex + 1,
-            currentNode.edges.getOrPut(element[currentIndex], { Node() }), notContainsString
-        )
+
+        fun howManyStartWithPrefixRecursive(prefix: String, currentIndex: Int): Int {
+            var quantity: Int
+            when (currentIndex) {
+                prefix.length -> {
+                    quantity = this.countQuantityOfChildren()
+                    if (this.isTerminal) {
+                        quantity++
+                    }
+                }
+                else -> {
+                    val nextNode = this.edges[prefix[currentIndex]] ?: return 0
+                    quantity = nextNode.howManyStartWithPrefixRecursive(prefix, currentIndex + 1)
+                }
+            }
+            return quantity
+        }
+
+        fun serializeSubtrie(): String {
+            val edges = mutableListOf<String>()
+            for (edge in this.edges) {
+                edges.add("${edge.key}: ${edge.value.serializeSubtrie()}")
+            }
+            return "{\"isTerminal\": \"${this.isTerminal}\", \"edges\": $edges}"
+        }
+
+        fun areSubtriesEqual(forCompare: Node): Boolean {
+            var areEquals = true
+            if (forCompare.isTerminal == this.isTerminal && forCompare.edges.size == this.edges.size) {
+                for (character in forCompare.edges.keys) {
+                    if (!(this.edges[character] ?: return false).areSubtriesEqual(
+                            forCompare.edges[character] ?: break
+                        )
+                    ) {
+                        areEquals = false
+                    }
+                }
+            } else {
+                areEquals = false
+            }
+            return areEquals
+        }
     }
 
     fun add(element: String): Boolean {
-        return addElement(element, 0, root, false)
-    }
-
-    private fun containsElement(element: String, currentIndex: Int, currentNode: Node): Boolean {
-        return when {
-            currentIndex == element.length -> true
-            element[currentIndex] !in currentNode.edges.keys -> false
-            else -> containsElement(element, currentIndex + 1,
-                currentNode.edges.getOrPut(element[currentIndex], { Node() })
-            )
+        val isNewElement = root.addElement(element, 0, false)
+        if (isNewElement) {
+            size++
         }
+        return isNewElement
     }
 
     fun contains(element: String): Boolean {
-        return containsElement(element, 0, root)
+        return root.containsElement(element, 0)
     }
 
     private fun removeElement(element: String, currentIndex: Int, edges: MutableMap<Char, Node>) {
@@ -92,65 +138,18 @@ class Trie {
         return size
     }
 
-    private fun howManyStartWithPrefixRecursive(prefix: String, currentIndex: Int, currentNode: Node): Int {
-        var quantity = 0
-        when (currentIndex) {
-            prefix.length -> {
-                quantity = currentNode.countQuantityOfChildren()
-                if (currentNode.isTerminal) {
-                    quantity++
-                }
-            }
-            else -> {
-                val nextNode = currentNode.edges[prefix[currentIndex]] ?: return 0
-                quantity = howManyStartWithPrefixRecursive(prefix, currentIndex + 1, nextNode)
-            }
-        }
-        return quantity
-    }
-
     fun howManyStartWithPrefix(prefix: String): Int {
-        return howManyStartWithPrefixRecursive(prefix, 0, root)
-    }
-
-    private fun areSubtriesEqual(firstRoot: Node, secondRoot: Node): Boolean {
-        var areEquals = true
-        if (firstRoot.isTerminal == secondRoot.isTerminal && firstRoot.edges.size == secondRoot.edges.size) {
-            for (character in firstRoot.edges.keys) {
-                if (!areSubtriesEqual(
-                        firstRoot.edges[character] ?: break,
-                        secondRoot.edges[character] ?: return false
-                    )
-                ) {
-                    areEquals = false
-                }
-            }
-        } else {
-            areEquals = false
-            println(firstRoot.isTerminal)
-            println(secondRoot.isTerminal)
-            println(firstRoot.edges.size)
-            println(secondRoot.edges.size)
-        }
-        return areEquals
+        return root.howManyStartWithPrefixRecursive(prefix, 0)
     }
 
     fun equalToTrie(trieForCompare: Trie): Boolean {
-        return areSubtriesEqual(root, trieForCompare.root)
-    }
-
-    private fun serializeSubtrie(root: Node): String {
-        val edges = mutableListOf<String>()
-        for (edge in root.edges) {
-            edges.add("${edge.key}: ${serializeSubtrie(edge.value)}")
-        }
-        return "{\"isTerminal\": \"${root.isTerminal}\", \"edges\": $edges}"
+        return root.areSubtriesEqual(trieForCompare.root)
     }
 
     fun serialize(out: OutputStream): String {
-        out.write(serializeSubtrie(root).toByteArray())
+        out.write(root.serializeSubtrie().toByteArray())
         out.close()
-        return serializeSubtrie(root)
+        return root.serializeSubtrie()
     }
 
     private fun parseList(currentIndex: Int, jsonList: String, node: Node): Int {
