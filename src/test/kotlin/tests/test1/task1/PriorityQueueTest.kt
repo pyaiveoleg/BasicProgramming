@@ -1,8 +1,8 @@
 package tests.test1.task1
 
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.AssertEquals
 import java.io.InvalidObjectException
 
 internal class PriorityQueueTest {

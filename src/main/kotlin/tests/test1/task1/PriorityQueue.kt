@@ -7,7 +7,7 @@ class PriorityQueue {
     val list = mutableListOf<Int>()
     val values = mutableListOf<Any>()
 
-    public fun enqueue(value: Any, priority: Int) {
+    fun enqueue(value: Any, priority: Int) {
         this.size += 1
         list.add(priority)
         values.add(value)
@@ -22,12 +22,12 @@ class PriorityQueue {
     }
 
     private fun swap(list: MutableList<Any>, firstIndex: Int, secondIndex: Int) {
-        val temp = list.get(firstIndex)
-        list.set(firstIndex, list.get(secondIndex))
-        list.set(secondIndex, temp)
+        val temp = list[firstIndex]
+        list[firstIndex] = list[secondIndex]
+        list[secondIndex] = temp
     }
 
-    public fun dequeue(): Any {
+    fun dequeue(): Any {
         if (this.isEmpty()) {
             throw InvalidObjectException("Queue is empty")
         }
@@ -42,7 +42,7 @@ class PriorityQueue {
         return this.size == 0
     }
 
-    public fun printQueue() {
+    fun printQueue() {
         print(this.values.toString())
     }
 }
