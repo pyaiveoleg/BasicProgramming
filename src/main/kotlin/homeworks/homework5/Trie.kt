@@ -92,6 +92,23 @@ class Trie {
             }
             return areEquals
         }
+
+        fun removeElement(element: String, currentIndex: Int, edges: MutableMap<Char, Node>) {
+            val currentNode = edges[element[currentIndex]] ?: return
+            if (currentIndex == element.length - 1) {
+                if (currentNode.edges.isEmpty()) {
+                    edges.remove(element[currentIndex])
+                } else {
+                    currentNode.isTerminal = false
+                }
+            } else {
+                removeElement(element, currentIndex + 1, currentNode.edges)
+                if (currentNode.edges.isEmpty() && !currentNode.isTerminal) {
+                    edges.remove(element[currentIndex])
+                }
+            }
+            return
+        }
     }
 
     fun add(element: String): Boolean {
@@ -106,30 +123,12 @@ class Trie {
         return root.containsElement(element, 0)
     }
 
-    private fun removeElement(element: String, currentIndex: Int, edges: MutableMap<Char, Node>) {
-        val currentNode = edges[element[currentIndex]] ?: return
-        if (currentIndex == element.length - 1) {
-            size--
-            if (currentNode.edges.isEmpty()) {
-                edges.remove(element[currentIndex])
-            } else {
-                currentNode.isTerminal = false
-            }
-        } else {
-            removeElement(element, currentIndex + 1, currentNode.edges)
-            if (currentNode.edges.isEmpty() && !currentNode.isTerminal) {
-                edges.remove(element[currentIndex])
-            }
-        }
-        return
-    }
-
     fun remove(element: String): Boolean {
         return if (!contains(element)) {
             false
         } else {
             size--
-            removeElement(element, 0, root.edges)
+            root.removeElement(element, 0, root.edges)
             true
         }
     }
