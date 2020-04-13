@@ -1,8 +1,8 @@
-package tests.test_1.task_1
+package tests.test1.task1
 
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.AssertEquals
 import java.io.InvalidObjectException
 
 internal class PriorityQueueTest {
@@ -24,8 +24,7 @@ internal class PriorityQueueTest {
     @Test
     fun enqueue_bigQueue() {
         val testQueue = PriorityQueue()
-        for (i in 1..10000)
-        {
+        for (i in 1..10000) {
             testQueue.enqueue(i, i)
         }
         assertEquals(testQueue.list[9999], 10000)
@@ -77,8 +76,7 @@ internal class PriorityQueueTest {
     @Test
     fun dequeue_queueWithManyElements() {
         val testQueue = PriorityQueue()
-        for (i in 1..10000)
-        {
+        for (i in 1..10000) {
             testQueue.enqueue(i, i)
         }
         assertEquals(testQueue.dequeue(), 10000)

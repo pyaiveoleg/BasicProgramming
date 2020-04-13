@@ -1,4 +1,4 @@
-package tests.test_1.task_1
+package tests.test1.task1
 
 import java.io.InvalidObjectException
 
@@ -21,16 +21,14 @@ class PriorityQueue {
         }
     }
 
-    private fun swap(list: MutableList<Any>, firstIndex: Int, secondIndex: Int)
-    {
+    private fun swap(list: MutableList<Any>, firstIndex: Int, secondIndex: Int) {
         val temp = list.get(firstIndex)
         list.set(firstIndex, list.get(secondIndex))
         list.set(secondIndex, temp)
     }
 
-    public fun dequeue() : Any {
-        if (this.isEmpty())
-        {
+    public fun dequeue(): Any {
+        if (this.isEmpty()) {
             throw InvalidObjectException("Queue is empty")
         }
         val value = this.values[this.size - 1]
@@ -40,12 +38,11 @@ class PriorityQueue {
         return value
     }
 
-    private fun isEmpty() : Boolean {
+    private fun isEmpty(): Boolean {
         return this.size == 0
     }
 
-    public fun printQueue()
-    {
+    public fun printQueue() {
         print(this.values.toString())
     }
 }
