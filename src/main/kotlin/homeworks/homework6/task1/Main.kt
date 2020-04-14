@@ -1,12 +1,13 @@
 package homeworks.homework6.task1
 
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlin.system.measureTimeMillis
 
 private const val SIZE_OF_ARRAY = 10000000
 private const val MAX_NUMBER = 100000
 
-suspend fun main() {
+fun main() {
     val listForSort = mutableListOf<Int>()
     for (i in 0 until SIZE_OF_ARRAY) {
         listForSort.add((0..MAX_NUMBER).random())
@@ -18,14 +19,14 @@ suspend fun main() {
     println("Time of usual realization is $timeUsualRealization")
 
     val arrayForAsyncSort = listForSort.toIntArray()
-    launchQuickSortAndPrintTime(arrayForAsyncSort)
-}
-
-suspend fun launchQuickSortAndPrintTime(arrayForAsyncSort: IntArray) = coroutineScope {
-    val timeAsyncRealization = measureTimeMillis {
-        asyncQuickSort(arrayForAsyncSort, 0, arrayForAsyncSort.size - 1)
+    runBlocking {
+        launch {
+            val timeAsyncRealization = measureTimeMillis {
+                asyncQuickSort(arrayForAsyncSort, 0, arrayForAsyncSort.size - 1)
+            }
+            println("Time of async realization is $timeAsyncRealization")
+        }
     }
-    println("Time of async realization is $timeAsyncRealization")
 }
 
 suspend fun asyncQuickSort(array: IntArray, left: Int, right: Int) {

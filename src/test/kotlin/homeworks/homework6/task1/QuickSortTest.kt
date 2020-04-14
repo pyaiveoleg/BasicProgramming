@@ -1,10 +1,11 @@
 package homeworks.homework6.task1
 
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
 
-private const val SIZE_OF_ARRAY = 100000
+private const val SIZE_OF_ARRAY = 10000
 private const val MAX_NUMBER = 100000
 
 internal class QuickSortTest {
@@ -40,7 +41,9 @@ internal class QuickSortTest {
         val expected = array.sorted().toIntArray()
         val arrayLength = array.size - 1
         runBlocking {
-            asyncQuickSort(array, 0, arrayLength)
+            launch {
+                asyncQuickSort(array, 0, arrayLength)
+            }
         }
         assertArrayEquals(expected, array)
     }
