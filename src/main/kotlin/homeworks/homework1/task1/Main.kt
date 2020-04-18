@@ -28,7 +28,7 @@ fun main() {
         val parsedArray = exchangeStartAndEnd(beginningLength, endingLength, array)
         println("Parsed array: ")
         println(parsedArray.joinToString(" "))
-    } catch (indexOutOfBoundsException: IndexOutOfBoundsException) {
-        println(indexOutOfBoundsException.message)
+    } catch (illegalQuantityOfNumbers: IndexOutOfBoundsException) {
+        println(illegalQuantityOfNumbers.message)
     }
 }
