@@ -18,7 +18,7 @@ fun main() {
     val beginningLength = scan.nextInt()
     val endingLength = scan.nextInt()
     println("Please, write down array: ")
-    val array  = readLine()?.split(" ")?.map { it.toInt() }?.toMutableList()
+    val array = readLine()?.split(" ")?.map { it.toInt() }?.toMutableList()
     if (array == null) {
         print("array cannot be null")
         return
@@ -28,7 +28,7 @@ fun main() {
         val parsedArray = exchangeStartAndEnd(beginningLength, endingLength, array)
         println("Parsed array: ")
         println(parsedArray.joinToString(" "))
-    } catch (e: IndexOutOfBoundsException) {
-        println(e.message)
+    } catch (indexOutOfBoundsException: IndexOutOfBoundsException) {
+        println(indexOutOfBoundsException.message)
     }
 }
