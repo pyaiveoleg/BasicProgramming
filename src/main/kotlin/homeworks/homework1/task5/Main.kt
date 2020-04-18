@@ -19,7 +19,7 @@ fun countNotEmptyStrings(input: File): Int {
 }
 
 fun main() {
-    val input = File("./src/main/resources/input.txt")
+    val input = File("./src/main/resources/homeworks/homework1/task1/input.txt")
     try {
         print("Quantity of not-empty strings in the file: ${countNotEmptyStrings(input)}")
     } catch (exception: InvalidObjectException) {
