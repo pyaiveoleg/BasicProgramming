@@ -1,15 +1,15 @@
 package homeworks.homework1.task1
 
-fun exchangeStartAndEnd(beginningLength: Int, endingLength: Int, array: IntArray): IntArray {
+fun exchangeStartAndEnd(beginningLength: Int, endingLength: Int, array: MutableList<Int>): MutableList<Int> {
     val arrayLength = beginningLength + endingLength
     if (array.size != arrayLength) {
+        print(array.size)
         throw IndexOutOfBoundsException("M + N should be equal to array length")
     }
-    val list = array.toMutableList()
-    list.subList(0, beginningLength).reverse()
-    list.subList(beginningLength, arrayLength).reverse()
-    list.reverse()
-    return list.toIntArray()
+    array.subList(0, beginningLength).reverse()
+    array.subList(beginningLength, arrayLength).reverse()
+    array.reverse()
+    return array
 }
 
 fun main() {
@@ -17,14 +17,18 @@ fun main() {
     println("Please, write down length of beginning (M) and ending (N) of the array: ")
     val beginningLength = scan.nextInt()
     val endingLength = scan.nextInt()
-    val arrayLength = beginningLength + endingLength
-    val array = IntArray(arrayLength) { 0 }
-
     println("Please, write down array: ")
-    for (i in 0 until arrayLength) {
-        array[i] = scan.nextInt()
+    val array  = readLine()?.split(" ")?.map { it.toInt() }?.toMutableList()
+    if (array == null) {
+        print("array cannot be null")
+        return
     }
 
-    println("Parsed array: ")
-    println(exchangeStartAndEnd(beginningLength, endingLength, array).joinToString(" "))
+    try {
+        val parsedArray = exchangeStartAndEnd(beginningLength, endingLength, array)
+        println("Parsed array: ")
+        println(parsedArray.joinToString(" "))
+    } catch (e: IndexOutOfBoundsException) {
+        println(e.message)
+    }
 }
