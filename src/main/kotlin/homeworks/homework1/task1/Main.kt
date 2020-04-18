@@ -4,7 +4,7 @@ fun exchangeStartAndEnd(beginningLength: Int, endingLength: Int, array: MutableL
     val arrayLength = beginningLength + endingLength
     if (array.size != arrayLength) {
         print(array.size)
-        throw IndexOutOfBoundsException("M + N should be equal to array length")
+        throw IllegalArgumentException("M + N should be equal to array length")
     }
     array.subList(0, beginningLength).reverse()
     array.subList(beginningLength, arrayLength).reverse()
@@ -28,7 +28,7 @@ fun main() {
         val parsedArray = exchangeStartAndEnd(beginningLength, endingLength, array)
         println("Parsed array: ")
         println(parsedArray.joinToString(" "))
-    } catch (illegalQuantityOfNumbers: IndexOutOfBoundsException) {
+    } catch (illegalQuantityOfNumbers: IllegalArgumentException) {
         println(illegalQuantityOfNumbers.message)
     }
 }
