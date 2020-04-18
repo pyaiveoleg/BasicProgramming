@@ -3,6 +3,7 @@ package homeworks.homework1.task1
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.File
+import java.lang.IllegalArgumentException
 
 internal class MainTest {
     @Test
@@ -29,7 +30,7 @@ internal class MainTest {
     @Test
     fun exchangeStartAndEnd_beginPlusEndNotEqualToArrayLength() {
         val array = mutableListOf(1, 2, 3, 4, 5, 6)
-        assertThrows(IndexOutOfBoundsException::class.java) {
+        assertThrows(IllegalArgumentException::class.java) {
             exchangeStartAndEnd(1, 3, array)
         }
     }
