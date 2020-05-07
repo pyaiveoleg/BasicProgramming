@@ -2,7 +2,7 @@ package homeworks.homework2.task1
 
 fun countQuantityOfSymbolsToDelete(inputString: String, quantityOfForbiddenX: Int = 3): Int {
     var quantityOfSymbolsToDelete = 0
-    val regex = "+".padStart(quantityOfForbiddenX + 1, 'x').toRegex()
+    val regex = "x{$quantityOfForbiddenX,}".toRegex()
     val illegalSubstrings = regex.findAll(inputString)
     for (match in illegalSubstrings) {
         quantityOfSymbolsToDelete += match.value.length + 1 - quantityOfForbiddenX
