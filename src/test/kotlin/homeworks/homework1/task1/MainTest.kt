@@ -2,8 +2,9 @@ package homeworks.homework1.task1
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
-import java.io.File
 import java.lang.IllegalArgumentException
+
+private const val BIG_ARRAY_LENGTH = 100000
 
 internal class MainTest {
     @Test
@@ -44,11 +45,10 @@ internal class MainTest {
 
     @Test
     fun exchangeStartAndEnd_veryLongArray() {
-        val input = File("./src/test/resources/homeworks/homework1/task1/bigArray.txt").readText()
-        val expected = input.split(' ').map { it.toInt() }.toMutableList()
-        val output = File("./src/test/resources/homeworks/homework1/task1/bigArrayResulting.txt").readText()
-        val actual = output.split(' ').map { it.toInt() }.toMutableList()
-        assertEquals(actual, exchangeStartAndEnd(1, 99999, expected))
+        val expected = (0 until BIG_ARRAY_LENGTH).toMutableList()
+        val actual = (1 until BIG_ARRAY_LENGTH).toMutableList()
+        actual.add(0)
+        assertEquals(actual, exchangeStartAndEnd(1, BIG_ARRAY_LENGTH - 1, expected))
     }
 
     @Test

@@ -3,7 +3,6 @@ package homeworks.homework1.task1
 fun exchangeStartAndEnd(beginningLength: Int, endingLength: Int, array: MutableList<Int>): MutableList<Int> {
     val arrayLength = beginningLength + endingLength
     if (array.size != arrayLength) {
-        print(array.size)
         throw IllegalArgumentException("M + N should be equal to array length")
     }
     array.subList(0, beginningLength).reverse()
@@ -21,6 +20,10 @@ fun main() {
     val array = readLine()?.split(" ")?.map { it.toInt() }?.toMutableList()
     if (array == null) {
         print("array cannot be null")
+        return
+    }
+    if (array.size != beginningLength + endingLength) {
+        print("M + N should be equal to array length")
         return
     }
 
