@@ -227,8 +227,8 @@ class AVLTree<K : Comparable<K>, V> : Map<K, V> {
         return OperationsWithNodes<K, V>().subtreeEquals(this.root, treeForCompare.root)
     }
 
-    fun toString() {
-        print("This is a tree: ${root?.toString()}\n")
+    override fun toString(): String {
+        return "${root?.toString()}"
     }
 
     override fun containsKey(key: K) = get(key) != null
