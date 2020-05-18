@@ -2,9 +2,6 @@ package homeworks.homework1.task1
 
 fun exchangeStartAndEnd(beginningLength: Int, endingLength: Int, array: MutableList<Int>): MutableList<Int> {
     val arrayLength = beginningLength + endingLength
-    if (array.size != arrayLength) {
-        throw IllegalArgumentException("M + N should be equal to array length")
-    }
     array.subList(0, beginningLength).reverse()
     array.subList(beginningLength, arrayLength).reverse()
     array.reverse()
@@ -27,11 +24,5 @@ fun main() {
         return
     }
 
-    try {
-        val parsedArray = exchangeStartAndEnd(beginningLength, endingLength, array)
-        println("Parsed array: ")
-        println(parsedArray.joinToString(" "))
-    } catch (illegalQuantityOfNumbers: IllegalArgumentException) {
-        println(illegalQuantityOfNumbers.message)
-    }
+    println("Parsed array: ${exchangeStartAndEnd(beginningLength, endingLength, array)}")
 }

@@ -1,12 +1,11 @@
 package homeworks.homework1.task1
 
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-import java.lang.IllegalArgumentException
-
-private const val BIG_ARRAY_LENGTH = 100000
 
 internal class MainTest {
+    private val bigArrayLength = 100000
+
     @Test
     fun exchangeStartAndEnd_usualCase() {
         val expected = mutableListOf(1, 2, 3, 4, 5, 6)
@@ -29,14 +28,6 @@ internal class MainTest {
     }
 
     @Test
-    fun exchangeStartAndEnd_beginPlusEndNotEqualToArrayLength() {
-        val array = mutableListOf(1, 2, 3, 4, 5, 6)
-        assertThrows(IllegalArgumentException::class.java) {
-            exchangeStartAndEnd(1, 3, array)
-        }
-    }
-
-    @Test
     fun exchangeStartAndEnd_lengthOfBeginningEqualsToEnding() {
         val expected = mutableListOf(1, 2, 3, 4, 5, 6)
         val actual = mutableListOf(4, 5, 6, 1, 2, 3)
@@ -45,10 +36,10 @@ internal class MainTest {
 
     @Test
     fun exchangeStartAndEnd_veryLongArray() {
-        val expected = (0 until BIG_ARRAY_LENGTH).toMutableList()
-        val actual = (1 until BIG_ARRAY_LENGTH).toMutableList()
+        val expected = (0 until bigArrayLength).toMutableList()
+        val actual = (1 until bigArrayLength).toMutableList()
         actual.add(0)
-        assertEquals(actual, exchangeStartAndEnd(1, BIG_ARRAY_LENGTH - 1, expected))
+        assertEquals(actual, exchangeStartAndEnd(1, bigArrayLength - 1, expected))
     }
 
     @Test
