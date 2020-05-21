@@ -194,25 +194,15 @@ class AVLTree<K : Comparable<K>, V> : Map<K, V> {
         size++
     }
 
-    private fun find(key: K, currentNode: Node<K, V>): V? {
-        var value: V? = currentNode.value
-        if (key < currentNode.key) {
-            val leftChild = currentNode.leftChild
-            value = if (leftChild == null) {
-                null
-            } else {
-                find(key, leftChild)
-            }
+    private fun find(key: K, currentNode: Node<K, V>?): V? {
+        if (currentNode == null) {
+            return null
         }
-        if (key > currentNode.key) {
-            val rightChild = currentNode.rightChild
-            value = if (rightChild == null) {
-                null
-            } else {
-                find(key, rightChild)
-            }
+        return when {
+            key < currentNode.key -> find(key, currentNode.leftChild)
+            key > currentNode.key -> find(key, currentNode.rightChild)
+            else -> currentNode.value
         }
-        return value
     }
 
     fun deleteElement(key: K) {

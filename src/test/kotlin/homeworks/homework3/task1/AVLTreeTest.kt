@@ -1,28 +1,27 @@
 package homeworks.homework3.task1
 
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
 internal class AVLTreeTest {
     @Test
     fun containsElement_emptyTree() {
         val tree = AVLTree<Int, Int>()
-        assertEquals(false, tree.containsKey(0))
+        assertFalse(tree.containsKey(0))
     }
 
     @Test
     fun containsElement_treeWithOneElementContainsKey() {
         val tree = AVLTree<Int, Int>()
         tree.addElement(0, 0)
-        assertEquals(true, tree.containsKey(0))
+        assert(tree.containsKey(0))
     }
 
     @Test
     fun containsElement_treeWithOneElementNotContainsKey() {
         val tree = AVLTree<Int, Int>()
         tree.addElement(1, 0)
-        assertEquals(false, tree.containsKey(0))
+        assertFalse(tree.containsKey(0))
     }
 
     @Test
@@ -32,7 +31,7 @@ internal class AVLTreeTest {
         tree.addElement(1, 0)
         tree.addElement(-1, 0)
         tree.addElement(2, 0)
-        assertEquals(true, tree.containsKey(1))
+        assert(tree.containsKey(1))
     }
 
     @Test
@@ -42,7 +41,7 @@ internal class AVLTreeTest {
         tree.addElement(1, 0)
         tree.addElement(-1, 0)
         tree.addElement(2, 0)
-        assertEquals(false, tree.containsKey(-5))
+        assertFalse(tree.containsKey(-5))
     }
 
     @Test
@@ -51,7 +50,7 @@ internal class AVLTreeTest {
         val tree = AVLTree<Int, Int>()
         tree.addElement(1, -5)
         tree.deleteElement(1)
-        assertEquals(true, tree.equalsToTree(actualTree))
+        assert(tree.equalsToTree(actualTree))
     }
 
     @Test
@@ -66,7 +65,7 @@ internal class AVLTreeTest {
         actualTree.addElement(2, 4)
         actualTree.addElement(4, -2)
         tree.deleteElement(1)
-        assertEquals(true, tree.equalsToTree(actualTree))
+        assert(tree.equalsToTree(actualTree))
     }
 
     @Test
@@ -88,7 +87,7 @@ internal class AVLTreeTest {
     @Test
     fun getValue_emptyTree() {
         val tree = AVLTree<Int, Int>()
-        assertEquals(null, tree.get(1))
+        assertNull(tree.get(1))
     }
 
     @Test
