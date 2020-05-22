@@ -33,7 +33,7 @@ class MainController : Controller() {
         firstCell = result[0]
         secondCell = result[1]
         val firstValue = result[2].toString()
-        val secondValue = result[3].toString()
+        val secondValue = result[result.size - 1].toString()
         table[firstCell].value = firstValue
         table[secondCell].value = secondValue
 
