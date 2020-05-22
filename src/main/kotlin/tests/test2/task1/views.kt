@@ -6,10 +6,12 @@ import javafx.scene.text.FontWeight
 import tornadofx.*
 
 class StartView : View("Find Pairs") {
+    private val heightOfWindow = 240.0
+    private val widthOfWindow = 480.0
     @KtorExperimentalAPI
     override val root = form {
-        prefHeight = 240.0
-        prefWidth = 480.0
+        prefHeight = heightOfWindow
+        prefWidth = widthOfWindow
 
         button("Start game!") {
             action {
@@ -21,12 +23,11 @@ class StartView : View("Find Pairs") {
 
 class MainView : View("Find Pairs") {
     private val controller: MainController by inject()
+    private val sizeOfButton = 50.0
+    private val sizeOfFont = 25.0
 
     @KtorExperimentalAPI
     override val root = form {
-        hbox {
-            paddingTop = 5
-        }
         vbox {
             paddingTop = 10
             for (i in 0 until controller.size) {
@@ -39,10 +40,10 @@ class MainView : View("Find Pairs") {
                         hbox {
                             paddingLeft = 3
                             button {
-                                minHeight = 50.0
-                                minWidth = 50.0
-                                maxHeight = 50.0
-                                maxWidth = 50.0
+                                minHeight = sizeOfButton
+                                minWidth = sizeOfButton
+                                maxHeight = sizeOfButton
+                                maxWidth = sizeOfButton
                                 bind(controller.table[i + controller.size * j])
                                 action {
                                     controller.parseClick(i, j)
@@ -50,7 +51,7 @@ class MainView : View("Find Pairs") {
                                 style {
                                     backgroundColor += Color.LIGHTGREEN
                                     fontWeight = FontWeight.EXTRA_BOLD
-                                    fontSize = 25.px
+                                    fontSize = sizeOfFont.px
                                 }
                             }
                         }
@@ -64,8 +65,6 @@ class MainView : View("Find Pairs") {
 class EndView : View("Find Pairs") {
     private val controller: MainController by inject()
     override val root = form {
-        prefHeight = 240.0
-        prefWidth = 480.0
         label("You won!")
         button("Return to main menu.") {
             action {

@@ -5,7 +5,7 @@ import javafx.stage.Stage
 import tornadofx.App
 import tornadofx.find
 
-class FindPairs : App(StartView::class) {
+class FindPairsApp : App(StartView::class) {
     override fun start(stage: Stage) {
         val controller = find(MainController::class)
         val size = parameters.named["size"]?.toInt()
@@ -24,5 +24,5 @@ class FindPairs : App(StartView::class) {
 }
 
 fun main(args: Array<String>) {
-    Application.launch(FindPairs::class.java, *args)
+    Application.launch(FindPairsApp::class.java, *args)
 }
