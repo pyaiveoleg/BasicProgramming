@@ -18,6 +18,7 @@ fun main(args: Array<String>) {
         print("Size cannot be odd")
         return
     }
+    
     controller.initializeBoard(size)
     Application.launch(FindPairsApp::class.java)
 }
