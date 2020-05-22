@@ -24,5 +24,5 @@ class FindPairsApp : App(StartView::class) {
 }
 
 fun main(args: Array<String>) {
-    Application.launch(FindPairsApp::class.java, *args)
+    Application.launch(FindPairsApp::class.java, *arrayOf(*args))
 }

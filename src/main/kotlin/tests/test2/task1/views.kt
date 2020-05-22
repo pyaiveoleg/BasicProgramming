@@ -16,18 +16,17 @@ import tornadofx.paddingTop
 import tornadofx.style
 import tornadofx.px
 
-private const val sizeOfButton = 50.0
-private const val sizeOfFont = 25.0
-private const val paddingOfObjects = 3
+private const val SIZE_OF_BUTTON = 50.0
+private const val SIZE_OF_FONT = 25.0
+private const val PADDING_OF_OBJECTS = 3
+private const val HEIGHT_OF_WINDOW = 240.0
+private const val WIDTH_OF_WINDOW = 480.0
 
 class StartView : View("Find Pairs") {
-    private val heightOfWindow = 240.0
-    private val widthOfWindow = 480.0
-
     @KtorExperimentalAPI
     override val root = form {
-        prefHeight = heightOfWindow
-        prefWidth = widthOfWindow
+        prefHeight = HEIGHT_OF_WINDOW
+        prefWidth = WIDTH_OF_WINDOW
 
         button("Start game!") {
             action {
@@ -48,15 +47,15 @@ class MainView : View("Find Pairs") {
                     label {
                         bind(controller.errorMessage)
                     }
-                    paddingTop = paddingOfObjects
+                    paddingTop = PADDING_OF_OBJECTS
                     for (j in 0 until controller.size) {
                         hbox {
-                            paddingLeft = paddingOfObjects
+                            paddingLeft = PADDING_OF_OBJECTS
                             button {
-                                minHeight = sizeOfButton
-                                minWidth = sizeOfButton
-                                maxHeight = sizeOfButton
-                                maxWidth = sizeOfButton
+                                minHeight = SIZE_OF_BUTTON
+                                minWidth = SIZE_OF_BUTTON
+                                maxHeight = SIZE_OF_BUTTON
+                                maxWidth = SIZE_OF_BUTTON
                                 bind(controller.table[i + controller.size * j])
                                 action {
                                     controller.parseClick(i, j)
@@ -64,7 +63,7 @@ class MainView : View("Find Pairs") {
                                 style {
                                     backgroundColor += Color.LIGHTGREEN
                                     fontWeight = FontWeight.EXTRA_BOLD
-                                    fontSize = sizeOfFont.px
+                                    fontSize = SIZE_OF_FONT.px
                                 }
                             }
                         }
