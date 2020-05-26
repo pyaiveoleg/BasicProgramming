@@ -11,6 +11,7 @@ fun main(args: Array<String>) {
         print("You haven't passed size")
         return
     }
+    
     val size = args[0].toInt()
     val controller = find(MainController::class)
 
