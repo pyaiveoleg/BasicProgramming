@@ -53,7 +53,7 @@ internal class TrieTest {
         trie.add("a")
         trie.add("ab")
         trie.add("abc")
-        assertEquals(true, trie.contains("ab"))
+        assert(trie.contains("ab"))
     }
 
     @Test
@@ -62,7 +62,7 @@ internal class TrieTest {
         trie.add("abc")
         trie.add("bbc")
         trie.add("cbc")
-        assertEquals(true, trie.contains("cbc"))
+        assert(trie.contains("cbc"))
     }
 
     @Test
@@ -71,27 +71,27 @@ internal class TrieTest {
         trie.add("abc")
         trie.add("bbc")
         trie.add("cbc")
-        assertEquals(false, trie.contains("bc"))
+        assertFalse(trie.contains("bc"))
     }
 
     @Test
     fun contains_OneElementContains() {
         val trie = Trie()
         trie.add("abc")
-        assertEquals(true, trie.contains("abc"))
+        assert(trie.contains("abc"))
     }
 
     @Test
     fun contains_OneElementNotContains() {
         val trie = Trie()
         trie.add("abc")
-        assertEquals(false, trie.contains("cba"))
+        assertFalse(trie.contains("cba"))
     }
 
     @Test
     fun contains_EmptyTrie() {
         val trie = Trie()
-        assertEquals(false, trie.contains("cba"))
+        assertFalse(trie.contains("cba"))
     }
 
     @Test
@@ -100,7 +100,7 @@ internal class TrieTest {
         val emptyTrie = Trie()
         trie.add("1bc")
         trie.remove("1bc")
-        assertEquals(true, trie.equalToTrie(emptyTrie))
+        assert(trie.equalToTrie(emptyTrie))
     }
 
     @Test
@@ -116,7 +116,7 @@ internal class TrieTest {
         expectedTrie.add("a")
         expectedTrie.add("ab")
         expectedTrie.add("abc")
-        assertEquals(true, actualTrie.equalToTrie(expectedTrie))
+        assert(actualTrie.equalToTrie(expectedTrie))
     }
 
     @Test
@@ -132,10 +132,8 @@ internal class TrieTest {
         expectedTrie.add("a")
         expectedTrie.add("abcd")
         expectedTrie.add("abc")
-        assertEquals(true, actualTrie.equalToTrie(expectedTrie))
+        assert(actualTrie.equalToTrie(expectedTrie))
     }
-
-    //начиная с этого момента - сделать тесты
 
     @Test
     fun serialize_complicatedTrie() {
@@ -168,7 +166,7 @@ internal class TrieTest {
         val actualTrie = Trie()
         val inp = FileInputStream("./src/test/resources/homeworks/homework5/task1/SerializeEmptyTrie.txt")
         trieForDeserialize.deserialize(inp)
-        assertEquals(true, actualTrie.equalToTrie(trieForDeserialize))
+        assert(actualTrie.equalToTrie(trieForDeserialize))
     }
 
     @Test
@@ -182,7 +180,7 @@ internal class TrieTest {
         actualTrie.add("acb")
         val inp = FileInputStream("./src/test/resources/homeworks/homework5/task1/SerializeComplicatedTrie.txt")
         trieForDeserialize.deserialize(inp)
-        assertEquals(true, actualTrie.equalToTrie(trieForDeserialize))
+        assert(actualTrie.equalToTrie(trieForDeserialize))
     }
 
     @Test
