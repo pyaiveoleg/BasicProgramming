@@ -1,19 +1,15 @@
-package homeworks.homework2.task1
+package homeworks.homework2.task2
 
-import java.util.Scanner
-
-fun removeRepeatingElements(originalArray: IntArray): IntArray {
-    return originalArray.reversed().distinct().reversed().toIntArray()
+fun removeRepeatingElements(originalArray: Array<Any>): Array<Any> {
+    return originalArray.reversed().distinct().reversed().toTypedArray()
 }
 
 fun main() {
-    val scan = Scanner(System.`in`)
-    println("Please, write down quantity of numbers in your array:")
-    val arrayLength = scan.nextInt()
-    val originalArray = Array(arrayLength) { 0 }.toIntArray()
-    println("Please, write down list of integer values:")
-    for (i in 0 until arrayLength) {
-        originalArray[i] = scan.nextInt()
+    println("Please, write down original string:")
+    val inputString = readLine() ?: run {
+        print("String cannot be null.")
+        return
     }
-    println("This is distincted list:\n" + removeRepeatingElements(originalArray))
+    val originalArray = inputString.split(" ").map { it.toInt() }
+    println("This is distincted list:\n" + removeRepeatingElements(originalArray.toTypedArray()))
 }
