@@ -14,6 +14,8 @@ class HashTable(private var sizeOfHash: Int, private var maxLoadFactor: Double, 
     }
 
     private fun redistributeElements() {
+        quantityOfFilledBuckets = 0
+        quantityOfRecords = 0
         val oldArray = this.array
         array = Array(sizeOfHash) { Record() }
         for (record in oldArray) {

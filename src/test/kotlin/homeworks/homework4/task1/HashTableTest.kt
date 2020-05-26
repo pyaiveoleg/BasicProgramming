@@ -1,6 +1,7 @@
 package homeworks.homework4.task1
 
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Test
 import kotlin.math.pow
 
@@ -14,14 +15,14 @@ internal class HashTableTest {
     fun search_containsConsistOfOneElement() {
         val table = HashTable(sizeOfHash, maxLoadFactor) { string: String -> calculatePolynomialHash(string) }
         table.addToTable("test")
-        assertEquals(true, table.search("test"))
+        assert(table.search("test"))
     }
 
     @Test
     fun search_notContainsConsistOfOneElement() {
         val table = HashTable(sizeOfHash, maxLoadFactor) { string: String -> calculatePolynomialHash(string) }
         table.addToTable("test")
-        assertEquals(false, table.search("not_test"))
+        assertFalse(table.search("not_test"))
     }
 
     @Test
@@ -30,7 +31,7 @@ internal class HashTableTest {
         table.addToTable("test")
         table.addToTable("test2")
         table.addToTable("test3")
-        assertEquals(false, table.search("not_test"))
+        assertFalse(table.search("not_test"))
     }
 
     @Test
@@ -39,7 +40,7 @@ internal class HashTableTest {
         table.addToTable("test")
         table.addToTable("test2")
         table.addToTable("test3")
-        assertEquals(true, table.search("test2"))
+        assert(table.search("test2"))
     }
 
     @Test
@@ -50,7 +51,7 @@ internal class HashTableTest {
         table.addToTable("test2")
         table.addToTable("test3")
         table.addToTable("test4")
-        assertEquals(true, table.search("test2"))
+        assert(table.search("test2"))
     }
 
     @Test
@@ -59,7 +60,7 @@ internal class HashTableTest {
         for (i in 1 until 2000) {
             table.addToTable("test$i")
         }
-        assertEquals(true, table.search("test1000"))
+        assert(table.search("test1000"))
     }
 
     @Test
@@ -68,7 +69,7 @@ internal class HashTableTest {
         for (i in 1 until 2000) {
             table.addToTable("test$i")
         }
-        assertEquals(false, table.search("abs"))
+        assertFalse(table.search("abs"))
     }
 
     @Test
@@ -78,7 +79,7 @@ internal class HashTableTest {
         table.addToTable("test2")
         table.addToTable("test3")
         table.changeHash { string: String -> calculateSimpleHash(string) }
-        assertEquals(true, table.search("test2"))
+        assert(table.search("test2"))
     }
 
     @Test
@@ -88,7 +89,7 @@ internal class HashTableTest {
         table.addToTable("test2")
         table.addToTable("test3")
         table.changeHash { string: String -> calculateSimpleHash(string) }
-        assertEquals(true, table.search("test2"))
+        assert(table.search("test2"))
     }
 
     private fun calculateSimpleHash(string: String): Int {
