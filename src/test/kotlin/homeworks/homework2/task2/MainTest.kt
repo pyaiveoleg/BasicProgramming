@@ -2,7 +2,6 @@ package homeworks.homework2.task2
 
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
-import java.io.File
 
 internal class MainTest {
     private val bigArrayLength = 100000
