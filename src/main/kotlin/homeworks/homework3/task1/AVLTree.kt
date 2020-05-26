@@ -1,7 +1,5 @@
 package homeworks.homework3.task1
 
-import java.lang.Integer.max
-
 class Entry<K, V>(override var key: K, override var value: V) : Map.Entry<K, V>
 
 class AVLTree<K : Comparable<K>, V> : Map<K, V> {
@@ -44,69 +42,6 @@ class AVLTree<K : Comparable<K>, V> : Map<K, V> {
     override var size = 0
         private set
 
-    class Node<K, V>(var key: K, val value: V) where K : Comparable<K> {
-        private var height = 0
-        var leftChild: Node<K, V>? = null
-        var rightChild: Node<K, V>? = null
-        private val balanceFactorToFix = 2
-
-        private fun getBalanceFactor(): Int {
-            return (rightChild?.height ?: -1) - (leftChild?.height ?: -1)
-        }
-
-        private fun updateHeight() {
-            height = max(rightChild?.height ?: -1, leftChild?.height ?: -1) + 1
-        }
-
-        private fun rotateRight(): Node<K, V>? {
-            val pivot = leftChild
-            leftChild = pivot?.rightChild
-            pivot?.rightChild = this
-            this.updateHeight()
-            pivot?.updateHeight()
-            return pivot
-        }
-
-        private fun rotateLeft(): Node<K, V>? {
-            val pivot = rightChild
-            rightChild = pivot?.leftChild
-            pivot?.leftChild = this
-            this.updateHeight()
-            pivot?.updateHeight()
-            return pivot
-        }
-
-        fun balance(): Node<K, V>? {
-            updateHeight()
-            var newPivot: Node<K, V>? = this
-            if (getBalanceFactor() == balanceFactorToFix) {
-                if (rightChild?.getBalanceFactor() ?: -1 < 0) {
-                    rightChild = rightChild?.rotateRight()
-                }
-                newPivot = rotateLeft()
-            } else if (getBalanceFactor() == -balanceFactorToFix) {
-                if (leftChild?.getBalanceFactor() ?: -1 > 0) {
-                    leftChild = leftChild?.rotateLeft()
-                }
-                newPivot = rotateRight()
-            }
-            return newPivot
-        }
-
-        fun findNodeWithMaxKeyInSubtree(): Node<K, V> {
-            return rightChild?.findNodeWithMaxKeyInSubtree() ?: this
-        }
-
-        fun removeNodeWithMaxKeyInSubtree(): Node<K, V>? {
-            rightChild = rightChild?.removeNodeWithMaxKeyInSubtree() ?: return leftChild
-            return balance()
-        }
-
-        override fun toString(): String {
-            return "([key: $key, value: $value] ${leftChild?.toString()} ${rightChild?.toString()})"
-        }
-    }
-
     class OperationsWithNodes<K : Comparable<K>, V> {
         fun delete(keyForDelete: K, currentNode: Node<K, V>): Node<K, V>? {
             if (keyForDelete < currentNode.key) {
@@ -144,24 +79,17 @@ class AVLTree<K : Comparable<K>, V> : Map<K, V> {
         }
 
         fun subtreeEquals(firstNode: Node<K, V>?, secondNode: Node<K, V>?): Boolean {
-            if (firstNode == null) {
-                if (secondNode == null) {
-                    return true
-                }
-                return false
+            if ((firstNode == null) && (secondNode == null)) {
+                return true
             }
-            if (secondNode == null) {
+            if ((firstNode == null) || (secondNode == null)) {
                 return false
             }
             if (firstNode.key != secondNode.key || firstNode.value != secondNode.value) {
                 return false
             }
-            if (!subtreeEquals(firstNode.leftChild, secondNode.leftChild) ||
-                !subtreeEquals(firstNode.rightChild, secondNode.rightChild)
-            ) {
-                return false
-            }
-            return true
+            return subtreeEquals(firstNode.leftChild, secondNode.leftChild) &&
+                    subtreeEquals(firstNode.rightChild, secondNode.rightChild)
         }
 
         fun insert(keyForInsert: K, valueForInsert: V, currentNode: Node<K, V>): Node<K, V>? {
@@ -179,6 +107,8 @@ class AVLTree<K : Comparable<K>, V> : Map<K, V> {
                 } else {
                     currentNode.rightChild = insert(keyForInsert, valueForInsert, rightChild)
                 }
+            } else {
+                currentNode.value = valueForInsert
             }
             return currentNode.balance()
         }
@@ -226,11 +156,7 @@ class AVLTree<K : Comparable<K>, V> : Map<K, V> {
 
     override fun get(key: K): V? {
         val root = this.root
-        return if (root == null) {
-            null
-        } else {
-            find(key, root)
-        }
+        return root?.let { find(key, it) }
     }
 
     override fun isEmpty() = size == 0
