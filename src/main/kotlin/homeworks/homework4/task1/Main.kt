@@ -13,7 +13,6 @@ private const val CODE_OF_EXIT = 7
 private const val SIZE_OF_HASH = 1000
 private const val MAX_LOAD_FACTOR = 0.9
 
-
 fun main() {
     val hashTable = HashTable(SIZE_OF_HASH, MAX_LOAD_FACTOR, PolynomialHash())
 
@@ -39,12 +38,28 @@ fun changeHash(codeOfHash: Int): HashFunction {
     }
 }
 
+fun readCodeAndChangeHash(hashTable: HashTable) {
+    println("Choose hash-function: 1 for polynomial hash, 2 for simple hash")
+    val codeOfHash = try {
+        readLine()?.toInt()
+    } catch (exception: NumberFormatException) {
+        0
+    }
+    if (codeOfHash == 1 || codeOfHash == 2) {
+        val hashFunction = changeHash(codeOfHash)
+        hashTable.changeHash(hashFunction)
+        println("Hash changed successfully!")
+    } else {
+        println("Invalid code of hash")
+    }
+}
+
 fun workWithTable(hashTable: HashTable) {
     println("Type '$CODE_OF_HELP' for list of commands.")
     while (true) {
         val command = try {
             readLine()?.toInt() ?: CODE_OF_HELP
-        } catch (e: Exception) {
+        } catch (e: NumberFormatException) {
             CODE_OF_HELP
         }
         when (command) {
@@ -71,19 +86,7 @@ fun workWithTable(hashTable: HashTable) {
                 }
             }
             CODE_OF_CHANGE_HASH -> {
-                println("Choose hash-function: 1 for polynomial hash, 2 for simple hash")
-                val codeOfHash = try {
-                    readLine()?.toInt()
-                } catch (e: Exception) {
-                    0
-                }
-                if (codeOfHash == 1 || codeOfHash == 2) {
-                    val hashFunction = changeHash(codeOfHash)
-                    hashTable.changeHash(hashFunction)
-                    println("Hash changed successfully!")
-                } else {
-                    println("Invalid code of hash")
-                }
+                readCodeAndChangeHash(hashTable)
             }
             CODE_OF_PRINT_STATISTICS -> {
                 hashTable.printStatistics()

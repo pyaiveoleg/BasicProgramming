@@ -12,7 +12,6 @@ class HashTable(private var sizeOfHash: Int,
     private var quantityOfFilledBuckets = 0
     private var array = Array(sizeOfHash) { Record(mutableListOf()) }
 
-
     data class Record(val key: MutableList<String>)
 
     private fun redistributeElements() {
