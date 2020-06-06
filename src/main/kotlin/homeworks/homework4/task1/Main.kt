@@ -54,15 +54,18 @@ fun readCodeAndChangeHash(hashTable: HashTable) {
     }
 }
 
+fun readCommand(): Int {
+    return try {
+       readLine()?.toInt() ?: CODE_OF_HELP
+    } catch (e: NumberFormatException) {
+        CODE_OF_HELP
+    }
+}
+
 fun workWithTable(hashTable: HashTable) {
     println("Type '$CODE_OF_HELP' for list of commands.")
     while (true) {
-        val command = try {
-            readLine()?.toInt() ?: CODE_OF_HELP
-        } catch (e: NumberFormatException) {
-            CODE_OF_HELP
-        }
-        when (command) {
+        when (readCommand()) {
             CODE_OF_HELP -> printHelp()
             CODE_OF_ADD -> {
                 println("Write down value for adding:")

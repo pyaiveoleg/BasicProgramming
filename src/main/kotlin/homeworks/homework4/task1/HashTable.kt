@@ -4,9 +4,10 @@ import kotlin.math.abs
 
 private const val VALUE_FOR_EXPAND = 2
 
-class HashTable(private var sizeOfHash: Int,
-                private var maxLoadFactor: Double,
-                private var hashFunction: HashFunction
+class HashTable(
+    private var sizeOfHash: Int,
+    private var maxLoadFactor: Double,
+    private var hashFunction: HashFunction
 ) {
     private var quantityOfRecords = 0
     private var quantityOfFilledBuckets = 0
