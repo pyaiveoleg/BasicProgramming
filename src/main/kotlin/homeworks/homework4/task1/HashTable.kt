@@ -2,22 +2,24 @@ package homeworks.homework4.task1
 
 import kotlin.math.abs
 
-class HashTable(private var sizeOfHash: Int, private var maxLoadFactor: Double, functionForHash: (String) -> Int) {
+private const val VALUE_FOR_EXPAND = 2
+
+class HashTable(private var sizeOfHash: Int,
+                private var maxLoadFactor: Double,
+                private var hashFunction: HashFunction
+) {
     private var quantityOfRecords = 0
     private var quantityOfFilledBuckets = 0
-    private var array = Array(sizeOfHash) { Record() }
-    private var calculateHash = functionForHash
+    private var array = Array(sizeOfHash) { Record(mutableListOf()) }
 
-    class Record {
-        val key = mutableListOf<String>()
-        var quantityOfEntries = 0
-    }
+
+    data class Record(val key: MutableList<String>)
 
     private fun redistributeElements() {
         quantityOfFilledBuckets = 0
         quantityOfRecords = 0
         val oldArray = this.array
-        array = Array(sizeOfHash) { Record() }
+        array = Array(sizeOfHash) { Record(mutableListOf()) }
         for (record in oldArray) {
             for (item in record.key) {
                 addToTable(item)
@@ -26,8 +28,7 @@ class HashTable(private var sizeOfHash: Int, private var maxLoadFactor: Double, 
     }
 
     private fun expandHashTable() {
-        val valueForExpand = 2
-        sizeOfHash *= valueForExpand
+        sizeOfHash *= VALUE_FOR_EXPAND
         redistributeElements()
     }
 
@@ -35,7 +36,7 @@ class HashTable(private var sizeOfHash: Int, private var maxLoadFactor: Double, 
         if (string == null) {
             return
         }
-        val hash = abs(calculateHash(string)) % sizeOfHash
+        val hash = abs(hashFunction.calculateHash(string)) % sizeOfHash
         val bucket = array[hash]
         if (string in bucket.key) {
             return
@@ -44,32 +45,31 @@ class HashTable(private var sizeOfHash: Int, private var maxLoadFactor: Double, 
             quantityOfFilledBuckets++
         }
         bucket.key.add(string)
-        bucket.quantityOfEntries++
         quantityOfRecords++
-        if (quantityOfRecords / sizeOfHash > maxLoadFactor) {
+        if (quantityOfRecords.toDouble() / sizeOfHash > maxLoadFactor) {
             expandHashTable()
         }
     }
 
-    fun deleteFromTable(string: String?) {
-        if (string == null) {
-            return
+    fun deleteFromTable(string: String?): Boolean {
+        if (string == null || !search(string)) {
+            return false
         }
-        val hash = abs(calculateHash(string)) % sizeOfHash
+        val hash = abs(hashFunction.calculateHash(string)) % sizeOfHash
         val bucket = array[hash]
         bucket.key.remove(string)
-        bucket.quantityOfEntries--
         if (bucket.key.size == 0) {
             quantityOfFilledBuckets--
         }
         quantityOfRecords--
+        return true
     }
 
     fun search(string: String?): Boolean {
         if (string == null) {
             return false
         }
-        val hash = abs(calculateHash(string)) % sizeOfHash
+        val hash = abs(hashFunction.calculateHash(string)) % sizeOfHash
         return string in array[hash].key
     }
 
@@ -87,14 +87,14 @@ class HashTable(private var sizeOfHash: Int, private var maxLoadFactor: Double, 
 
         println("Quantity of filled buckets is $quantityOfFilledBuckets")
         println("Quantity of items is $quantityOfRecords")
-        println("Load factor is ${quantityOfFilledBuckets.toDouble() / sizeOfHash}")
+        println("Load factor is ${quantityOfRecords.toDouble() / sizeOfHash}")
         println("Quantity of conflicts is $quantityOfConflicts")
         println("Maximum length of list in bucket with conflict is $maxElementsInConflictBucket")
         println("Quantity of empty buckets is ${sizeOfHash - quantityOfFilledBuckets}")
     }
 
-    fun changeHash(hashFunction: (String) -> Int) {
-        this.calculateHash = hashFunction
+    fun changeHash(hashFunction: HashFunction) {
+        this.hashFunction = hashFunction
         redistributeElements()
     }
 }
