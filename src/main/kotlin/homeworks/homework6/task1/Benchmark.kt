@@ -5,10 +5,12 @@ import kotlinx.coroutines.runBlocking
 import java.io.File
 import kotlin.system.measureTimeMillis
 
-class CompareSorts {
-    private val sizeOfArray = 10000000
-    private val maxNumber = 100000
-    private val quantityOfAttempts = 10
+class Benchmark {
+    companion object Config {
+        private val sizeOfArray = 10000000
+        private val maxNumber = 100000
+        private val quantityOfAttempts = 10
+    }
 
     fun printComparingBetweenSorts() {
         val resultingFile = File("result.txt")
