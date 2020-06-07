@@ -44,15 +44,19 @@ object TicTacToe {
     }
 
     private fun isHorizontalRow(board: MutableList<Int>, player: Int): Boolean {
-        return (board[leftUpperCorner] == player && board[upperMiddle] == player && board[rightUpperCorner] == player)
-                || (board[leftMiddle] == player && board[middle] == player && board[rightMiddle] == player)
-                || (board[leftDownCorner] == player && board[downMiddle] == player && board[rightDownCorner] == player)
+        return (
+            board[leftUpperCorner] == player && board[upperMiddle] == player && board[rightUpperCorner] == player ||
+            board[leftMiddle] == player && board[middle] == player && board[rightMiddle] == player ||
+            board[leftDownCorner] == player && board[downMiddle] == player && board[rightDownCorner] == player
+        )
     }
 
     private fun isVerticalRow(board: MutableList<Int>, player: Int): Boolean {
-        return (board[leftUpperCorner] == player && board[leftMiddle] == player && board[leftDownCorner] == player) ||
-                (board[upperMiddle] == player && board[middle] == player && board[downMiddle] == player) ||
-                (board[rightUpperCorner] == player && board[rightMiddle] == player && board[rightDownCorner] == player)
+        return (
+             board[leftUpperCorner] == player && board[leftMiddle] == player && board[leftDownCorner] == player ||
+             board[upperMiddle] == player && board[middle] == player && board[downMiddle] == player ||
+             board[rightUpperCorner] == player && board[rightMiddle] == player && board[rightDownCorner] == player
+        )
     }
 
     fun winning(board: MutableList<Int>, player: Int): Boolean {

@@ -29,9 +29,16 @@ object HardBot {
         return intArrayOf(xMove, yMove)
     }
 
-    data class Move(var index: Int = 0, var score: Int = 0)
+    data class Move(
+        var index: Int = 0,
+        var score: Int = 0
+    )
 
-    private fun estimateMoves(availablePoints: MutableList<Int>, newBoard: MutableList<Int>, player: Int): MutableList<Move> {
+    private fun estimateMoves(
+        availablePoints: MutableList<Int>,
+        newBoard: MutableList<Int>,
+        player: Int
+    ): MutableList<Move> {
         val moves = mutableListOf<Move>()
         for (i in 0 until availablePoints.size) {
             val move = Move(newBoard[availablePoints[i]], 0)
