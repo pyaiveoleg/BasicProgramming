@@ -31,27 +31,7 @@ object HardBot {
 
     data class Move(var index: Int = 0, var score: Int = 0)
 
-    private fun minimax(newBoard: MutableList<Int>, player: Int): Move {
-        val availablePoints = mutableListOf<Int>()
-        for (cell in newBoard) {
-            if (cell in 0 until boardSide * boardSide) {
-                availablePoints.add(cell)
-            }
-        }
-        if (human == codeOfO && TicTacToe.winning(newBoard, TicTacToe.CROSS) ||
-            human == codeOfX && TicTacToe.winning(newBoard, TicTacToe.ZERO)
-        ) {
-            return Move(-1, -scoreStep)
-        }
-        if (ai == codeOfO && TicTacToe.winning(newBoard, TicTacToe.CROSS) ||
-            ai == codeOfX && TicTacToe.winning(newBoard, TicTacToe.ZERO)
-        ) {
-            return Move(-1, scoreStep)
-        }
-        if (availablePoints.size == 0) {
-            return Move(-1, 0)
-        }
-
+    private fun estimateMoves(availablePoints: MutableList<Int>, newBoard: MutableList<Int>, player: Int): MutableList<Move> {
         val moves = mutableListOf<Move>()
         for (i in 0 until availablePoints.size) {
             val move = Move(newBoard[availablePoints[i]], 0)
@@ -72,24 +52,66 @@ object HardBot {
             newBoard[availablePoints[i]] = move.index
             moves.add(move)
         }
+        return moves
+    }
 
-        var bestMove = 0
-        if (player == ai) {
-            var bestScore = -hugeScore
-            for (i in 0 until moves.size) {
-                if (moves[i].score > bestScore) {
-                    bestScore = moves[i].score
-                    bestMove = i
-                }
+    private fun calculateForAi(moves: MutableList<Move>): Int {
+        var bestMove = -1
+        var bestScore = -hugeScore
+        for (i in 0 until moves.size) {
+            if (moves[i].score > bestScore) {
+                bestScore = moves[i].score
+                bestMove = i
             }
+        }
+        return bestMove
+    }
+
+    private fun calculateForHuman(moves: MutableList<Move>): Int {
+        var bestMove = -1
+        var bestScore = hugeScore
+        for (i in 0 until moves.size) {
+            if (moves[i].score < bestScore) {
+                bestScore = moves[i].score
+                bestMove = i
+            }
+        }
+        return bestMove
+    }
+
+    private fun minimax(newBoard: MutableList<Int>, player: Int): Move {
+        val availablePoints = mutableListOf<Int>()
+        for (cell in newBoard) {
+            if (cell in 0 until boardSide * boardSide) {
+                availablePoints.add(cell)
+            }
+        }
+
+        var terminalState: Move? = null
+        if (human == codeOfO && TicTacToe.winning(newBoard, TicTacToe.CROSS) ||
+            human == codeOfX && TicTacToe.winning(newBoard, TicTacToe.ZERO)
+        ) {
+            terminalState = Move(-1, -scoreStep)
+        }
+        if (ai == codeOfO && TicTacToe.winning(newBoard, TicTacToe.CROSS) ||
+            ai == codeOfX && TicTacToe.winning(newBoard, TicTacToe.ZERO)
+        ) {
+            terminalState = Move(-1, scoreStep)
+        }
+        if (availablePoints.size == 0) {
+            terminalState = Move(-1, 0)
+        }
+
+        if (terminalState != null) {
+            return terminalState
+        }
+
+        val moves = estimateMoves(availablePoints, newBoard, player)
+
+        val bestMove = if (player == ai) {
+            calculateForAi(moves)
         } else {
-            var bestScore = hugeScore
-            for (i in 0 until moves.size) {
-                if (moves[i].score < bestScore) {
-                    bestScore = moves[i].score
-                    bestMove = i
-                }
-            }
+            calculateForHuman(moves)
         }
         return moves[bestMove]
     }

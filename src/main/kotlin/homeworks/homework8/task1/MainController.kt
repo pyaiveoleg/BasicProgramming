@@ -23,7 +23,7 @@ class MainController : Controller() {
         if (newMode == "Online") {
             onlineMode.start()
         }
-        model.board = (0..8).toMutableList()
+        model.board = (0 until model.boardSide * model.boardSide).toMutableList()
         model.currentMove.value = "x"
     }
 
@@ -37,7 +37,7 @@ class MainController : Controller() {
 
         val availablePoints = mutableListOf<Int>()
         for (cell in model.board) {
-            if (cell in 0 until 9) {
+            if (cell in 0 until model.boardSide * model.boardSide) {
                 availablePoints.add(cell)
             }
         }
@@ -65,7 +65,7 @@ class MainController : Controller() {
 
     private fun move(x: Int, y: Int) {
         model.table[x][y].value = model.currentMove.value
-        model.board[3 * y + x] = if (model.currentMove.value == "x") {
+        model.board[model.boardSide * y + x] = if (model.currentMove.value == "x") {
             model.CROSS
         } else {
             model.ZERO

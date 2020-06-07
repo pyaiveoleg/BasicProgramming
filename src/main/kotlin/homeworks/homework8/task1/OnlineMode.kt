@@ -67,10 +67,10 @@ class OnlineMode : Thread() {
     private val updater = Runnable {
         for (y1 in 0..2) {
             for (x1 in 0..2) {
-                if (model.board[3 * y1 + x1] == model.ZERO) {
+                if (model.board[model.boardSide * y1 + x1] == model.ZERO) {
                     model.table[x1][y1].value = "o"
                 }
-                if (model.board[3 * y1 + x1] == model.CROSS) {
+                if (model.board[model.boardSide * y1 + x1] == model.CROSS) {
                     model.table[x1][y1].value = "x"
                 }
             }
