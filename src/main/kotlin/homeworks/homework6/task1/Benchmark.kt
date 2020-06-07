@@ -7,9 +7,9 @@ import kotlin.system.measureTimeMillis
 
 class Benchmark {
     companion object Config {
-        private val sizeOfArray = 10000000
-        private val maxNumber = 100000
-        private val quantityOfAttempts = 10
+        private const val sizeOfArray = 10000000
+        private const val maxNumber = 100000
+        private const val quantityOfAttempts = 10
     }
 
     fun printComparingBetweenSorts() {
