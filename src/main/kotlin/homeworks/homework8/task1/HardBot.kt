@@ -95,14 +95,16 @@ object HardBot {
         }
 
         var terminalState: Move? = null
-        if (human == codeOfO && TicTacToe.winning(newBoard, TicTacToe.CROSS) ||
-            human == codeOfX && TicTacToe.winning(newBoard, TicTacToe.ZERO)
-        ) {
+
+        val humanSecondLoses = human == codeOfO && TicTacToe.winning(newBoard, TicTacToe.CROSS)
+        val humanFirstLoses = human == codeOfX && TicTacToe.winning(newBoard, TicTacToe.ZERO)
+        if (humanSecondLoses || humanFirstLoses) {
             terminalState = Move(-1, -scoreStep)
         }
-        if (ai == codeOfO && TicTacToe.winning(newBoard, TicTacToe.CROSS) ||
-            ai == codeOfX && TicTacToe.winning(newBoard, TicTacToe.ZERO)
-        ) {
+
+        val aiSecondLoses = ai == codeOfO && TicTacToe.winning(newBoard, TicTacToe.CROSS)
+        val aiFirstLoses = ai == codeOfX && TicTacToe.winning(newBoard, TicTacToe.ZERO)
+        if (aiSecondLoses || aiFirstLoses) {
             terminalState = Move(-1, scoreStep)
         }
         if (availablePoints.size == 0) {
