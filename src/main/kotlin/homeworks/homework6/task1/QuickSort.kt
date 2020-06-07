@@ -9,11 +9,11 @@ class QuickSort {
         }
     }
 
-    fun quickSort(array: IntArray, left: Int, right: Int) {
+    fun simpleQuickSort(array: IntArray, left: Int, right: Int) {
         if (left < right) {
             val middle = splitArray(array, left, right)
-            quickSort(array, middle + 1, right)
-            quickSort(array, left, middle)
+            simpleQuickSort(array, middle + 1, right)
+            simpleQuickSort(array, left, middle)
         }
     }
 

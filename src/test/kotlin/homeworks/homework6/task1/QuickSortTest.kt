@@ -10,11 +10,11 @@ internal class QuickSortTest {
     private val maxNumber = 100000
 
     @Test
-    fun quickSort_allElementsEqual() {
+    fun simpleQuickSort_allElementsEqual() {
         val array = intArrayOf(5, 5, 5, 5, 5, 5)
         val expected = intArrayOf(5, 5, 5, 5, 5, 5)
         val arrayLength = array.size - 1
-        QuickSort().quickSort(array, 0, arrayLength)
+        QuickSort().simpleQuickSort(array, 0, arrayLength)
         assertArrayEquals(expected, array)
     }
 
@@ -30,11 +30,11 @@ internal class QuickSortTest {
     }
 
     @Test
-    fun quickSort_allElementsDifferent() {
+    fun simpleQuickSort_allElementsDifferent() {
         val array = intArrayOf(5, 5, 5, 5, 5, 5)
         val expected = intArrayOf(5, 5, 5, 5, 5, 5)
         val arrayLength = array.size - 1
-        QuickSort().quickSort(array, 0, arrayLength)
+        QuickSort().simpleQuickSort(array, 0, arrayLength)
         assertArrayEquals(expected, array)
     }
 
@@ -50,11 +50,11 @@ internal class QuickSortTest {
     }
 
     @Test
-    fun quickSort_veryBigRandomArray() {
+    fun simpleQuickSort_veryBigRandomArray() {
         val array = IntArray(sizeOfArray) { (0..maxNumber).random() }
         val expected = array.sorted().toIntArray()
         val arrayLength = array.size - 1
-        QuickSort().quickSort(array, 0, arrayLength)
+        QuickSort().simpleQuickSort(array, 0, arrayLength)
         assertArrayEquals(expected, array)
     }
 
@@ -72,11 +72,11 @@ internal class QuickSortTest {
     }
 
     @Test
-    fun quickSort_veryBigAscendingArray() {
+    fun simpleQuickSort_veryBigAscendingArray() {
         val array = IntArray(sizeOfArray) { it }
         val expected = array.sorted().toIntArray()
         val arrayLength = array.size - 1
-        QuickSort().quickSort(array, 0, arrayLength)
+        QuickSort().simpleQuickSort(array, 0, arrayLength)
         assertArrayEquals(expected, array)
     }
 
@@ -92,11 +92,11 @@ internal class QuickSortTest {
     }
 
     @Test
-    fun quickSort_veryBigDescendingArray() {
+    fun simpleQuickSort_veryBigDescendingArray() {
         val array = IntArray(sizeOfArray) { sizeOfArray - it }
         val expected = array.sorted().toIntArray()
         val arrayLength = array.size - 1
-        QuickSort().quickSort(array, 0, arrayLength)
+        QuickSort().simpleQuickSort(array, 0, arrayLength)
         assertArrayEquals(expected, array)
     }
 
