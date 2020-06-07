@@ -1,0 +1,7 @@
+There are
+seven
+lines 
+and 
+they all
+are
+not empty. 	
