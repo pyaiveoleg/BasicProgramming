@@ -5,11 +5,11 @@ import javafx.beans.property.SimpleStringProperty
 import tornadofx.Controller
 
 class MainController : Controller() {
-    val model = TicTacToe
+    private val model = TicTacToe
     private var winner: Int? = null
     var winMessage = SimpleStringProperty()
-    private val hardBot = HardBot()
-    private val easyBot = EasyBot()
+    private val hardBot = HardBot
+    private val easyBot = EasyBot
     private var humanSide: Int? = null
     private var mode: String = ""
     private val onlineMode = OnlineMode()

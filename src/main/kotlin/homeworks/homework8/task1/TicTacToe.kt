@@ -4,6 +4,16 @@ import javafx.beans.property.SimpleStringProperty
 import tornadofx.find
 
 object TicTacToe {
+    private const val leftUpperCorner = 0
+    private const val upperMiddle = 1
+    private const val rightUpperCorner = 2
+    private const val leftMiddle = 3
+    private const val middle = 4
+    private const val rightMiddle = 5
+    private const val leftDownCorner = 6
+    private const val downMiddle = 7
+    private const val rightDownCorner = 8
+
     const val CROSS = 10
     const val ZERO = -10
 
@@ -27,14 +37,24 @@ object TicTacToe {
         }
     }
 
+    private fun isDiagonalRow(board: MutableList<Int>, player: Int): Boolean {
+        return (board[leftUpperCorner] == player && board[middle] == player && board[rightDownCorner] == player) ||
+               (board[rightUpperCorner] == player && board[middle] == player && board[leftDownCorner] == player)
+    }
+
+    private fun isHorizontalRow(board: MutableList<Int>, player: Int): Boolean {
+        return (board[leftUpperCorner] == player && board[upperMiddle] == player && board[rightUpperCorner] == player) ||
+                (board[leftMiddle] == player && board[middle] == player && board[rightMiddle] == player) ||
+                (board[leftDownCorner] == player && board[downMiddle] == player && board[rightDownCorner] == player)
+    }
+
+    private fun isVerticalRow(board: MutableList<Int>, player: Int): Boolean {
+        return (board[leftUpperCorner] == player && board[leftMiddle] == player && board[leftDownCorner] == player) ||
+               (board[upperMiddle] == player && board[middle] == player && board[downMiddle] == player) ||
+               (board[rightUpperCorner] == player && board[rightMiddle] == player && board[rightDownCorner] == player)
+    }
+
     fun winning(board: MutableList<Int>, player: Int): Boolean {
-        return (board[0] == player && board[1] == player && board[2] == player) ||
-                (board[3] == player && board[4] == player && board[5] == player) ||
-                (board[6] == player && board[7] == player && board[8] == player) ||
-                (board[0] == player && board[3] == player && board[6] == player) ||
-                (board[1] == player && board[4] == player && board[7] == player) ||
-                (board[2] == player && board[5] == player && board[8] == player) ||
-                (board[0] == player && board[4] == player && board[8] == player) ||
-                (board[2] == player && board[4] == player && board[6] == player)
+        return isDiagonalRow(board, player) || isVerticalRow(board, player) || isHorizontalRow(board, player)
     }
 }

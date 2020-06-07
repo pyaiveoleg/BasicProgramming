@@ -17,6 +17,7 @@ class OnlineMode : Thread() {
         val client = HttpClient {
             install(WebSockets)
         }
+
         runBlocking {
             print("start")
             client.ws(
@@ -27,14 +28,6 @@ class OnlineMode : Thread() {
                 when (val frame = incoming.receive()) {
                     is Frame.Text -> {
                         model.numberOfPlayer = frame.readText().toInt()
-                        val define = Runnable {
-                            if (model.numberOfPlayer == 2) {
-                                model.currentMove.value = "o"
-                            }
-                            if (model.numberOfPlayer == 1) {
-                                model.isOpponentMoved = true
-                            }
-                        }
                         Platform.runLater(define)
                     }
                 }
@@ -49,20 +42,6 @@ class OnlineMode : Thread() {
                         is Frame.Text -> {
                             val received = (frame.readText().split("[")[1]).split("]")[0].split(",").map { it.trim() }
                             model.board = received.map { it.toInt() }.toMutableList()
-                            val updater = Runnable {
-                                for (y1 in 0..2) {
-                                    for (x1 in 0..2) {
-                                        if (model.board[3 * y1 + x1] == model.ZERO) {
-                                            model.table[x1][y1].value = "o"
-                                        }
-                                        if (model.board[3 * y1 + x1] == model.CROSS) {
-                                            model.table[x1][y1].value = "x"
-                                        }
-                                    }
-                                }
-                                model.isOpponentMoved = true
-                                model.controller.checkWinner()
-                            }
                             Platform.runLater(updater)
                         }
                     }
@@ -74,5 +53,29 @@ class OnlineMode : Thread() {
                 }
             }
         }
+    }
+
+    private val define = Runnable {
+        if (model.numberOfPlayer == 2) {
+            model.currentMove.value = "o"
+        }
+        if (model.numberOfPlayer == 1) {
+            model.isOpponentMoved = true
+        }
+    }
+
+    private val updater = Runnable {
+        for (y1 in 0..2) {
+            for (x1 in 0..2) {
+                if (model.board[3 * y1 + x1] == model.ZERO) {
+                    model.table[x1][y1].value = "o"
+                }
+                if (model.board[3 * y1 + x1] == model.CROSS) {
+                    model.table[x1][y1].value = "x"
+                }
+            }
+        }
+        model.isOpponentMoved = true
+        model.controller.checkWinner()
     }
 }

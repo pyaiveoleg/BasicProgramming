@@ -15,9 +15,14 @@ import tornadofx.px
 import tornadofx.style
 import tornadofx.vbox
 
-class EndView : View("Cross-zero") {
+object EndView : View("Cross-zero") {
     private val controller: MainController by inject()
     private val model = TicTacToe
+
+    private const val sizeOfSquare = 50.0
+    private const val sizeOfFont = 20
+    private const val paddingBetweenSquares = 3
+    private const val paddingBetweenBoardAndLabel = 10
 
     @KtorExperimentalAPI
     override val root = vbox {
@@ -25,7 +30,7 @@ class EndView : View("Cross-zero") {
             label {
                 bind(controller.winMessage)
                 style {
-                    fontSize = 20.px
+                    fontSize = sizeOfFont.px
                     fontWeight = FontWeight.EXTRA_BOLD
                 }
             }
@@ -37,18 +42,18 @@ class EndView : View("Cross-zero") {
             }
         }
         vbox {
-            paddingTop = 10
+            paddingTop = paddingBetweenBoardAndLabel
             for (i in 0..2) {
                 hbox {
-                    paddingTop = 3
+                    paddingTop = paddingBetweenSquares
                     for (j in 0..2) {
                         hbox {
-                            paddingLeft = 3
+                            paddingLeft = paddingBetweenSquares
                             button {
-                                minHeight = 50.0
-                                minWidth = 50.0
-                                maxHeight = 50.0
-                                maxWidth = 50.0
+                                minHeight = sizeOfSquare
+                                minWidth = sizeOfSquare
+                                maxHeight = sizeOfSquare
+                                maxWidth = sizeOfSquare
                                 bind(model.table[j][i])
                                 action {
                                     controller.play(j, i)
@@ -56,7 +61,7 @@ class EndView : View("Cross-zero") {
                                 style {
                                     backgroundColor += Color.LIGHTGREEN
                                     fontWeight = FontWeight.EXTRA_BOLD
-                                    fontSize = 25.px
+                                    fontSize = sizeOfFont.px
                                 }
                             }
                         }

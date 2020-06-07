@@ -2,49 +2,51 @@ package homeworks.homework7.task2
 
 import javafx.beans.property.SimpleStringProperty
 
-class HardBot {
+object HardBot {
+    private const val hugeScore = 20000
+    private const val scoreStep = 20
+    private const val boardSide = 3
+    private const val codeOfX = 2
+    private const val codeOfO = 1
     private var human = 0
     private var ai = 0
 
-    fun makeMove(board: MutableList<Int>, currentMove: SimpleStringProperty): Array<Int> {
+    fun makeMove(board: MutableList<Int>, currentMove: SimpleStringProperty): IntArray {
         human = if (currentMove.value == "x") {
-            2
+            codeOfX
         } else {
-            1
+            codeOfO
         }
         ai = if (currentMove.value == "x") {
-            1
+            codeOfO
         } else {
-            2
+            codeOfX
         }
 
         val pointToMove = minimax(board, ai)
-        val xMove = pointToMove.index % 3
-        val yMove: Int = pointToMove.index / 3
-        return arrayOf(xMove, yMove)
+        val xMove = pointToMove.index % boardSide
+        val yMove: Int = pointToMove.index / boardSide
+        return intArrayOf(xMove, yMove)
     }
 
-    class Move(newIndex: Int = 0, newScore: Int = 0) {
-        var index: Int = newIndex
-        var score: Int = newScore
-    }
+    data class Move(var index: Int = 0, var score: Int = 0)
 
     private fun minimax(newBoard: MutableList<Int>, player: Int): Move {
         val availablePoints = mutableListOf<Int>()
         for (cell in newBoard) {
-            if (cell in 0 until 9) {
+            if (cell in 0 until boardSide * boardSide) {
                 availablePoints.add(cell)
             }
         }
-        if (human == 1 && TicTacToe.winning(newBoard, TicTacToe.CROSS) ||
-            human == 2 && TicTacToe.winning(newBoard, TicTacToe.ZERO)
+        if (human == codeOfO && TicTacToe.winning(newBoard, TicTacToe.CROSS) ||
+            human == codeOfX && TicTacToe.winning(newBoard, TicTacToe.ZERO)
         ) {
-            return Move(-1, -20)
+            return Move(-1, -scoreStep)
         }
-        if (ai == 1 && TicTacToe.winning(newBoard, TicTacToe.CROSS) ||
-            ai == 2 && TicTacToe.winning(newBoard, TicTacToe.ZERO)
+        if (ai == codeOfO && TicTacToe.winning(newBoard, TicTacToe.CROSS) ||
+            ai == codeOfX && TicTacToe.winning(newBoard, TicTacToe.ZERO)
         ) {
-            return Move(-1, 20)
+            return Move(-1, scoreStep)
         }
         if (availablePoints.size == 0) {
             return Move(-1, 0)
@@ -53,7 +55,6 @@ class HardBot {
         val moves = mutableListOf<Move>()
         for (i in 0 until availablePoints.size) {
             val move = Move(newBoard[availablePoints[i]], 0)
-
             newBoard[availablePoints[i]] = if (player == 1) {
                 TicTacToe.CROSS
             } else {
@@ -74,7 +75,7 @@ class HardBot {
 
         var bestMove = 0
         if (player == ai) {
-            var bestScore = -20000
+            var bestScore = -hugeScore
             for (i in 0 until moves.size) {
                 if (moves[i].score > bestScore) {
                     bestScore = moves[i].score
@@ -82,7 +83,7 @@ class HardBot {
                 }
             }
         } else {
-            var bestScore = 20000
+            var bestScore = hugeScore
             for (i in 0 until moves.size) {
                 if (moves[i].score < bestScore) {
                     bestScore = moves[i].score
