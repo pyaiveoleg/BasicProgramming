@@ -10,8 +10,8 @@ class Main {
     private val maxNumber = 100000
     private val quantityOfAttempts = 10
 
-    fun main() {
-        val resultingFile = File("result.txt") // чего-то он пустой
+    fun printComparingBetweenSorts() {
+        val resultingFile = File("result.txt")
         val writer = resultingFile.bufferedWriter()
         for (i in 1..quantityOfAttempts) {
             writer.write("Attempt: $i\n")
@@ -36,4 +36,8 @@ class Main {
         }
         writer.flush()
     }
+}
+
+fun main() {
+    Main().printComparingBetweenSorts()
 }
