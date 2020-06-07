@@ -1,0 +1,39 @@
+Attempt: 1
+Time of usual realization is 919
+Time of async realization is 1117
+
+Attempt: 2
+Time of usual realization is 914
+Time of async realization is 1009
+
+Attempt: 3
+Time of usual realization is 887
+Time of async realization is 990
+
+Attempt: 4
+Time of usual realization is 906
+Time of async realization is 996
+
+Attempt: 5
+Time of usual realization is 899
+Time of async realization is 1039
+
+Attempt: 6
+Time of usual realization is 917
+Time of async realization is 1042
+
+Attempt: 7
+Time of usual realization is 904
+Time of async realization is 1035
+
+Attempt: 8
+Time of usual realization is 910
+Time of async realization is 1043
+
+Attempt: 9
+Time of usual realization is 913
+Time of async realization is 1042
+
+Attempt: 10
+Time of usual realization is 900
+Time of async realization is 1051

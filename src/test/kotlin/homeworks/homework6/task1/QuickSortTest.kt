@@ -5,18 +5,36 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertArrayEquals
 import org.junit.jupiter.api.Test
 
-private const val SIZE_OF_ARRAY = 10000
-private const val MAX_NUMBER = 100000
-
 internal class QuickSortTest {
+    private val sizeOfArray = 10000
+    private val maxNumber = 100000
+
+    @Test
+    fun quickSort_allElementsEqual() {
+        val array = intArrayOf(5, 5, 5, 5, 5, 5)
+        val expected = intArrayOf(5, 5, 5, 5, 5, 5)
+        val arrayLength = array.size - 1
+        QuickSort().quickSort(array, 0, arrayLength)
+        assertArrayEquals(expected, array)
+    }
+
     @Test
     fun asyncQuickSort_allElementsEqual() {
         val array = intArrayOf(5, 5, 5, 5, 5, 5)
         val expected = intArrayOf(5, 5, 5, 5, 5, 5)
         val arrayLength = array.size - 1
         runBlocking {
-            asyncQuickSort(array, 0, arrayLength)
+            QuickSort().asyncQuickSort(array, 0, arrayLength)
         }
+        assertArrayEquals(expected, array)
+    }
+
+    @Test
+    fun quickSort_allElementsDifferent() {
+        val array = intArrayOf(5, 5, 5, 5, 5, 5)
+        val expected = intArrayOf(5, 5, 5, 5, 5, 5)
+        val arrayLength = array.size - 1
+        QuickSort().quickSort(array, 0, arrayLength)
         assertArrayEquals(expected, array)
     }
 
@@ -26,54 +44,69 @@ internal class QuickSortTest {
         val expected = intArrayOf(5, 5, 5, 5, 5, 5)
         val arrayLength = array.size - 1
         runBlocking {
-            asyncQuickSort(array, 0, arrayLength)
+            QuickSort().asyncQuickSort(array, 0, arrayLength)
         }
         assertArrayEquals(expected, array)
     }
 
     @Test
+    fun quickSort_veryBigRandomArray() {
+        val array = IntArray(sizeOfArray) { (0..maxNumber).random() }
+        val expected = array.sorted().toIntArray()
+        val arrayLength = array.size - 1
+        QuickSort().quickSort(array, 0, arrayLength)
+        assertArrayEquals(expected, array)
+    }
+
+    @Test
     fun asyncQuickSort_veryBigRandomArray() {
-        val listForSort = mutableListOf<Int>()
-        for (i in 0 until SIZE_OF_ARRAY) {
-            listForSort.add((0..MAX_NUMBER).random())
-        }
-        val array = listForSort.toIntArray()
+        val array = IntArray(sizeOfArray) { (0..maxNumber).random() }
         val expected = array.sorted().toIntArray()
         val arrayLength = array.size - 1
         runBlocking {
             launch {
-                asyncQuickSort(array, 0, arrayLength)
+                QuickSort().asyncQuickSort(array, 0, arrayLength)
             }
         }
         assertArrayEquals(expected, array)
     }
 
     @Test
+    fun quickSort_veryBigAscendingArray() {
+        val array = IntArray(sizeOfArray) { it }
+        val expected = array.sorted().toIntArray()
+        val arrayLength = array.size - 1
+        QuickSort().quickSort(array, 0, arrayLength)
+        assertArrayEquals(expected, array)
+    }
+
+    @Test
     fun asyncQuickSort_veryBigAscendingArray() {
-        val listForSort = mutableListOf<Int>()
-        for (i in 0 until SIZE_OF_ARRAY) {
-            listForSort.add(i)
-        }
-        val array = listForSort.toIntArray()
+        val array = IntArray(sizeOfArray) { it }
         val expected = array.sorted().toIntArray()
         val arrayLength = array.size - 1
         runBlocking {
-            asyncQuickSort(array, 0, arrayLength)
+            QuickSort().asyncQuickSort(array, 0, arrayLength)
         }
         assertArrayEquals(expected, array)
     }
 
     @Test
+    fun quickSort_veryBigDescendingArray() {
+        val array = IntArray(sizeOfArray) { sizeOfArray - it }
+        val expected = array.sorted().toIntArray()
+        val arrayLength = array.size - 1
+        QuickSort().quickSort(array, 0, arrayLength)
+        assertArrayEquals(expected, array)
+    }
+
+    @Test
     fun asyncQuickSort_veryBigDescendingArray() {
-        val listForSort = mutableListOf<Int>()
-        for (i in 0 until SIZE_OF_ARRAY) {
-            listForSort.add(SIZE_OF_ARRAY - i)
-        }
-        val array = listForSort.toIntArray()
+        val array = IntArray(sizeOfArray) { sizeOfArray - it }
         val expected = array.sorted().toIntArray()
         val arrayLength = array.size - 1
         runBlocking {
-            asyncQuickSort(array, 0, arrayLength)
+            QuickSort().asyncQuickSort(array, 0, arrayLength)
         }
         assertArrayEquals(expected, array)
     }
