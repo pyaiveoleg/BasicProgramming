@@ -1,5 +1,7 @@
 package homeworks.homework4.task2
 
+import java.lang.IllegalArgumentException
+
 class ArithmeticTree(private val stringWithTree: String) {
     private val root: Node
 
@@ -13,23 +15,23 @@ class ArithmeticTree(private val stringWithTree: String) {
 
     private fun splitString(stringWithSubtree: String): Int {
         var quantityOfNonClosedBrackets = 0
-        var valueToReturn = 0
+
         if (stringWithSubtree[0].isDigit()) {
-            valueToReturn = stringWithSubtree.indexOf(' ')
-        } else {
-            for (i in stringWithSubtree.indices) {
-                if (stringWithSubtree[i] == '(') {
-                    quantityOfNonClosedBrackets++
-                }
-                if (stringWithSubtree[i] == ')') {
-                    quantityOfNonClosedBrackets--
-                }
-                if (quantityOfNonClosedBrackets == 0) {
-                    return i + 1
-                }
+            return stringWithSubtree.indexOf(' ')
+        }
+
+        for (i in stringWithSubtree.indices) {
+            if (stringWithSubtree[i] == '(') {
+                quantityOfNonClosedBrackets++
+            }
+            if (stringWithSubtree[i] == ')') {
+                quantityOfNonClosedBrackets--
+            }
+            if (quantityOfNonClosedBrackets == 0) {
+                return i + 1
             }
         }
-        return valueToReturn
+        throw IllegalArgumentException("Invalid input")
     }
 
     private fun importSubtree(start: Int, end: Int): Node {
