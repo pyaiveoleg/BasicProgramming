@@ -2,13 +2,14 @@ package homeworks.homework4.task1
 
 import kotlin.math.abs
 
-private const val VALUE_FOR_EXPAND = 2
-
 class HashTable(
     private var sizeOfHash: Int,
     private var maxLoadFactor: Double,
     private var hashFunction: HashFunction
 ) {
+    companion object Config {
+        private const val VALUE_FOR_EXPAND = 2
+    }
     private var quantityOfRecords = 0
     private var quantityOfFilledBuckets = 0
     private var array = Array(sizeOfHash) { Record(mutableListOf()) }

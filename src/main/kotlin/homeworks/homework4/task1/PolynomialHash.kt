@@ -2,9 +2,10 @@ package homeworks.homework4.task1
 
 import kotlin.math.pow
 
-private const val BIG_PRIMARY_NUMBER = 1000000009.0
-
 class PolynomialHash : HashFunction {
+    companion object Config {
+        private const val BIG_PRIMARY_NUMBER = 1000000009.0
+    }
     override fun calculateHash(string: String): Int {
         var hash = 0
         var index = 0
