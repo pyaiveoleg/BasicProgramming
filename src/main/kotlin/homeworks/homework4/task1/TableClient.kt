@@ -4,11 +4,6 @@ import java.io.File
 
 class TableClient {
     companion object Config {
-        const val SIZE_OF_HASH = 1000
-        const val MAX_LOAD_FACTOR = 0.9
-    }
-
-    companion object Commands {
         private const val CODE_OF_HELP = 0
         private const val CODE_OF_ADD = 1
         private const val CODE_OF_SEARCH = 2
@@ -17,6 +12,9 @@ class TableClient {
         private const val CODE_OF_PRINT_STATISTICS = 5
         private const val CODE_OF_IMPORT = 6
         private const val CODE_OF_EXIT = 7
+
+        const val SIZE_OF_HASH = 1000
+        const val MAX_LOAD_FACTOR = 0.9
     }
 
     private fun printHelp() {
