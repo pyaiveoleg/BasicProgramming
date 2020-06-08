@@ -24,7 +24,9 @@ class TableClient {
         println("$CODE_OF_REMOVE - remove value from table")
         println("$CODE_OF_CHANGE_HASH - change hash-function (from list of built-in functions)")
         println("$CODE_OF_PRINT_STATISTICS - show statistics")
-        println("$CODE_OF_IMPORT - import table from file \"./src/main/resources/homeworks/homework4/task1/testFile.txt\"")
+        println(
+            "$CODE_OF_IMPORT - import table from file \"./src/main/resources/homeworks/homework4/task1/testFile.txt\""
+        )
         println("$CODE_OF_EXIT - exit")
     }
 
