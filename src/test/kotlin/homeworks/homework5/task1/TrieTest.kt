@@ -101,7 +101,7 @@ internal class TrieTest {
         val emptyTrie = Trie(Node())
         trie.add("1bc")
         trie.remove("1bc")
-        assert(trie.equal(emptyTrie))
+        assert(trie == emptyTrie)
     }
 
     @Test
@@ -118,7 +118,7 @@ internal class TrieTest {
         expectedTrie.add("ab")
         expectedTrie.add("abc")
 
-        assert(actualTrie.equal(expectedTrie))
+        assert(actualTrie == expectedTrie)
     }
 
     @Test
@@ -134,7 +134,7 @@ internal class TrieTest {
         expectedTrie.add("a")
         expectedTrie.add("abcd")
         expectedTrie.add("abc")
-        assert(actualTrie.equal(expectedTrie))
+        assert(actualTrie == expectedTrie)
     }
 
     @Test
@@ -147,7 +147,7 @@ internal class TrieTest {
         trieForSerialize.add("ab")
         trieForSerialize.add("fg")
         trieForSerialize.add("acb")
-        trieForSerialize.serialize(out)
+        trieForSerialize.writeObject(out)
         val expected =
             File("./src/test/resources/homeworks/homework5/task1/TestSerializeComplicatedTrie.txt").readText()
         val actual =
@@ -159,7 +159,7 @@ internal class TrieTest {
     fun serialize_emptyTrie() {
         val trieForSerialize = Trie(Node())
         val out = FileOutputStream("./src/test/resources/homeworks/homework5/task1/TestSerializeEmptyTrie.txt")
-        trieForSerialize.serialize(out)
+        trieForSerialize.writeObject(out)
         val expected =
             File("./src/test/resources/homeworks/homework5/task1/TestSerializeEmptyTrie.txt").readText()
         val actual = File("./src/test/resources/homeworks/homework5/task1/SerializeEmptyTrie.txt").readText()
@@ -168,16 +168,16 @@ internal class TrieTest {
 
     @Test
     fun deserialize_emptyTrie() {
-        val trieForDeserialize = Trie.deserialize(
+        val trieForDeserialize = Trie.readObject(
             FileInputStream("./src/test/resources/homeworks/homework5/task1/SerializeEmptyTrie.txt")
         )
         val actualTrie = Trie(Node())
-        assert(actualTrie.equal(trieForDeserialize))
+        assert(actualTrie == trieForDeserialize)
     }
 
     @Test
     fun deserialize_bigComplicatedTrie() {
-        val trieForDeserialize = Trie.deserialize(
+        val trieForDeserialize = Trie.readObject(
             FileInputStream("./src/test/resources/homeworks/homework5/task1/SerializeComplicatedTrie.txt")
         )
         val actualTrie = Trie(Node())
@@ -186,7 +186,7 @@ internal class TrieTest {
         actualTrie.add("ab")
         actualTrie.add("fg")
         actualTrie.add("acb")
-        assert(actualTrie.equal(trieForDeserialize))
+        assert(actualTrie == trieForDeserialize)
     }
 
     @Test
@@ -197,7 +197,7 @@ internal class TrieTest {
         trie.add("abe")
         trie.add("ab")
         trie.add("abcd")
-        print(trie.serialize(OutputStream.nullOutputStream()))
+        print(trie.writeObject(OutputStream.nullOutputStream()))
         assertEquals(5, trie.howManyStartWithPrefix("ab"))
     }
 

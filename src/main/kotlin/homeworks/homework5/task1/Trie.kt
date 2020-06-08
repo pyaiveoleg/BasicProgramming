@@ -1,5 +1,6 @@
 package homeworks.homework5.task1
 
+import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.Serializable
@@ -36,20 +37,25 @@ class Trie(private val root: Node) : Serializable {
         return root.howManyStartWithPrefixRecursive(prefix, 0)
     }
 
-    fun equal(trieForCompare: Trie): Boolean {
-        return root.equal(trieForCompare.root)
+    override fun equals(other: Any?): Boolean {
+        if (other !is Trie) {
+            return false
+        }
+        return root.equal(other.root)
     }
 
-    fun serialize(out: OutputStream): String {
+    @Throws(IOException::class)
+    fun writeObject(out: OutputStream) {
         out.write(root.serializeSubtrie().toByteArray())
         out.close()
-        return root.serializeSubtrie()
+        return
     }
 
     companion object Deserialize {
         private const val symbolsToShift = 3
 
-        fun deserialize(input: InputStream): Trie {
+        @Throws(IOException::class, ClassNotFoundException::class)
+        fun readObject(input: InputStream): Trie {
             return Trie(deserializeSubtrie(1, input.bufferedReader().readText()).node)
         }
 
