@@ -44,6 +44,11 @@ class Trie(private val root: Node) : Serializable {
         return root.equal(other.root)
     }
 
+    override fun hashCode(): Int {
+        val primeNumber = 31
+        return primeNumber * root.hashCode() + quantityOfWords
+    }
+
     @Throws(IOException::class)
     fun writeObject(out: OutputStream) {
         out.write(root.serializeSubtrie().toByteArray())
