@@ -80,7 +80,7 @@ class MainController : Controller() {
         }
         if (humanSide == 2) {
             val coordinates = if (mode == "Hard") {
-                hardBot.makeMove(model.board, model.currentMove)
+                hardBot.makeMove(model.board, model.currentMove.value)
             } else {
                 easyBot.makeMove(model.board)
             }
@@ -96,7 +96,6 @@ class MainController : Controller() {
             return
         }
         move(x, y)
-        println("1")
         if (mode == "Online") {
             model.queueWithBoard.set(model.board.toString())
             model.changeMove()
@@ -105,7 +104,7 @@ class MainController : Controller() {
 
         if ((mode == "Hard" || mode == "Easy") && winner == null) {
             val coordinates = if (mode == "Hard") {
-                hardBot.makeMove(model.board, model.currentMove)
+                hardBot.makeMove(model.board, model.currentMove.value)
             } else {
                 easyBot.makeMove(model.board)
             }

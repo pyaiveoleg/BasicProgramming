@@ -1,7 +1,5 @@
 package homeworks.homework7.task2
 
-import javafx.beans.property.SimpleStringProperty
-
 object HardBot {
     private const val hugeScore = 20000
     private const val scoreStep = 20
@@ -11,13 +9,13 @@ object HardBot {
     private var human = 0
     private var ai = 0
 
-    fun makeMove(board: MutableList<Int>, currentMove: SimpleStringProperty): IntArray {
-        human = if (currentMove.value == "x") {
+    fun makeMove(board: MutableList<Int>, currentMove: String): IntArray {
+        human = if (currentMove == "x") {
             codeOfX
         } else {
             codeOfO
         }
-        ai = if (currentMove.value == "x") {
+        ai = if (currentMove == "x") {
             codeOfO
         } else {
             codeOfX
