@@ -14,7 +14,7 @@ class TableClient {
         private const val CODE_OF_EXIT = 7
 
         const val SIZE_OF_HASH = 1000
-        const val MAX_LOAD_FACTOR = 0.9
+        const val MAX_LOAD_FACTOR = 0.75
     }
 
     private fun printHelp() {

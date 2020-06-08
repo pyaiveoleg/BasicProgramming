@@ -6,8 +6,8 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
 
 internal class HashTableTest {
-    private val sizeOfHash = 1000
-    private val maxLoadFactor = 0.9
+    private val sizeOfHash = TableClient.SIZE_OF_HASH
+    private val maxLoadFactor = TableClient.MAX_LOAD_FACTOR
 
     @Test
     fun search_containsConsistOfOneElement() {
