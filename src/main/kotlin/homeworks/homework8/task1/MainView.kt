@@ -16,15 +16,16 @@ import tornadofx.px
 import tornadofx.style
 import tornadofx.vbox
 
-object MainView : View("Cross-zero") {
+class MainView : View("Cross-zero") {
     private val controller: MainController by inject()
     private val model = TicTacToe
-
-    private const val sizeOfSquare = 50.0
-    private const val sizeOfFont = 20
-    private const val paddingBetweenSquares = 3
-    private const val paddingBetweenBoardAndLabel = 10
-    private const val paddingBetweenTopAndLabel = 5
+    companion object Config {
+        private const val sizeOfSquare = 50.0
+        private const val sizeOfFont = 20
+        private const val paddingBetweenSquares = 3
+        private const val paddingBetweenBoardAndLabel = 10
+        private const val paddingBetweenTopAndLabel = 5
+    }
 
     @KtorExperimentalAPI
     override val root = form {

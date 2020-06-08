@@ -9,10 +9,8 @@ import tornadofx.label
 import tornadofx.radiobutton
 import tornadofx.vbox
 
-object ChooseSideView : View("Cross-zero") {
+class ChooseSideView : View("Cross-zero") {
     private val controller: MainController by inject()
-    private const val firstSide = 1
-    private const val secondSide = 2
 
     override val root = form {
         var side: Int? = null
@@ -21,12 +19,12 @@ object ChooseSideView : View("Cross-zero") {
             label("Choose your side")
             radiobutton("First", chooseSide) {
                 action {
-                    side = firstSide
+                    side = 1
                 }
             }
             radiobutton("Second", chooseSide) {
                 action {
-                    side = secondSide
+                    side = 2
                 }
             }
         }

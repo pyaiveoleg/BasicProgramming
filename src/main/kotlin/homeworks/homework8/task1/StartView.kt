@@ -10,16 +10,17 @@ import tornadofx.label
 import tornadofx.radiobutton
 import tornadofx.vbox
 
-object StartView : View("Cross-zero") {
-    private val controller: MainController by inject()
-
-    private const val height = 240.0
-    private const val width = 480.0
+class StartView : View("Cross-zero") {
+    val controller: MainController by inject()
+    companion object Config {
+        private const val HEIGHT = 240.0
+        private const val WIDTH = 480.0
+    }
 
     @KtorExperimentalAPI
     override val root = form {
-        prefHeight = height
-        prefWidth = width
+        prefHeight = HEIGHT
+        prefWidth = WIDTH
 
         var mode = ""
         val chooseMode = ToggleGroup()

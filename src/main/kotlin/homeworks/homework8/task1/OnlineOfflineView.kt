@@ -10,7 +10,7 @@ import tornadofx.label
 import tornadofx.radiobutton
 import tornadofx.vbox
 
-object OnlineOfflineView : View("Cross-zero") {
+class OnlineOfflineView : View("Cross-zero") {
     private val controller: MainController by inject()
 
     @KtorExperimentalAPI
