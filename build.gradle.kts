@@ -33,6 +33,7 @@ dependencies {
     implementation ("io.ktor:ktor-client-js:$ktor_version")
     implementation ("io.ktor:ktor-client-okhttp:$ktor_version")
     implementation ("io.ktor:ktor-websockets:$ktor_version")
+    implementation("org.junit.jupiter:junit-jupiter-params:5.0.0")
     implementation ("org.jetbrains.kotlinx:kotlinx-serialization-runtime-native:0.9.1")
 }
 
