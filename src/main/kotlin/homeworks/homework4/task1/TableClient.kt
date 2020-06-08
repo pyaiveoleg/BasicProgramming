@@ -15,6 +15,7 @@ class TableClient {
 
         const val SIZE_OF_HASH = 1000
         const val MAX_LOAD_FACTOR = 0.75
+        private const val PATH_TO_FILE = "./src/main/resources/homeworks/homework4/task1/testFile.txt"
     }
 
     private fun printHelp() {
@@ -25,7 +26,7 @@ class TableClient {
         println("$CODE_OF_CHANGE_HASH - change hash-function (from list of built-in functions)")
         println("$CODE_OF_PRINT_STATISTICS - show statistics")
         println(
-            "$CODE_OF_IMPORT - import table from file \"./src/main/resources/homeworks/homework4/task1/testFile.txt\""
+            "$CODE_OF_IMPORT - import table from file $PATH_TO_FILE"
         )
         println("$CODE_OF_EXIT - exit")
     }
@@ -107,7 +108,7 @@ class TableClient {
                     hashTable.printStatistics()
                 }
                 CODE_OF_IMPORT -> {
-                    val inputFile = File("./src/main/resources/homeworks/homework4/task1/testFile.txt")
+                    val inputFile = File(PATH_TO_FILE)
                     for (string in inputFile.readLines()) {
                         hashTable.addToTable(string)
                     }
