@@ -1,0 +1,1 @@
+{"isTerminal": "false", "edges": [a: {"isTerminal": "true", "edges": [b: {"isTerminal": "true", "edges": [c: {"isTerminal": "true", "edges": []}]}, c: {"isTerminal": "false", "edges": [b: {"isTerminal": "true", "edges": []}]}]}, f: {"isTerminal": "false", "edges": [g: {"isTerminal": "true", "edges": []}]}]}
