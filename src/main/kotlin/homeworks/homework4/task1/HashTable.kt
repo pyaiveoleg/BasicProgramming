@@ -1,5 +1,6 @@
 package homeworks.homework4.task1
 
+import java.lang.IllegalArgumentException
 import kotlin.math.abs
 
 class HashTable(
@@ -33,14 +34,14 @@ class HashTable(
         redistributeElements()
     }
 
-    fun addToTable(string: String?) {
+    fun addToTable(string: String?): Boolean {
         if (string == null) {
-            return
+            throw IllegalArgumentException("String cannot be null")
         }
         val hash = abs(hashFunction.calculateHash(string)) % sizeOfHash
         val bucket = array[hash]
         if (string in bucket.key) {
-            return
+            return false
         }
         if (bucket.key.size == 0) {
             quantityOfFilledBuckets++
@@ -50,6 +51,7 @@ class HashTable(
         if (quantityOfRecords.toDouble() / sizeOfHash > maxLoadFactor) {
             expandHashTable()
         }
+        return true
     }
 
     fun deleteFromTable(string: String?): Boolean {

@@ -7,12 +7,6 @@ class PolynomialHash : HashFunction {
         private const val BIG_PRIMARY_NUMBER = 1000000009.0
     }
     override fun calculateHash(string: String): Int {
-        var hash = 0
-        var index = 0
-        for (character in string) {
-            hash += (character.toInt() * BIG_PRIMARY_NUMBER.pow(index)).toInt()
-            index++
-        }
-        return hash
+        return string.mapIndexed { i, it -> (it.toInt() * BIG_PRIMARY_NUMBER.pow(i)).toInt() }.sum()
     }
 }

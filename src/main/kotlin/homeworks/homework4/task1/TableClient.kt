@@ -62,15 +62,27 @@ class TableClient {
         }
     }
 
+    private fun addElement(hashTable: HashTable) {
+        println("Write down value for adding:")
+        val stringToAdd = readLine()
+        if (stringToAdd == null) {
+            println("String cannot be null")
+        }
+
+        if (hashTable.addToTable(stringToAdd)) {
+            println("Successfully added")
+        } else {
+            println("String is already in table")
+        }
+    }
+
     fun workWithTable(hashTable: HashTable) {
         println("Type '$CODE_OF_HELP' for list of commands.")
         while (true) {
             when (readCommand()) {
                 CODE_OF_HELP -> printHelp()
                 CODE_OF_ADD -> {
-                    println("Write down value for adding:")
-                    hashTable.addToTable(readLine())
-                    println("Successfully added")
+                    addElement(hashTable)
                 }
                 CODE_OF_SEARCH -> {
                     println("Write down value for search:")
