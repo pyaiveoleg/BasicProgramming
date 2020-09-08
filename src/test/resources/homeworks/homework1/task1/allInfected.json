@@ -1,0 +1,46 @@
+{
+  "size": 5,
+  "computers": [
+    {
+      "operatingSystem": "Windows",
+      "isInfected": true,
+      "connected": [
+        1,
+        3
+      ]
+    },
+    {
+      "operatingSystem": "Linux",
+      "isInfected": true,
+      "connected": [
+        0,
+        2
+      ]
+    },
+    {
+      "operatingSystem": "Windows",
+      "isInfected": true,
+      "connected": [
+        1,
+        3,
+        4
+      ]
+    },
+    {
+      "operatingSystem": "MacOs",
+      "isInfected": true,
+      "connected": [
+        0,
+        2
+      ]
+    },
+    {
+      "operatingSystem": "Linux",
+      "isInfected": true,
+      "connected": [
+        1,
+        2
+      ]
+    }
+  ]
+}
