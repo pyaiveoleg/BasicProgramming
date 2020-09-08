@@ -5,7 +5,7 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 @Serializable
-data class Computer(var isInfected: Boolean, val connected: IntArray, val OS: OperatingSystem)
+data class Computer(var isInfected: Boolean, val connected: IntArray, val operatingSystem: OperatingSystem)
 
 @Serializable
 data class Network(val size: Int, val computers: Array<Computer>)

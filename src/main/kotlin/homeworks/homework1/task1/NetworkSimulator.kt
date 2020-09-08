@@ -11,7 +11,7 @@ class NetworkSimulator(private val network: Network) {
             }
             for (computerIndex in computer.connected) {
                 val computerToInfect = this.network.computers[computerIndex]
-                if (randomNumber < computerToInfect.OS.probabilityOfInfection) {
+                if (randomNumber < computerToInfect.operatingSystem.probabilityOfInfection) {
                     computerToInfect.isInfected = true
                 }
             }
