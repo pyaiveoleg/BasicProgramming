@@ -24,6 +24,6 @@ fun main() {
     for (i in 1..iterations) {
         println("Iteration: $i")
         networkSimulator.nextTurn()
-        print("Infected computers numbers: ${networkSimulator.getInfectedComputersList()}")
+        println("Infected computers numbers: ${networkSimulator.getInfectedComputersList()}")
     }
 }

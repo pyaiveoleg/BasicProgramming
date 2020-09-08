@@ -2,7 +2,7 @@
   "size": 5,
   "computers": [
     {
-      "OS": "Windows",
+      "operatingSystem": "Windows",
       "isInfected": false,
       "connected": [
         1,
@@ -10,7 +10,7 @@
       ]
     },
     {
-      "OS": "Linux",
+      "operatingSystem": "Linux",
       "isInfected": true,
       "connected": [
         0,
@@ -18,7 +18,7 @@
       ]
     },
     {
-      "OS": "Windows",
+      "operatingSystem": "Windows",
       "isInfected": false,
       "connected": [
         1,
@@ -27,7 +27,7 @@
       ]
     },
     {
-      "OS": "MacOs",
+      "operatingSystem": "MacOs",
       "isInfected": true,
       "connected": [
         0,
@@ -35,7 +35,7 @@
       ]
     },
     {
-      "OS": "Linux",
+      "operatingSystem": "Linux",
       "isInfected": false,
       "connected": [
         1,
