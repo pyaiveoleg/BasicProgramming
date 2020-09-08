@@ -1,2 +1,2 @@
-rootProject.name = "Semester 2"
+rootProject.name = "Semester3"
 
