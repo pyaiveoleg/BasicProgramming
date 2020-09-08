@@ -6,12 +6,13 @@ class NetworkSimulator(private val network: Network) {
     fun nextTurn() {
         val randomNumber = Random.nextDouble(0.0, 1.0)
         for (computer in network.computers) {
-            if (computer.isInfected) {
-                for (computerIndex in computer.connected) {
-                    val computerToInfect = this.network.computers[computerIndex]
-                    if (randomNumber < computerToInfect.OS.probabilityOfInfection) {
-                        computerToInfect.isInfected = true
-                    }
+            if (!computer.isInfected) {
+                continue
+            }
+            for (computerIndex in computer.connected) {
+                val computerToInfect = this.network.computers[computerIndex]
+                if (randomNumber < computerToInfect.OS.probabilityOfInfection) {
+                    computerToInfect.isInfected = true
                 }
             }
         }
