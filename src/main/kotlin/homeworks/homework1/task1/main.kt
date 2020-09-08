@@ -11,9 +11,11 @@ data class Computer(var isInfected: Boolean, val connected: IntArray, val operat
 data class Network(val size: Int, val computers: Array<Computer>)
 
 fun main() {
+    val pathToConfig = "./src/main/resources/homeworks/homework1/task1/input.json"
+    println("Config will be imported from $pathToConfig")
     val network = Json.decodeFromString(
         Network.serializer(),
-        File("./src/main/resources/homeworks/homework1/task1/input.json").readText()
+        File(pathToConfig).readText()
     )
     val networkSimulator = NetworkSimulator(network)
 
