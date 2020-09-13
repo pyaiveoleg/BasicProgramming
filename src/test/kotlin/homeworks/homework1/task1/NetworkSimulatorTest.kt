@@ -39,7 +39,7 @@ internal class NetworkSimulatorTest {
         )
         val networkSimulator = NetworkSimulator(network)
         networkSimulator.nextTurn()
-        assertEquals(listOf<Int>(0, 1, 2, 3, 4), networkSimulator.getInfectedComputersList())
+        assertEquals(listOf(0, 1, 2, 3, 4), networkSimulator.getInfectedComputersList())
     }
 
     @Test
@@ -49,7 +49,7 @@ internal class NetworkSimulatorTest {
             File("./src/test/resources/homeworks/homework1/task1/allInfected.json").readText()
         )
         val networkSimulator = NetworkSimulator(network)
-        assertEquals(listOf<Int>(0, 1, 2, 3, 4), networkSimulator.getInfectedComputersList())
+        assertEquals(listOf(0, 1, 2, 3, 4), networkSimulator.getInfectedComputersList())
     }
 
     @Test
@@ -74,30 +74,83 @@ internal class NetworkSimulatorTest {
     }
 
     @Test
-    fun nextTurn_checkQuantityOfInfected() {
+    fun nextTurn_complicatedGraphProbability100() {
         val network = Json.decodeFromString(
             Network.serializer(),
-            File("./src/test/resources/homeworks/homework1/task1/checkQuantity.json").readText()
+            File("./src/test/resources/homeworks/homework1/task1/complicatedGraphProbability100.json").readText()
         )
         val networkSimulator = NetworkSimulator(network)
         networkSimulator.nextTurn()
-        assert(networkSimulator.getInfectedComputersList().size >= 3)
+        for (number in 0..4) {
+            assert(networkSimulator.getInfectedComputersList().contains(number))
+        }
     }
 
     @Test
-    fun nextTurn_manyIterations() {
+    fun nextTurn_oneInfectedCenterProbability100() {
         val network = Json.decodeFromString(
             Network.serializer(),
-            File("./src/test/resources/homeworks/homework1/task1/checkQuantity.json").readText()
+            File("./src/test/resources/homeworks/homework1/task1/oneInfectedCenterProbability100.json").readText()
         )
         val networkSimulator = NetworkSimulator(network)
-        for (i in 1..QUANTITY_OF_ITERATIONS) {
-            networkSimulator.nextTurn()
-            if (networkSimulator.getInfectedComputersList().size == 5) {
-                break
-            }
-        }
         networkSimulator.nextTurn()
-        assert(networkSimulator.getInfectedComputersList().size >= 3)
+        for (number in 0..4) {
+            assert(networkSimulator.getInfectedComputersList().contains(number))
+        }
+    }
+
+    @Test
+    fun nextTurn_probabilityIsZero() {
+        val network = Json.decodeFromString(
+            Network.serializer(),
+            File("./src/test/resources/homeworks/homework1/task1/probabilityIsZero.json").readText()
+        )
+        val networkSimulator = NetworkSimulator(network)
+        for (iterations in 0..QUANTITY_OF_ITERATIONS) {
+            networkSimulator.nextTurn()
+            for (number in 0..3) {
+                assertFalse(networkSimulator.getInfectedComputersList().contains(number))
+            }
+            assert(networkSimulator.getInfectedComputersList().contains(4))
+        }
+    }
+
+    @Test
+    fun nextTurn_oneLine() {
+        val network = Json.decodeFromString(
+            Network.serializer(),
+            File("./src/test/resources/homeworks/homework1/task1/oneLine.json").readText()
+        )
+        val networkSimulator = NetworkSimulator(network)
+        networkSimulator.nextTurn()
+        assert(networkSimulator.getInfectedComputersList().contains(0))
+        assertFalse(networkSimulator.getInfectedComputersList().contains(2))
+        assertFalse(networkSimulator.getInfectedComputersList().contains(3))
+    }
+
+    @Test
+    fun nextTurn_oneLineProbabilityIs100() {
+        val network = Json.decodeFromString(
+            Network.serializer(),
+            File("./src/test/resources/homeworks/homework1/task1/oneLineProbability100.json").readText()
+        )
+        val networkSimulator = NetworkSimulator(network)
+        networkSimulator.nextTurn()
+        assert(networkSimulator.getInfectedComputersList().contains(0))
+        assert(networkSimulator.getInfectedComputersList().contains(1))
+        assertFalse(networkSimulator.getInfectedComputersList().contains(2))
+    }
+
+    @Test
+    fun nextTurn_oneUninfectedProbability100() {
+        val network = Json.decodeFromString(
+            Network.serializer(),
+            File("./src/test/resources/homeworks/homework1/task1/oneUninfectedProbability100.json").readText()
+        )
+        val networkSimulator = NetworkSimulator(network)
+        networkSimulator.nextTurn()
+        for (number in 0..2) {
+            assert(networkSimulator.getInfectedComputersList().contains(number))
+        }
     }
 }

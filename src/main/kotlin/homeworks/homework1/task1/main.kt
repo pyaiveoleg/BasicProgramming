@@ -5,10 +5,15 @@ import kotlinx.serialization.json.Json
 import java.io.File
 
 @Serializable
-data class Computer(var isInfected: Boolean, val connected: IntArray, val operatingSystem: OperatingSystem)
+data class Computer(var isInfected: Boolean, val operatingSystem: String)
 
 @Serializable
-data class Network(val size: Int, val computers: Array<Computer>)
+data class Network(
+    val size: Int,
+    val computers: Array<Computer>,
+    val adjacencyMatrix: Array<IntArray>,
+    val probabilitiesOfInfection: Map<String, Double>
+)
 
 fun main() {
     val pathToConfig = "./src/main/resources/homeworks/homework1/task1/input.json"

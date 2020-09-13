@@ -1,33 +1,33 @@
 {
   "size": 5,
   "probabilitiesOfInfection": {
-    "Windows": 0.3,
-    "Linux": 0.1,
-    "MacOs": 0.2
+    "Windows": 0.0,
+    "Linux": 0.0,
+    "MacOs": 0.0
   },
   "adjacencyMatrix": [
-    [1, 3],
-    [0, 2],
-    [1, 3, 4],
-    [0, 2],
-    [1, 2]
+    [4],
+    [4],
+    [4],
+    [4],
+    [0, 1, 2, 3]
   ],
   "computers": [
     {
       "operatingSystem": "Windows",
-      "isInfected": true
+      "isInfected": false
     },
     {
       "operatingSystem": "Linux",
-      "isInfected": true
+      "isInfected": false
     },
     {
       "operatingSystem": "Windows",
-      "isInfected": true
+      "isInfected": false
     },
     {
       "operatingSystem": "MacOs",
-      "isInfected": true
+      "isInfected": false
     },
     {
       "operatingSystem": "Linux",
