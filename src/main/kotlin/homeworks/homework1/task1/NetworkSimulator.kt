@@ -1,16 +1,15 @@
 package homeworks.homework1.task1
 
-import kotlin.random.Random
-
-class NetworkSimulator(private val network: Network) {
+class NetworkSimulator(val network: Network, private val generator: RandomGenerator) {
     fun nextTurn() {
         val willInfected = mutableSetOf<Int>()
         for ((index, computer) in network.computers.withIndex()) {
-            val randomNumber = Random.nextDouble(0.0, 1.0)
             if (!computer.isInfected) {
                 continue
             }
+
             for (computerIndex in network.adjacencyMatrix[index]) {
+                val randomNumber = generator.generateRandomDouble()
                 val computerToInfect = this.network.computers[computerIndex]
 
                 if (randomNumber < network.probabilitiesOfInfection.getValue(computerToInfect.operatingSystem)) {

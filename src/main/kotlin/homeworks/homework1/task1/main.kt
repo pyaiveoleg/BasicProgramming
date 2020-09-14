@@ -22,7 +22,7 @@ fun main() {
         Network.serializer(),
         File(pathToConfig).readText()
     )
-    val networkSimulator = NetworkSimulator(network)
+    val networkSimulator = NetworkSimulator(network, ActualRandom())
 
     val scan = java.util.Scanner(System.`in`)
     println("Please, write down quantity of iterations in infection process: ")
