@@ -1,6 +1,6 @@
 package homeworks.homework1.task1
 
-class DefinedNumbers(private val numbers: DoubleArray): RandomGenerator {
+class DefinedNumbers(private val numbers: DoubleArray) : RandomGenerator {
     private var index: Int = -1
     override fun generateRandomDouble(): Double {
         index += 1
