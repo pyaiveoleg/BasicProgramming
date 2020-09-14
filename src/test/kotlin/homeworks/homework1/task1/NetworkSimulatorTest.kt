@@ -153,4 +153,65 @@ internal class NetworkSimulatorTest {
             assert(networkSimulator.getInfectedComputersList().contains(number))
         }
     }
+
+    private fun checkStep(networkSimulator: NetworkSimulator, network: Network) {
+        val previousInfectedList = networkSimulator.getInfectedComputersList()
+        networkSimulator.nextTurn()
+
+        for (computer in 0..network.size) {
+            if (computer in previousInfectedList) {
+                assert(networkSimulator.getInfectedComputersList().contains(computer))
+                continue
+            }
+
+            var isAdjacentToInfected = false
+            for (infectedComputer in previousInfectedList) {
+                if (computer in network.adjacencyMatrix[infectedComputer]) {
+                    isAdjacentToInfected = true
+                }
+            }
+            if (!isAdjacentToInfected) {
+                assertFalse(networkSimulator.getInfectedComputersList().contains(computer))
+            }
+        }
+    }
+
+    @Test
+    fun nextTurn_oneUninfected() {
+        val network = Json.decodeFromString(
+            Network.serializer(),
+            File("./src/test/resources/homeworks/homework1/task1/oneUninfected.json").readText()
+        )
+        val networkSimulator = NetworkSimulator(network)
+
+        for (i in 0..2) {
+            checkStep(networkSimulator, network)
+        }
+    }
+
+    @Test
+    fun nextTurn_oneInfected() {
+        val network = Json.decodeFromString(
+            Network.serializer(),
+            File("./src/test/resources/homeworks/homework1/task1/oneUninfected.json").readText()
+        )
+        val networkSimulator = NetworkSimulator(network)
+        networkSimulator.nextTurn()
+        for (i in 0..2) {
+            checkStep(networkSimulator, network)
+        }
+    }
+
+    @Test
+    fun nextTurn_complicatedGraph() {
+        val network = Json.decodeFromString(
+            Network.serializer(),
+            File("./src/test/resources/homeworks/homework1/task1/complicatedGraph.json").readText()
+        )
+        val networkSimulator = NetworkSimulator(network)
+        networkSimulator.nextTurn()
+        for (i in 0..2) {
+            checkStep(networkSimulator, network)
+        }
+    }
 }
