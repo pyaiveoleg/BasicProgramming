@@ -154,6 +154,9 @@ internal class NetworkSimulatorTest {
         }
     }
 
+    // probabilities below are not 100% and not 0%, so we check that infected computers remain infected
+    // and not adjacent to infected can't infect in each step
+
     private fun checkStep(networkSimulator: NetworkSimulator, network: Network) {
         val previousInfectedList = networkSimulator.getInfectedComputersList()
         networkSimulator.nextTurn()
@@ -207,6 +210,32 @@ internal class NetworkSimulatorTest {
         val network = Json.decodeFromString(
             Network.serializer(),
             File("./src/test/resources/homeworks/homework1/task1/complicatedGraph.json").readText()
+        )
+        val networkSimulator = NetworkSimulator(network)
+        networkSimulator.nextTurn()
+        for (i in 0..2) {
+            checkStep(networkSimulator, network)
+        }
+    }
+
+    @Test
+    fun nextTurn_graphIsCycle() {
+        val network = Json.decodeFromString(
+            Network.serializer(),
+            File("./src/test/resources/homeworks/homework1/task1/graphIsCycle.json").readText()
+        )
+        val networkSimulator = NetworkSimulator(network)
+        networkSimulator.nextTurn()
+        for (i in 0..2) {
+            checkStep(networkSimulator, network)
+        }
+    }
+
+    @Test
+    fun nextTurn_completeGraph() {
+        val network = Json.decodeFromString(
+            Network.serializer(),
+            File("./src/test/resources/homeworks/homework1/task1/completeGraph.json").readText()
         )
         val networkSimulator = NetworkSimulator(network)
         networkSimulator.nextTurn()
