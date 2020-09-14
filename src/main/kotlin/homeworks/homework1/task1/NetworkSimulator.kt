@@ -1,6 +1,6 @@
 package homeworks.homework1.task1
 
-class NetworkSimulator(val network: Network, private val generator: RandomGenerator) {
+class NetworkSimulator(val network: Network, private val probabilityGenerator: RandomProbabilityGenerator) {
     fun nextTurn() {
         val willInfected = mutableSetOf<Int>()
         for ((index, computer) in network.computers.withIndex()) {
@@ -9,7 +9,7 @@ class NetworkSimulator(val network: Network, private val generator: RandomGenera
             }
 
             for (computerIndex in network.adjacencyMatrix[index]) {
-                val randomNumber = generator.generateRandomDouble()
+                val randomNumber = probabilityGenerator.generateProbability()
                 val computerToInfect = this.network.computers[computerIndex]
 
                 if (randomNumber < network.probabilitiesOfInfection.getValue(computerToInfect.operatingSystem)) {
