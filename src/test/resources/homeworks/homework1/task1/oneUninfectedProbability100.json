@@ -1,0 +1,27 @@
+{
+  "size": 3,
+  "probabilitiesOfInfection": {
+    "Windows": 1.0,
+    "Linux": 1.0,
+    "MacOs": 1.0
+  },
+  "adjacencyMatrix": [
+    [1],
+    [0, 2],
+    [1]
+  ],
+  "computers": [
+    {
+      "operatingSystem": "Windows",
+      "isInfected": true
+    },
+    {
+      "operatingSystem": "Linux",
+      "isInfected": false
+    },
+    {
+      "operatingSystem": "Windows",
+      "isInfected": true
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "size": 0,
+  "probabilitiesOfInfection": {
+    "Windows": 0.3,
+    "Linux": 0.1,
+    "MacOs": 0.2
+  },
+  "adjacencyMatrix": [],
+  "computers": []
+}
