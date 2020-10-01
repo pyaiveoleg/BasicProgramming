@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 
-internal class ParkingInfoAutomatTest {
+internal class ParkingInfoTest {
     companion object Config {
         const val CAPACITY = 1000
         const val QUANTITY_OF_THREADS = 100
@@ -12,13 +12,13 @@ internal class ParkingInfoAutomatTest {
 
     @Test
     fun addCar_capacityIsZero() {
-        val parking = ParkingInfoAutomat(ParkingInfo(0))
+        val parking = ParkingInfo(0)
         assertFalse(parking.addCar())
     }
 
     @Test
     fun addCar_allSpaceOccupied() {
-        val parking = ParkingInfoAutomat(ParkingInfo(CAPACITY))
+        val parking = ParkingInfo(CAPACITY)
         for (i in 1..CAPACITY) {
             parking.addCar()
         }
@@ -27,7 +27,7 @@ internal class ParkingInfoAutomatTest {
 
     @Test
     fun addCar_someSpaceFree() {
-        val parking = ParkingInfoAutomat(ParkingInfo(CAPACITY))
+        val parking = ParkingInfo(CAPACITY)
         for (i in 1..CAPACITY / 2) {
             parking.addCar()
         }
@@ -36,7 +36,7 @@ internal class ParkingInfoAutomatTest {
 
     @Test
     fun addCar_manyThreadsAllRight() {
-        val parking = ParkingInfoAutomat(ParkingInfo(CAPACITY))
+        val parking = ParkingInfo(CAPACITY)
 
         val arrayOfThreads = Array(QUANTITY_OF_THREADS) {
             Thread {
@@ -54,7 +54,7 @@ internal class ParkingInfoAutomatTest {
 
     @Test
     fun addCar_manyThreadsParkingOverflow() {
-        val parking = ParkingInfoAutomat(ParkingInfo(CAPACITY))
+        val parking = ParkingInfo(CAPACITY)
 
         val arrayOfThreads = Array(QUANTITY_OF_THREADS) {
             Thread {
@@ -72,20 +72,20 @@ internal class ParkingInfoAutomatTest {
 
     @Test
     fun removeCar_emptyParking() {
-        val parking = ParkingInfoAutomat(ParkingInfo(1))
+        val parking = ParkingInfo(1)
         assertFalse(parking.removeCar())
     }
 
     @Test
     fun removeCar_areCars() {
-        val parking = ParkingInfoAutomat(ParkingInfo(1))
+        val parking = ParkingInfo(1)
         parking.addCar()
         assert(parking.removeCar())
     }
 
     @Test
     fun removeCar_manyTreadsAllRight() { // доделать
-        val parking = ParkingInfoAutomat(ParkingInfo(CAPACITY))
+        val parking = ParkingInfo(CAPACITY)
 
         for (i in 1.. CAPACITY) {
             parking.addCar()
@@ -107,7 +107,7 @@ internal class ParkingInfoAutomatTest {
 
     @Test
     fun removeCar_manyThreadsParkingOverflow() {
-        val parking = ParkingInfoAutomat(ParkingInfo(CAPACITY))
+        val parking = ParkingInfo(CAPACITY)
 
         for (i in 1.. 2 * CAPACITY) {
             parking.addCar()
@@ -129,13 +129,13 @@ internal class ParkingInfoAutomatTest {
 
     @Test
     fun getOccupiedSpace_emptyParking() {
-        val parking = ParkingInfoAutomat(ParkingInfo(CAPACITY))
+        val parking = ParkingInfo(CAPACITY)
         assertEquals(0, parking.getOccupiedSpace())
     }
 
     @Test
     fun getOccupiedSpace_allSpaceOccupied() {
-        val parking = ParkingInfoAutomat(ParkingInfo(CAPACITY))
+        val parking = ParkingInfo(CAPACITY)
 
         for (i in 1..CAPACITY) {
             parking.addCar()
@@ -146,7 +146,7 @@ internal class ParkingInfoAutomatTest {
 
     @Test
     fun getOccupiedSpace_parkingOverflow() {
-        val parking = ParkingInfoAutomat(ParkingInfo(CAPACITY))
+        val parking = ParkingInfo(CAPACITY)
 
         for (i in 1..2 * CAPACITY) {
             parking.addCar()
