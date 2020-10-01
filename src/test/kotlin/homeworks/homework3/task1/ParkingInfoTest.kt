@@ -84,7 +84,7 @@ internal class ParkingInfoTest {
     }
 
     @Test
-    fun removeCar_manyTreadsAllRight() { // доделать
+    fun removeCar_manyTreadsAllRight() {
         val parking = ParkingInfo(CAPACITY)
 
         for (i in 1.. CAPACITY) {
